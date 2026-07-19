@@ -1,8 +1,7 @@
 import Card from "./Card";
 
 export default function MarketRegime({ data }) {
-  // Keep existing UI usable until API data is available
-  console.log("MarketRegime data:", data);
+  // Keep existing UI usable until API data is available.
   const regime = data ?? {};
 
   const score = regime.score ?? 74;
@@ -37,15 +36,10 @@ export default function MarketRegime({ data }) {
     `${direction} + ${regime.volatility ?? "ELEVATED VOLATILITY"}`;
 
   return (
-    <Card
-      title="MARKET REGIME SUMMARY"
-      className="market-regime"
-    >
+    <Card title="MARKET REGIME SUMMARY" className="market-regime">
       <div className="regime-content">
-
         {/* LEFT SIDE - GAUGE */}
         <div className="gauge-area">
-
           <div className="gauge">
             <div className="gauge-center">
               <strong>{score}</strong>
@@ -61,15 +55,12 @@ export default function MarketRegime({ data }) {
           <h3>{direction}</h3>
 
           <p>
-            Confidence:{" "}
-            <strong>{confidence}</strong>
+            Confidence: <strong>{confidence}</strong>
           </p>
-
         </div>
 
         {/* RIGHT SIDE - SCORE TABLE */}
         <div className="score-table">
-
           <div className="score-header">
             <span />
             <span>SCORE</span>
@@ -78,23 +69,17 @@ export default function MarketRegime({ data }) {
 
           {components.map((item) => {
             const warning =
-              item.status
-                ?.toLowerCase()
-                .includes("elevated") ||
-              item.parameter
-                ?.toLowerCase()
-                .includes("volatility");
+              item.status?.toLowerCase().includes("elevated") ||
+              item.parameter?.toLowerCase().includes("volatility");
+
+            const displayScore =
+              item.score > 0 && !warning ? `+${item.score}` : item.score;
 
             return (
               <Score
                 key={item.parameter}
                 name={item.parameter}
-                score={
-                  item.score > 0 &&
-                  !warning
-                    ? `+${item.score}`
-                    : item.score
-                }
+                score={displayScore}
                 status={item.status}
                 warning={warning}
               />
@@ -104,52 +89,24 @@ export default function MarketRegime({ data }) {
           <div className="final-regime">
             <span>MARKET REGIME</span>
 
-            <strong>
-              {finalRegime}
-            </strong>
+            <strong>{finalRegime}</strong>
           </div>
-
         </div>
-
       </div>
     </Card>
   );
 }
 
+function Score({ name, score, status, warning = false }) {
+  const statusClassName = warning ? "yellow" : "green";
 
-function Score({
-  name,
-  score,
-  status,
-  warning,
-}) {
   return (
     <div className="score-row">
+      <span>{name}</span>
 
-      <span>
-        {name}
-      </span>
+      <strong className={statusClassName}>{score}</strong>
 
-      <strong
-        className={
-          warning
-            ? "yellow"
-            : "green"
-        }
-      >
-        {score}
-      </strong>
-
-      <strong
-        className={
-          warning
-            ? "yellow"
-            : "green"
-        }
-      >
-        {status}
-      </strong>
-
+      <strong className={statusClassName}>{status}</strong>
     </div>
   );
 }

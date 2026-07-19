@@ -258,12 +258,11 @@ button {
   border: 1px solid var(--border);
   border-radius: 8px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(10, 29, 46, 0.98),
-      rgba(6, 20, 33, 0.98)
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(10, 29, 46, 0.98),
+    rgba(6, 20, 33, 0.98)
+  );
 }
 
 .watchlist-heading {
@@ -609,11 +608,7 @@ button {
 
   border-radius: 50%;
 
-  background:
-    conic-gradient(
-      #72c9ff 0deg 285deg,
-      #27384a 285deg 360deg
-    );
+  background: conic-gradient(#72c9ff 0deg 285deg, #27384a 285deg 360deg);
 }
 
 .countdown-circle span {
@@ -739,8 +734,7 @@ button {
 
   display: grid;
 
-  grid-template-columns:
-    repeat(12, minmax(0, 1fr));
+  grid-template-columns: repeat(12, minmax(0, 1fr));
 
   grid-auto-rows: auto;
 
@@ -764,12 +758,11 @@ button {
   border: 1px solid var(--border);
   border-radius: 7px;
 
-  background:
-    linear-gradient(
-      145deg,
-      rgba(11, 29, 46, 0.98),
-      rgba(7, 22, 36, 0.98)
-    );
+  background: linear-gradient(
+    145deg,
+    rgba(11, 29, 46, 0.98),
+    rgba(7, 22, 36, 0.98)
+  );
 }
 
 .card-heading {
@@ -905,14 +898,13 @@ button {
 
   border-radius: 100px 100px 0 0;
 
-  background:
-    conic-gradient(
-      from 270deg,
-      var(--green) 0deg 130deg,
-      #f0f4f7 130deg 140deg,
-      #314154 140deg 180deg,
-      transparent 180deg
-    );
+  background: conic-gradient(
+    from 270deg,
+    var(--green) 0deg 130deg,
+    #f0f4f7 130deg 140deg,
+    #314154 140deg 180deg,
+    transparent 180deg
+  );
 }
 
 .gauge::after {
@@ -1169,8 +1161,7 @@ button {
 
   display: grid;
 
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
   border-top: 1px solid var(--border);
 }
@@ -1385,14 +1376,13 @@ button {
 
   height: 2px;
 
-  background:
-    linear-gradient(
-      to right,
-      var(--green),
-      var(--green) 55%,
-      var(--red) 55%,
-      var(--red)
-    );
+  background: linear-gradient(
+    to right,
+    var(--green),
+    var(--green) 55%,
+    var(--red) 55%,
+    var(--red)
+  );
 }
 
 .location-line i {
@@ -1415,8 +1405,7 @@ button {
 
   display: grid;
 
-  grid-template-columns:
-    repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
 
   border-top: 1px solid var(--border);
 }
@@ -1502,8 +1491,7 @@ button {
 .pcr-main {
   display: grid;
 
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .pcr-metric,
@@ -1584,8 +1572,7 @@ button {
 
   display: grid;
 
-  grid-template-columns:
-    repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 
   border-top: 1px solid var(--border);
 }
@@ -2295,8 +2282,7 @@ button {
   }
 
   .sr-intelligence {
-    grid-template-columns:
-      repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
 
     row-gap: 15px;
   }
@@ -2387,7 +2373,6 @@ button {
    Add at END of App.css
    ========================================================= */
 
-
 /* =========================================================
    1. HEADER - OPEN / HIGH / LOW / PREV CLOSE
    ========================================================= */
@@ -2435,7 +2420,6 @@ button {
   color: var(--red);
 }
 
-
 /* Make NIFTY label slightly stronger */
 
 .nifty-title {
@@ -2453,7 +2437,6 @@ button {
   font-size: 8px;
   font-weight: 700;
 }
-
 
 /* =========================================================
    2. MARKET REGIME - SCORE / STATUS HEADER
@@ -2475,7 +2458,6 @@ button {
   font-size: 10px;
   font-weight: 600;
 }
-
 
 /* Improve table row readability */
 
@@ -2501,7 +2483,6 @@ button {
   font-weight: 600;
 }
 
-
 /* Market regime final label */
 
 .final-regime span {
@@ -2520,7 +2501,6 @@ button {
   font-weight: 700;
 }
 
-
 /* =========================================================
    3. PCR & VOLATILITY - OPTION SELLING ENVIRONMENT
    ========================================================= */
@@ -2533,12 +2513,11 @@ button {
   border: 1px solid rgba(35, 215, 124, 0.22);
   border-radius: 5px;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(35, 215, 124, 0.07),
-      rgba(35, 215, 124, 0.025)
-    );
+  background: linear-gradient(
+    135deg,
+    rgba(35, 215, 124, 0.07),
+    rgba(35, 215, 124, 0.025)
+  );
 
   text-align: center;
 }
@@ -2581,7 +2560,6 @@ button {
   line-height: 1.5;
 }
 
-
 /* =========================================================
    4. STRATEGY ENVIRONMENT - RECOMMENDED STRATEGIES
    ========================================================= */
@@ -2620,7 +2598,6 @@ button {
   white-space: nowrap;
 }
 
-
 /* =========================================================
    5. ENTRY STATUS - IMPROVED LAYOUT
    ========================================================= */
@@ -2639,7 +2616,6 @@ button {
 
   min-height: 145px;
 }
-
 
 /* WAIT STATUS */
 
@@ -2673,7 +2649,6 @@ button {
 
   letter-spacing: 0.5px;
 }
-
 
 /* REASON AREA */
 
@@ -2724,7 +2699,6 @@ button {
   font-size: 11px;
 }
 
-
 /* =========================================================
    BEST ENTRY ZONE - PREMIUM STYLE
    ========================================================= */
@@ -2739,7 +2713,6 @@ button {
   border-left: 1px solid var(--border);
 }
 
-
 /* Entry Zone Label */
 
 .entry-zone > span:first-child {
@@ -2752,7 +2725,6 @@ button {
 
   text-transform: uppercase;
 }
-
 
 /* Entry Range */
 
@@ -2770,12 +2742,11 @@ button {
   border: 1px solid rgba(35, 215, 124, 0.25);
   border-radius: 5px;
 
-  background:
-    linear-gradient(
-      135deg,
-      rgba(35, 215, 124, 0.1),
-      rgba(35, 215, 124, 0.025)
-    );
+  background: linear-gradient(
+    135deg,
+    rgba(35, 215, 124, 0.1),
+    rgba(35, 215, 124, 0.025)
+  );
 
   color: #ffffff;
 
@@ -2784,10 +2755,8 @@ button {
 
   letter-spacing: 0.3px;
 
-  box-shadow:
-    inset 3px 0 0 var(--green);
+  box-shadow: inset 3px 0 0 var(--green);
 }
-
 
 /* Divider */
 
@@ -2801,7 +2770,6 @@ button {
   border-top: 1px solid var(--border);
 }
 
-
 /* Invalidation label */
 
 .entry-zone span:not(:first-child) {
@@ -2812,7 +2780,6 @@ button {
 
   letter-spacing: 0.3px;
 }
-
 
 /* Invalidation value */
 
@@ -2826,7 +2793,6 @@ button {
 
   line-height: 1.4;
 }
-
 
 /* =========================================================
    6. GENERAL SECONDARY TEXT READABILITY
@@ -2849,14 +2815,12 @@ button {
   font-size: 13px;
 }
 
-
 /* =========================================================
    7. MEDIUM DESKTOP OVERRIDES
    Important because screenshot appears around this breakpoint
    ========================================================= */
 
 @media (max-width: 1500px) {
-
   .nifty-mini-stat {
     min-width: 72px;
 
@@ -2934,7 +2898,6 @@ button {
   min-height: 160px;
 }
 
-
 /* =========================
    WAIT STATE
    ========================= */
@@ -2988,7 +2951,6 @@ button {
   letter-spacing: 0.4px;
 }
 
-
 /* =========================
    REASON
    ========================= */
@@ -3015,7 +2977,6 @@ button {
   margin: 7px 0;
 }
 
-
 /* =========================
    ENHANCED ENTRY ZONE
    ========================= */
@@ -3031,7 +2992,6 @@ button {
 
   border-left: 1px solid var(--border);
 }
-
 
 /* Header */
 
@@ -3061,7 +3021,6 @@ button {
   white-space: nowrap;
 }
 
-
 /* =========================
    RANGE CHART
    ========================= */
@@ -3073,7 +3032,6 @@ button {
   margin-bottom: 8px;
 }
 
-
 /* Top min/max */
 
 .entry-range-top-labels {
@@ -3084,7 +3042,6 @@ button {
   font-size: 11px;
   font-weight: 600;
 }
-
 
 /* Main Track */
 
@@ -3099,7 +3056,6 @@ button {
   background: #172b3e;
 }
 
-
 /* Entry Zone Green Area */
 
 .entry-zone-range {
@@ -3111,17 +3067,10 @@ button {
 
   border-radius: 10px;
 
-  background:
-    linear-gradient(
-      90deg,
-      rgba(35, 215, 124, 0.65),
-      var(--green)
-    );
+  background: linear-gradient(90deg, rgba(35, 215, 124, 0.65), var(--green));
 
-  box-shadow:
-    0 0 8px rgba(35, 215, 124, 0.3);
+  box-shadow: 0 0 8px rgba(35, 215, 124, 0.3);
 }
-
 
 /* =========================
    CURRENT PRICE
@@ -3152,10 +3101,8 @@ button {
 
   background: var(--yellow);
 
-  box-shadow:
-    0 0 0 2px rgba(244, 201, 54, 0.2);
+  box-shadow: 0 0 0 2px rgba(244, 201, 54, 0.2);
 }
-
 
 /* Price tooltip */
 
@@ -3184,9 +3131,7 @@ button {
 
   background: #16202a;
 
-  transform:
-    translateX(-50%)
-    rotate(45deg);
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .current-price-tooltip span {
@@ -3203,7 +3148,6 @@ button {
   font-size: 8px;
 }
 
-
 /* =========================
    INVALIDATION MARKER
    ========================= */
@@ -3218,7 +3162,6 @@ button {
 
   background: var(--red);
 }
-
 
 /* =========================
    ENTRY ZONE PRICE LABELS
@@ -3245,7 +3188,6 @@ button {
 
   white-space: nowrap;
 }
-
 
 /* =========================
    POSITION STATUS
@@ -3281,7 +3223,6 @@ button {
 
   white-space: nowrap;
 }
-
 
 /* =========================
    INVALIDATION
@@ -3329,13 +3270,11 @@ button {
   font-size: 7px;
 }
 
-
 /* =========================================================
    MEDIUM DESKTOP
    ========================================================= */
 
 @media (max-width: 1500px) {
-
   .entry-layout {
     grid-template-columns:
       95px
@@ -3363,5 +3302,206 @@ button {
   .current-price-tooltip {
     padding-left: 4px;
     padding-right: 4px;
+  }
+}
+
+/* =========================================================
+   STATUS BAR / FOOTER
+   ========================================================= */
+
+.status-bar {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  background: #06131f;
+  border-top: 1px solid #20384b;
+
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.status-bar-info {
+  display: flex;
+  align-items: center;
+  gap: 42px;
+  min-width: 0;
+}
+
+.status-item {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+
+  color: #78a0bd;
+  font-size: 10px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status-item strong {
+  color: #b9d5e8;
+  font-weight: 600;
+}
+
+.status-dot {
+  width: 6px;
+  height: 6px;
+  display: inline-block;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #20dc8e;
+}
+
+.status-bar-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.footer-button {
+  min-height: 32px;
+  padding: 0 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #29445b;
+  border-radius: 4px;
+
+  background: transparent;
+  color: #d7e8f5;
+
+  font-family: inherit;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.footer-button:hover {
+  background: #10263a;
+  border-color: #3d607c;
+}
+
+.footer-button-primary {
+  background: #283c99;
+  border-color: #425bc3;
+  color: #ffffff;
+}
+
+.footer-button-primary:hover {
+  background: #3249ad;
+}
+
+.footer-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Auto refresh */
+
+.auto-refresh-control {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  color: #d7e8f5;
+  font-size: 10px;
+  font-weight: 600;
+
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.auto-refresh-control input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.auto-refresh-switch {
+  position: relative;
+
+  width: 38px;
+  height: 20px;
+
+  display: inline-block;
+  flex-shrink: 0;
+
+  border-radius: 20px;
+  background: #294054;
+
+  transition:
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.auto-refresh-switch::after {
+  content: "";
+
+  position: absolute;
+  top: 3px;
+  left: 3px;
+
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+  background: #ffffff;
+
+  transition: transform 0.2s ease;
+}
+
+.auto-refresh-control input:checked + .auto-refresh-switch {
+  background: #20d98a;
+}
+
+.auto-refresh-control input:checked + .auto-refresh-switch::after {
+  transform: translateX(18px);
+}
+
+.auto-refresh-control input:focus-visible + .auto-refresh-switch {
+  box-shadow: 0 0 0 2px rgba(73, 158, 255, 0.45);
+}
+
+/* =========================================================
+   RESPONSIVE FOOTER
+   ========================================================= */
+
+@media (max-width: 1200px) {
+  .status-bar {
+    padding: 8px 14px;
+    gap: 12px;
+  }
+
+  .status-bar-info {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 900px) {
+  .status-bar {
+    flex-wrap: wrap;
+  }
+
+  .status-bar-info {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .status-bar-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
 }

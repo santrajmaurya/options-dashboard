@@ -42,35 +42,90 @@ export default function App() {
     } catch (err) {
       console.error("Dashboard API error:", err);
 
-      setError(err.message);
+      setError(err instanceof Error ? err.message : "Failed to load dashboard");
     } finally {
       setLoading(false);
       setRefreshing(false);
     }
   }, []);
 
+  /*
+   * Initial dashboard load.
+   *
+   * The API request is started asynchronously inside the effect.
+   * This avoids calling loadDashboard(), which updates state,
+   * synchronously from the effect body.
+   */
   useEffect(() => {
-    loadDashboard();
-  }, [loadDashboard]);
+    let cancelled = false;
 
+    const initializeDashboard = async () => {
+      try {
+        const data = await fetchDashboard();
+
+        if (cancelled) {
+          return;
+        }
+
+        setDashboardData(data);
+        setError(null);
+      } catch (err) {
+        if (cancelled) {
+          return;
+        }
+
+        console.error("Dashboard API error:", err);
+
+        setError(
+          err instanceof Error ? err.message : "Failed to load dashboard"
+        );
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    void initializeDashboard();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  /*
+   * Auto refresh.
+   *
+   * State-changing loadDashboard() is called from the timer callback,
+   * rather than directly from the effect body.
+   */
   useEffect(() => {
     if (!autoRefresh) {
-      return;
+      return undefined;
     }
 
-    const interval = setInterval(() => {
-      loadDashboard(true);
-    }, 5 * 60 * 1000);
+    const interval = window.setInterval(
+      () => {
+        void loadDashboard(true);
+      },
+      5 * 60 * 1000
+    );
 
-    return () => clearInterval(interval);
+    return () => {
+      window.clearInterval(interval);
+    };
   }, [autoRefresh, loadDashboard]);
 
+  const handleRetry = () => {
+    void loadDashboard();
+  };
+
+  const handleRefresh = () => {
+    void loadDashboard(true);
+  };
+
   if (loading) {
-    return (
-      <div className="app-loading">
-        Loading market dashboard...
-      </div>
-    );
+    return <div className="app-loading">Loading market dashboard...</div>;
   }
 
   if (error && !dashboardData) {
@@ -80,7 +135,7 @@ export default function App() {
 
         <p>{error}</p>
 
-        <button onClick={() => loadDashboard()}>
+        <button type="button" onClick={handleRetry}>
           Retry
         </button>
       </div>
@@ -93,10 +148,10 @@ export default function App() {
 
       <div className="main-shell">
         <Topbar
-  data={dashboardData}
-  autoRefresh={autoRefresh}
-  refreshInterval={300}
-/>
+          data={dashboardData}
+          autoRefresh={autoRefresh}
+          refreshInterval={300}
+        />
 
         {error && (
           <div className="dashboard-api-warning">
@@ -105,26 +160,18 @@ export default function App() {
         )}
 
         <main className="dashboard-grid">
-          <MarketRegime
-            data={dashboardData?.regime}
-          />
+          <MarketRegime data={dashboardData?.regime} />
 
-          <MultiTimeframeTrend
-            data={dashboardData?.trend}
-          />
+          <MultiTimeframeTrend data={dashboardData?.trend} />
 
           <PriceAndLevels
             nifty={dashboardData?.nifty}
             levels={dashboardData?.levels}
           />
 
-          <FuturesOI
-            data={dashboardData?.futures}
-          />
+          <FuturesOI data={dashboardData?.futures} />
 
-          <OptionChain
-            data={dashboardData?.option_chain}
-          />
+          <OptionChain data={dashboardData?.option_chain} />
 
           <SupportResistance
             data={dashboardData?.levels}
@@ -136,71 +183,75 @@ export default function App() {
             vix={dashboardData?.vix}
           />
 
-          <IVMetrics
-            data={dashboardData?.volatility}
-          />
+          <IVMetrics data={dashboardData?.volatility} />
 
-          <MarketBreadth
-            data={dashboardData?.breadth}
-          />
+          <MarketBreadth data={dashboardData?.breadth} />
 
           <SectorStrength />
 
-          <StrategyEnvironment
-            data={dashboardData?.strategies}
-          />
+          <StrategyEnvironment data={dashboardData?.strategies} />
 
-          <EntryStatus
-            data={dashboardData?.entry}
-          />
+          <EntryStatus data={dashboardData?.entry} />
 
-          <RiskEvents
-            data={dashboardData?.risk}
-          />
+          <RiskEvents data={dashboardData?.risk} />
         </main>
 
         <footer className="status-bar">
-          <div>
-            DATA SOURCE: FastAPI / Upstox
+          <div className="status-bar-info">
+            <div className="status-item">
+              <span className="status-dot" />
+              <span>
+                DATA SOURCE: <strong>FastAPI / Upstox</strong>
+              </span>
+            </div>
+
+            <div className="status-item">
+              <span>
+                DATA QUALITY: <strong>GOOD</strong>
+              </span>
+              <span className="status-dot" />
+            </div>
+
+            <div className="status-item">
+              <span>
+                LAST DATA RECEIVED:{" "}
+                <strong>
+                  {dashboardData?.market?.timestamp
+                    ? new Date(
+                        dashboardData.market.timestamp
+                      ).toLocaleTimeString()
+                    : "--"}
+                </strong>
+              </span>
+            </div>
           </div>
 
-          <div>
-            DATA QUALITY: GOOD
+          <div className="status-bar-actions">
+            <button
+              type="button"
+              className="footer-button footer-button-primary"
+              onClick={handleRefresh}
+              disabled={refreshing}
+            >
+              {refreshing ? "REFRESHING..." : "REFRESH NOW"}
+            </button>
+
+            <button type="button" className="footer-button">
+              EXPORT SNAPSHOT
+            </button>
+
+            <label className="auto-refresh-control">
+              <span>AUTO REFRESH</span>
+
+              <input
+                type="checkbox"
+                checked={autoRefresh}
+                onChange={(event) => setAutoRefresh(event.target.checked)}
+              />
+
+              <span className="auto-refresh-switch" />
+            </label>
           </div>
-
-          <div>
-            LAST DATA RECEIVED:{" "}
-            {dashboardData?.market?.timestamp
-              ? new Date(
-                  dashboardData.market.timestamp
-                ).toLocaleTimeString()
-              : "--"}
-          </div>
-
-          <button
-            onClick={() => loadDashboard(true)}
-            disabled={refreshing}
-          >
-            {refreshing
-              ? "REFRESHING..."
-              : "REFRESH NOW"}
-          </button>
-
-          <button>
-            EXPORT SNAPSHOT
-          </button>
-
-          <label>
-            AUTO REFRESH
-
-            <input
-              type="checkbox"
-              checked={autoRefresh}
-              onChange={(event) =>
-                setAutoRefresh(event.target.checked)
-              }
-            />
-          </label>
         </footer>
       </div>
     </div>
