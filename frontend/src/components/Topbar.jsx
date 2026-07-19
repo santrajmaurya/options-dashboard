@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Menu, Settings, Bell } from "lucide-react";
 
 export default function Topbar({
@@ -9,46 +8,50 @@ export default function Topbar({
 }) {
   const [countdown, setCountdown] = useState(refreshInterval);
 
-  // ---------------------------------------------
+  // --------------------------------------------------
   // API DATA
-  // ---------------------------------------------
+  // --------------------------------------------------
 
   const market = data?.market ?? {};
   const nifty = data?.nifty ?? {};
 
-  // ---------------------------------------------
-  // SAFE FALLBACK VALUES
-  // These keep the existing UI working even if
-  // some backend fields are temporarily missing.
-  // ---------------------------------------------
+  const price = nifty.ltp ?? 0;
+  const change = nifty.change ?? 0;
+  const changePercent = nifty.change_percent ?? 0;
 
-  const price = nifty.ltp ?? 25152.35;
-
-  const change = nifty.change ?? 132.45;
-
-  const changePercent = nifty.change_percent ?? 0.53;
-
-  const open = nifty.open ?? 25020.15;
-
-  const high = nifty.high ?? 25182.4;
-
-  const low = nifty.low ?? 24985.2;
-
-  const previousClose = nifty.previous_close ?? 25019.9;
+  const open = nifty.open ?? 0;
+  const high = nifty.high ?? 0;
+  const low = nifty.low ?? 0;
+  const previousClose = nifty.previous_close ?? 0;
 
   const timestamp = market.timestamp ?? null;
+  const rawMarketStatus = market.status ?? "UNKNOWN";
 
-  const marketStatus = market.status ?? "MARKET OPEN";
+  // --------------------------------------------------
+  // DERIVED VALUES
+  // --------------------------------------------------
 
-  // ---------------------------------------------
-  // PRICE DIRECTION
-  // ---------------------------------------------
+  const numericChange = Number(change);
+  const numericChangePercent = Number(changePercent);
 
-  const isPositive = Number(change) >= 0;
+  const isPositive = numericChange >= 0;
 
-  // ---------------------------------------------
+  const normalizedMarketStatus = String(rawMarketStatus).toUpperCase();
+
+  const isMarketOpen =
+    normalizedMarketStatus === "OPEN" ||
+    normalizedMarketStatus === "MARKET OPEN";
+
+  const marketStatusLabel = isMarketOpen
+    ? "MARKET OPEN"
+    : normalizedMarketStatus === "CLOSED" ||
+        normalizedMarketStatus === "MARKET CLOSED"
+      ? "MARKET CLOSED"
+      : normalizedMarketStatus;
+
+  // --------------------------------------------------
   // COUNTDOWN TIMER
-  // ---------------------------------------------
+  // --------------------------------------------------
 
   useEffect(() => {
     if (!autoRefresh) {
@@ -70,14 +73,14 @@ export default function Topbar({
     };
   }, [autoRefresh, refreshInterval]);
 
-  // ---------------------------------------------
+  // --------------------------------------------------
   // NUMBER FORMATTER
-  // ---------------------------------------------
+  // --------------------------------------------------
 
   const formatNumber = (value) => {
     const number = Number(value);
 
-    if (Number.isNaN(number)) {
+    if (!Number.isFinite(number)) {
       return "--";
     }
 
@@ -87,76 +90,69 @@ export default function Topbar({
     });
   };
 
-  // ---------------------------------------------
+  // --------------------------------------------------
   // COUNTDOWN FORMATTER
-  // ---------------------------------------------
+  // --------------------------------------------------
 
   const formatCountdown = () => {
     const minutes = Math.floor(countdown / 60);
-
     const seconds = countdown % 60;
 
-    return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(
+    return `${String(minutes).padStart(
       2,
       "0"
-    )}`;
+    )}:${String(seconds).padStart(2, "0")}`;
   };
 
-  // ---------------------------------------------
-  // TIME FORMATTER
-  // ---------------------------------------------
+  // --------------------------------------------------
+  // REFRESH INTERVAL LABEL
+  // --------------------------------------------------
 
-  const formatTime = () => {
-    if (!timestamp) {
-      return "11:20:00 AM";
+  const formatRefreshInterval = () => {
+    if (refreshInterval % 60 === 0) {
+      const minutes = refreshInterval / 60;
+
+      return `(Every ${minutes} Min)`;
     }
 
-    const date = new Date(timestamp);
-
-    if (Number.isNaN(date.getTime())) {
-      return "11:20:00 AM";
-    }
-
-    return date.toLocaleTimeString("en-IN", {
-      hour: "2-digit",
-      minute: "2-digit",
-      second: "2-digit",
-      hour12: true,
-    });
+    return `(Every ${refreshInterval} Sec)`;
   };
 
-  // ---------------------------------------------
-  // DATE FORMATTER
-  // ---------------------------------------------
+  // --------------------------------------------------
+  // TIMESTAMP
+  // --------------------------------------------------
 
-  const formatDate = () => {
-    if (!timestamp) {
-      return "23 May 2024";
-    }
+  const marketDate = timestamp ? new Date(timestamp) : null;
 
-    const date = new Date(timestamp);
+  const hasValidTimestamp = marketDate && !Number.isNaN(marketDate.getTime());
 
-    if (Number.isNaN(date.getTime())) {
-      return "23 May 2024";
-    }
+  const formattedTime = hasValidTimestamp
+    ? marketDate.toLocaleTimeString("en-IN", {
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit",
+        hour12: true,
+        timeZone: "Asia/Kolkata",
+      })
+    : "--:--:--";
 
-    return date.toLocaleDateString("en-IN", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-    });
-  };
-
-  // ---------------------------------------------
-  // MARKET STATUS
-  // ---------------------------------------------
-
-  const isMarketOpen = String(marketStatus).toUpperCase().includes("OPEN");
+  const formattedDate = hasValidTimestamp
+    ? marketDate.toLocaleDateString("en-IN", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        timeZone: "Asia/Kolkata",
+      })
+    : "--";
 
   return (
     <header className="topbar">
       {/* Hamburger */}
-      <button className="icon-button hamburger" aria-label="Open menu">
+      <button
+        type="button"
+        className="icon-button hamburger"
+        aria-label="Open menu"
+      >
         <Menu size={21} />
       </button>
 
@@ -164,7 +160,7 @@ export default function Topbar({
       <div className="top-section mode-section">
         <span className="top-label">MODE</span>
 
-        <select defaultValue="expiry">
+        <select defaultValue="expiry" aria-label="Trading mode">
           <option value="intraday">INTRADAY</option>
 
           <option value="expiry">EXPIRY DAY</option>
@@ -188,36 +184,38 @@ export default function Topbar({
 
             <span className={isPositive ? "green" : "red"}>
               {isPositive ? "↑" : "↓"} {isPositive ? "+" : ""}
-              {formatNumber(change)}
+              {formatNumber(numericChange)}
               {" ("}
               {isPositive ? "+" : ""}
-              {Number(changePercent).toFixed(2)}
+              {Number.isFinite(numericChangePercent)
+                ? numericChangePercent.toFixed(2)
+                : "--"}
               %)
             </span>
           </div>
 
-          {/* OPEN */}
+          {/* Open */}
           <div className="nifty-mini-stat">
             <span>OPEN</span>
 
             <strong>{formatNumber(open)}</strong>
           </div>
 
-          {/* HIGH */}
+          {/* High */}
           <div className="nifty-mini-stat">
             <span>HIGH</span>
 
             <strong className="green">{formatNumber(high)}</strong>
           </div>
 
-          {/* LOW */}
+          {/* Low */}
           <div className="nifty-mini-stat">
             <span>LOW</span>
 
             <strong className="red">{formatNumber(low)}</strong>
           </div>
 
-          {/* PREVIOUS CLOSE */}
+          {/* Previous Close */}
           <div className="nifty-mini-stat">
             <span>PREV CLOSE</span>
 
@@ -230,9 +228,9 @@ export default function Topbar({
       <div className="top-section time-section">
         <span className="top-label">TIME</span>
 
-        <strong>{formatTime()}</strong>
+        <strong>{formattedTime}</strong>
 
-        <small>{formatDate()}</small>
+        <small>{formattedDate}</small>
       </div>
 
       {/* Next Update */}
@@ -244,7 +242,7 @@ export default function Topbar({
             <span>{formatCountdown()}</span>
           </div>
 
-          <small>{autoRefresh ? "(Every 5 Min)" : "(Paused)"}</small>
+          <small>{autoRefresh ? formatRefreshInterval() : "(Paused)"}</small>
         </div>
       </div>
 
@@ -255,17 +253,18 @@ export default function Topbar({
         <strong className={isMarketOpen ? "green" : "red"}>
           <i />
 
-          {marketStatus}
+          {marketStatusLabel}
         </strong>
       </div>
 
       {/* Actions */}
       <div className="top-actions">
-        <button className="round-button" aria-label="Settings">
+        <button type="button" className="round-button" aria-label="Settings">
           <Settings size={18} />
         </button>
 
         <button
+          type="button"
           className="round-button notification"
           aria-label="Notifications"
         >

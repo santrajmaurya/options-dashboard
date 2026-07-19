@@ -3505,3 +3505,31 @@ button {
     justify-content: flex-end;
   }
 }
+
+.atm-label {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 5px;
+
+  border-radius: 3px;
+
+  background: rgba(255, 193, 7, 0.15);
+  color: #ffc107;
+
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.option-table .strike {
+  white-space: nowrap;
+}
+
+.option-table .atm-highlight {
+  background: rgba(255, 193, 7, 0.06);
+}
+
+.option-table .atm-highlight .strike {
+  color: #ffc107;
+  font-weight: 700;
+}

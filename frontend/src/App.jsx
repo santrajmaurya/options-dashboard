@@ -141,6 +141,7 @@ export default function App() {
       </div>
     );
   }
+  console.log("dashboardData:", dashboardData);
 
   return (
     <div className="app-shell">
@@ -171,11 +172,15 @@ export default function App() {
 
           <FuturesOI data={dashboardData?.futures} />
 
-          <OptionChain data={dashboardData?.option_chain} />
+          <OptionChain
+            data={dashboardData?.option_chain}
+            nifty={dashboardData?.nifty}
+          />
 
           <SupportResistance
             data={dashboardData?.levels}
             nifty={dashboardData?.nifty}
+            optionChain={dashboardData?.option_chain}
           />
 
           <PCRVolatility
