@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import Sidebar from "./components/Sidebar";
 import Topbar from "./components/Topbar";
@@ -16,77 +16,191 @@ import StrategyEnvironment from "./components/StrategyEnvironment";
 import EntryStatus from "./components/EntryStatus";
 import RiskEvents from "./components/RiskEvents";
 
+import { fetchDashboard } from "./services/dashboardApi";
+
 import "./App.css";
 
 export default function App() {
   const [autoRefresh, setAutoRefresh] = useState(true);
+
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
+
+  const loadDashboard = useCallback(async (isRefresh = false) => {
+    try {
+      if (isRefresh) {
+        setRefreshing(true);
+      }
+
+      setError(null);
+
+      const data = await fetchDashboard();
+
+      setDashboardData(data);
+    } catch (err) {
+      console.error("Dashboard API error:", err);
+
+      setError(err.message);
+    } finally {
+      setLoading(false);
+      setRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    loadDashboard();
+  }, [loadDashboard]);
+
+  useEffect(() => {
+    if (!autoRefresh) {
+      return;
+    }
+
+    const interval = setInterval(() => {
+      loadDashboard(true);
+    }, 5 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [autoRefresh, loadDashboard]);
+
+  if (loading) {
+    return (
+      <div className="app-loading">
+        Loading market dashboard...
+      </div>
+    );
+  }
+
+  if (error && !dashboardData) {
+    return (
+      <div className="app-error">
+        <h2>Unable to load market data</h2>
+
+        <p>{error}</p>
+
+        <button onClick={() => loadDashboard()}>
+          Retry
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="app-shell">
       <Sidebar />
 
       <div className="main-shell">
-        <Topbar />
+        <Topbar
+  data={dashboardData}
+  autoRefresh={autoRefresh}
+  refreshInterval={300}
+/>
+
+        {error && (
+          <div className="dashboard-api-warning">
+            Live data refresh failed. Showing last available data.
+          </div>
+        )}
 
         <main className="dashboard-grid">
-          <MarketRegime />
-          <MultiTimeframeTrend />
-          <PriceAndLevels />
+          <MarketRegime
+            data={dashboardData?.regime}
+          />
 
-          <FuturesOI />
-          <OptionChain />
-          <SupportResistance />
+          <MultiTimeframeTrend
+            data={dashboardData?.trend}
+          />
 
-          <PCRVolatility />
-          <IVMetrics />
-          <MarketBreadth />
+          <PriceAndLevels
+            nifty={dashboardData?.nifty}
+            levels={dashboardData?.levels}
+          />
+
+          <FuturesOI
+            data={dashboardData?.futures}
+          />
+
+          <OptionChain
+            data={dashboardData?.option_chain}
+          />
+
+          <SupportResistance
+            data={dashboardData?.levels}
+            nifty={dashboardData?.nifty}
+          />
+
+          <PCRVolatility
+            optionChain={dashboardData?.option_chain}
+            vix={dashboardData?.vix}
+          />
+
+          <IVMetrics
+            data={dashboardData?.volatility}
+          />
+
+          <MarketBreadth
+            data={dashboardData?.breadth}
+          />
+
           <SectorStrength />
 
-          <StrategyEnvironment />
-          <EntryStatus />
-          <RiskEvents />
+          <StrategyEnvironment
+            data={dashboardData?.strategies}
+          />
+
+          <EntryStatus
+            data={dashboardData?.entry}
+          />
+
+          <RiskEvents
+            data={dashboardData?.risk}
+          />
         </main>
 
-        <footer className="status-footer">
-          <div className="footer-info">
-            <span>
-              <i className="online-dot" />
-              DATA SOURCE: <strong>Upstox API</strong>
-            </span>
-
-            <span>
-              DATA QUALITY: <strong>GOOD</strong>
-              <i className="online-dot" />
-            </span>
-
-            <span>
-              LAST DATA RECEIVED: <strong>11:19:58 AM</strong>
-            </span>
+        <footer className="status-bar">
+          <div>
+            DATA SOURCE: FastAPI / Upstox
           </div>
 
-          <div className="footer-actions">
-            <button className="primary-button">
-              REFRESH NOW
-            </button>
-
-            <button className="secondary-button">
-              EXPORT SNAPSHOT
-            </button>
-
-            <label className="toggle-label">
-              AUTO REFRESH
-
-              <input
-                type="checkbox"
-                checked={autoRefresh}
-                onChange={() =>
-                  setAutoRefresh(!autoRefresh)
-                }
-              />
-
-              <span className="toggle" />
-            </label>
+          <div>
+            DATA QUALITY: GOOD
           </div>
+
+          <div>
+            LAST DATA RECEIVED:{" "}
+            {dashboardData?.market?.timestamp
+              ? new Date(
+                  dashboardData.market.timestamp
+                ).toLocaleTimeString()
+              : "--"}
+          </div>
+
+          <button
+            onClick={() => loadDashboard(true)}
+            disabled={refreshing}
+          >
+            {refreshing
+              ? "REFRESHING..."
+              : "REFRESH NOW"}
+          </button>
+
+          <button>
+            EXPORT SNAPSHOT
+          </button>
+
+          <label>
+            AUTO REFRESH
+
+            <input
+              type="checkbox"
+              checked={autoRefresh}
+              onChange={(event) =>
+                setAutoRefresh(event.target.checked)
+              }
+            />
+          </label>
         </footer>
       </div>
     </div>

@@ -1,19 +1,15 @@
 from fastapi import APIRouter
 
-from app.market.models import DashboardResponse
+from app.services.dashboard_service import DashboardService
 
-from app.services.dashboard_service import (
-    dashboard_service,
+router = APIRouter(
+    prefix="/api/dashboard",
+    tags=["Dashboard"],
 )
 
+dashboard_service = DashboardService()
 
-router = APIRouter()
 
-
-@router.get(
-    "/dashboard",
-    response_model=DashboardResponse,
-)
+@router.get("")
 async def get_dashboard():
-
     return dashboard_service.get_dashboard()
