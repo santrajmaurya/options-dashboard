@@ -1,6 +1,6 @@
 /* =========================================================
    NIFTY MARKET REGIME & OPTION SELLING DASHBOARD
-   APP.CSS - V3
+   APP.CSS - V4
    ========================================================= */
 
 /* =========================
@@ -28,6 +28,7 @@ body {
   min-width: 1180px;
   min-height: 100vh;
   overflow-x: auto;
+
   font-family:
     Inter,
     ui-sans-serif,
@@ -36,6 +37,7 @@ body {
     BlinkMacSystemFont,
     "Segoe UI",
     sans-serif;
+
   background: #030b14;
   color: #dce8f5;
 }
@@ -55,6 +57,7 @@ button {
   --sidebar: #06111e;
   --panel: #091929;
   --panel2: #0b1c2e;
+
   --border: #203449;
   --border-soft: #182b3d;
 
@@ -96,7 +99,10 @@ button {
   min-height: 100vh;
 
   display: grid;
-  grid-template-columns: 235px minmax(0, 1fr);
+
+  grid-template-columns:
+    235px
+    minmax(0, 1fr);
 
   background:
     radial-gradient(
@@ -131,6 +137,7 @@ button {
   overflow-x: hidden;
 
   background: #05111e;
+
   border-right: 1px solid var(--border);
 
   display: flex;
@@ -140,8 +147,6 @@ button {
 
   z-index: 10;
 }
-
-/* Custom scrollbar */
 
 .sidebar::-webkit-scrollbar {
   width: 5px;
@@ -174,6 +179,7 @@ button {
 
 .logo strong {
   display: block;
+
   font-size: 15px;
   line-height: 1.4;
 }
@@ -181,16 +187,16 @@ button {
 .logo span {
   display: block;
 
+  margin-top: 3px;
+
   color: #a2b0bf;
 
   font-size: 11px;
   line-height: 1.4;
-
-  margin-top: 3px;
 }
 
 /* =========================
-   SIDEBAR NAVIGATION
+   NAVIGATION
    ========================= */
 
 .nav {
@@ -202,16 +208,18 @@ button {
   width: 100%;
   height: 40px;
 
-  border: 0;
-  border-radius: 6px;
-
   padding: 0 11px;
 
   display: flex;
   align-items: center;
+
   gap: 11px;
 
+  border: 0;
+  border-radius: 6px;
+
   color: #a7b5c5;
+
   background: transparent;
 
   font-size: 12.5px;
@@ -228,11 +236,13 @@ button {
 
 .nav-item:hover {
   color: #fff;
+
   background: rgba(39, 55, 132, 0.45);
 }
 
 .nav-item.active {
   color: #fff;
+
   background: #273784;
 }
 
@@ -243,10 +253,10 @@ button {
 .watchlist {
   margin-top: auto;
 
+  padding: 11px 12px;
+
   border: 1px solid var(--border);
   border-radius: 8px;
-
-  padding: 11px 12px;
 
   background:
     linear-gradient(
@@ -257,17 +267,17 @@ button {
 }
 
 .watchlist-heading {
+  padding: 2px 3px 9px;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
+  border-bottom: 1px solid var(--border);
+
   color: #8ea0b3;
 
   font-size: 12px;
-
-  padding: 2px 3px 9px;
-
-  border-bottom: 1px solid var(--border);
 }
 
 .watch-row {
@@ -295,6 +305,7 @@ button {
 .watch-symbol {
   display: flex;
   align-items: center;
+
   gap: 7px;
 }
 
@@ -330,11 +341,11 @@ button {
   width: 4px;
   min-height: 2px;
 
+  border-radius: 1px;
+
   background: var(--green);
 
   opacity: 0.8;
-
-  border-radius: 1px;
 }
 
 .watch-price {
@@ -361,7 +372,7 @@ button {
 }
 
 /* =========================================================
-   TOP BAR
+   TOPBAR
    ========================================================= */
 
 .topbar {
@@ -373,7 +384,7 @@ button {
   grid-template-columns:
     58px
     175px
-    minmax(230px, 0.85fr)
+    minmax(500px, 1fr)
     175px
     205px
     190px
@@ -411,11 +422,11 @@ button {
 }
 
 .top-label {
+  margin-bottom: 6px;
+
   color: #8395a8;
 
   font-size: 10.5px;
-
-  margin-bottom: 6px;
 }
 
 .top-section > strong {
@@ -423,11 +434,11 @@ button {
 }
 
 .top-section > small {
+  margin-top: 4px;
+
   color: #a6b4c3;
 
   font-size: 10px;
-
-  margin-top: 4px;
 }
 
 /* =========================
@@ -444,42 +455,134 @@ button {
 
   padding: 8px 10px;
 
-  color: white;
-
   border: 1px solid #354a9b;
   border-radius: 5px;
+
+  outline: none;
+
+  color: white;
 
   background: #1d2d74;
 
   font-size: 11px;
-
-  outline: none;
 }
 
-/* =========================
-   NIFTY HEADER
-   ========================= */
+/* =========================================================
+   ENHANCED NIFTY MARKET SNAPSHOT
+   ========================================================= */
 
 .nifty-section {
-  padding-left: 20px;
-  padding-right: 15px;
+  padding: 10px 20px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
-.nifty-price {
-  display: flex !important;
-  align-items: baseline;
+.nifty-header-row {
+  display: flex;
+  align-items: center;
 
   gap: 8px;
 
+  margin-bottom: 7px;
+}
+
+.nifty-title {
+  color: #9bacc0;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  letter-spacing: 0.5px;
+}
+
+.nifty-market-badge {
+  padding: 2px 5px;
+
+  border-radius: 3px;
+
+  background: rgba(80, 101, 232, 0.18);
+
+  color: #8191ff;
+
+  font-size: 7px;
+  font-weight: 700;
+}
+
+.nifty-market-data {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+}
+
+.nifty-current {
+  min-width: 190px;
+
+  padding-right: 20px;
+
+  display: flex;
+  align-items: baseline;
+
+  gap: 9px;
+
+  border-right: 1px solid var(--border);
+}
+
+.nifty-current > strong {
   color: var(--green);
 
-  font-size: 19px !important;
+  font-size: 21px;
+  font-weight: 700;
 
   white-space: nowrap;
 }
 
-.nifty-price small {
-  font-size: 10px;
+.nifty-current > span {
+  color: var(--green);
+
+  font-size: 9px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.nifty-mini-stat {
+  min-width: 80px;
+
+  padding: 0 14px;
+}
+
+.nifty-mini-stat span {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: var(--muted);
+
+  font-size: 7px;
+
+  white-space: nowrap;
+}
+
+.nifty-mini-stat strong {
+  display: block;
+
+  color: #dce8f5;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+.nifty-mini-stat strong.green {
+  color: var(--green);
+}
+
+.nifty-mini-stat strong.red {
+  color: var(--red);
 }
 
 /* =========================
@@ -499,18 +602,18 @@ button {
 
   flex-shrink: 0;
 
-  border-radius: 50%;
-
   padding: 2px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 50%;
 
   background:
     conic-gradient(
       #72c9ff 0deg 285deg,
       #27384a 285deg 360deg
     );
-
-  display: grid;
-  place-items: center;
 }
 
 .countdown-circle span {
@@ -551,11 +654,11 @@ button {
   width: 7px;
   height: 7px;
 
+  margin-right: 8px;
+
   border-radius: 50%;
 
   background: var(--green);
-
-  margin-right: 8px;
 }
 
 /* =========================
@@ -578,14 +681,14 @@ button {
 
   flex-shrink: 0;
 
+  padding: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0;
-
-  border-radius: 50%;
   border: 1px solid #162b3e;
+  border-radius: 50%;
 
   background: #091929;
 
@@ -605,14 +708,14 @@ button {
   width: 18px;
   height: 18px;
 
+  padding: 0;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
-  padding: 0;
-
-  border-radius: 50%;
   border: 2px solid #04101c;
+  border-radius: 50%;
 
   background: #e6444a;
 
@@ -624,7 +727,7 @@ button {
 }
 
 /* =========================================================
-   MAIN DASHBOARD GRID
+   DASHBOARD GRID
    ========================================================= */
 
 .dashboard-grid {
@@ -670,17 +773,17 @@ button {
 }
 
 .card-heading {
+  margin-bottom: 14px;
+
   color: #e7eef6;
 
   font-size: 13px;
   font-weight: 700;
   line-height: 1.3;
-
-  margin-bottom: 14px;
 }
 
 /* =========================
-   CARD GRID POSITIONS
+   CARD POSITIONS
    ========================= */
 
 .market-regime {
@@ -777,7 +880,9 @@ button {
 .regime-content {
   display: grid;
 
-  grid-template-columns: 42% 58%;
+  grid-template-columns:
+    42%
+    58%;
 
   min-height: 205px;
 }
@@ -791,14 +896,14 @@ button {
 }
 
 .gauge {
+  position: relative;
+
   width: 135px;
   height: 108px;
 
-  border-radius: 100px 100px 0 0;
-
   overflow: hidden;
 
-  position: relative;
+  border-radius: 100px 100px 0 0;
 
   background:
     conic-gradient(
@@ -860,9 +965,9 @@ button {
 }
 
 .gauge-area h3 {
-  color: var(--green);
-
   margin: 9px 0 2px;
+
+  color: var(--green);
 
   font-size: 16px;
 }
@@ -890,11 +995,11 @@ button {
 }
 
 .score-header {
+  padding-bottom: 5px;
+
   color: #91a2b4;
 
   font-size: 9px;
-
-  padding-bottom: 5px;
 }
 
 .score-row {
@@ -923,15 +1028,15 @@ button {
 }
 
 .final-regime strong {
+  margin-top: 4px;
+
   color: #9dea32;
 
   font-size: 11px;
-
-  margin-top: 4px;
 }
 
 /* =========================================================
-   MULTI TIMEFRAME TREND
+   TREND
    ========================================================= */
 
 .direction {
@@ -942,13 +1047,13 @@ button {
 .trend-footer {
   margin-top: 11px;
 
-  border-top: 1px solid var(--border);
-
   display: grid;
 
   grid-template-columns:
     1fr
     1fr;
+
+  border-top: 1px solid var(--border);
 }
 
 .trend-footer div {
@@ -991,14 +1096,14 @@ button {
 }
 
 .level-row {
+  padding: 6px 0;
+
   display: grid;
 
   grid-template-columns:
     1.25fr
     0.8fr
     0.5fr;
-
-  padding: 6px 0;
 
   font-size: 10px;
 }
@@ -1016,13 +1121,13 @@ button {
 }
 
 .chart-label {
-  text-align: center;
+  margin-bottom: 4px;
 
   color: #bac7d3;
 
-  font-size: 9px;
+  text-align: center;
 
-  margin-bottom: 4px;
+  font-size: 9px;
 }
 
 .candlestick-chart {
@@ -1032,7 +1137,7 @@ button {
 }
 
 /* =========================================================
-   FUTURES PRICE & OI
+   FUTURES
    ========================================================= */
 
 .table-scroll {
@@ -1062,12 +1167,12 @@ button {
   margin-top: 18px;
   padding-top: 14px;
 
-  border-top: 1px solid var(--border);
-
   display: grid;
 
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border);
 }
 
 .futures-summary-item {
@@ -1089,11 +1194,11 @@ button {
 .futures-summary-item > span {
   display: block;
 
+  margin-bottom: 7px;
+
   color: var(--muted);
 
   font-size: 9px;
-
-  margin-bottom: 7px;
 }
 
 .futures-summary-item > strong {
@@ -1174,12 +1279,12 @@ button {
 }
 
 .max-oi {
+  margin-top: 12px;
+
   display: flex;
   justify-content: space-between;
 
   gap: 10px;
-
-  margin-top: 12px;
 
   font-size: 9px;
 }
@@ -1207,6 +1312,8 @@ button {
 }
 
 .sr-row {
+  margin: 12px 0;
+
   display: grid;
 
   grid-template-columns:
@@ -1217,8 +1324,6 @@ button {
   gap: 7px;
 
   align-items: center;
-
-  margin: 12px 0;
 
   font-size: 10.5px;
 }
@@ -1308,12 +1413,12 @@ button {
   margin-top: 18px;
   padding-top: 14px;
 
-  border-top: 1px solid var(--border);
-
   display: grid;
 
   grid-template-columns:
     repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border);
 }
 
 .sr-intelligence > div {
@@ -1477,12 +1582,12 @@ button {
   margin-top: 12px;
   padding-top: 12px;
 
-  border-top: 1px solid var(--border);
-
   display: grid;
 
   grid-template-columns:
     repeat(3, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border);
 }
 
 .volatility-regime > div {
@@ -1517,8 +1622,8 @@ button {
 
   padding: 9px 10px;
 
-  border-radius: 4px;
   border: 1px solid rgba(35, 215, 124, 0.15);
+  border-radius: 4px;
 
   background: rgba(35, 215, 124, 0.05);
 }
@@ -1560,16 +1665,22 @@ button {
 }
 
 /* =========================================================
-   MARKET BREADTH
+   MARKET BREADTH - V4
    ========================================================= */
 
+.breadth-card {
+  overflow: hidden;
+}
+
 .breadth-layout {
+  width: 100%;
+
   display: grid;
 
   grid-template-columns:
-    minmax(125px, 0.8fr)
-    minmax(100px, 0.7fr)
-    minmax(150px, 1.1fr);
+    105px
+    minmax(75px, 0.65fr)
+    minmax(0, 1.35fr);
 
   align-items: center;
 
@@ -1579,9 +1690,10 @@ button {
 .breadth-chart-container {
   position: relative;
 
-  width: 125px;
-  min-width: 125px;
-  height: 145px;
+  width: 105px;
+  height: 130px;
+
+  min-width: 0;
 
   overflow: visible;
 }
@@ -1596,89 +1708,135 @@ button {
 
   inset: 0;
 
-  pointer-events: none;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  pointer-events: none;
 }
 
 .breadth-center strong {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .breadth-center span {
+  margin-top: 2px;
+
   color: var(--muted);
 
   font-size: 7px;
 }
 
 .breadth-numbers {
-  padding-left: 4px;
+  min-width: 0;
+
+  padding-left: 2px;
 }
 
 .breadth-numbers > div {
-  margin: 10px 0;
-}
-
-.breadth-numbers span,
-.breadth-numbers strong {
-  display: block;
+  margin: 9px 0;
 }
 
 .breadth-numbers span {
+  display: block;
+
   color: var(--muted);
 
-  font-size: 8px;
+  font-size: 7px;
+
+  white-space: nowrap;
 }
 
 .breadth-numbers strong {
+  display: block;
+
   margin-top: 3px;
 
-  font-size: 10px;
+  font-size: 9px;
+
+  white-space: nowrap;
 }
 
 .breadth-details {
-  padding-left: 12px;
+  min-width: 0;
+
+  padding-left: 10px;
 
   border-left: 1px solid var(--border);
 }
 
 .breadth-details p {
+  width: 100%;
+
   margin: 0;
 
   padding: 8px 0;
 
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
 
   gap: 8px;
 
   border-bottom: 1px solid var(--border-soft);
 
-  font-size: 8.5px;
+  font-size: 8px;
+}
+
+.breadth-details p:last-child {
+  border-bottom: 0;
+}
+
+.breadth-details p span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #b5c1cd;
+}
+
+.breadth-details p strong {
+  text-align: right;
+
+  font-size: 9px;
+
+  white-space: nowrap;
 }
 
 .breadth-status {
   margin-top: 10px;
   padding-top: 10px;
 
-  border-top: 1px solid var(--border);
-
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-top: 1px solid var(--border);
 }
 
 .breadth-status span {
   color: var(--muted);
 
-  font-size: 8px;
+  font-size: 7px;
 }
 
 .breadth-status strong {
-  font-size: 10px;
+  font-size: 9px;
+
+  text-align: right;
+
+  white-space: nowrap;
 }
 
 /* =========================================================
@@ -1691,7 +1849,7 @@ button {
 }
 
 /* =========================================================
-   STRATEGY ENVIRONMENT
+   STRATEGY
    ========================================================= */
 
 .subheading {
@@ -1711,16 +1869,16 @@ button {
 .strategy-row {
   padding: 8px;
 
-  border: 1px solid #284057;
-  border-radius: 4px;
-
-  background: #102234;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   gap: 8px;
+
+  border: 1px solid #284057;
+  border-radius: 4px;
+
+  background: #102234;
 
   font-size: 10px;
 }
@@ -1732,9 +1890,9 @@ button {
 }
 
 .preferred {
-  background: #10532e;
-
   border-color: #197240;
+
+  background: #10532e;
 }
 
 .avoid {
@@ -1760,9 +1918,9 @@ button {
   justify-content: center;
   align-items: center;
 
-  color: var(--yellow);
-
   border-right: 1px solid var(--border);
+
+  color: var(--yellow);
 }
 
 .entry-state strong {
@@ -1795,7 +1953,6 @@ button {
   text-align: left;
 
   font-size: 9px;
-
   line-height: 1.5;
 }
 
@@ -1911,7 +2068,6 @@ button {
   text-align: left;
 
   font-size: 9px;
-
   line-height: 1.5;
 }
 
@@ -1937,15 +2093,15 @@ button {
 
   padding: 7px 18px;
 
-  border-top: 1px solid var(--border);
-
-  background: #04101c;
-
   display: flex;
   justify-content: space-between;
   align-items: center;
 
   gap: 15px;
+
+  border-top: 1px solid var(--border);
+
+  background: #04101c;
 }
 
 .footer-info {
@@ -1964,11 +2120,11 @@ button {
   width: 6px;
   height: 6px;
 
+  margin: 0 6px;
+
   border-radius: 50%;
 
   background: var(--green);
-
-  margin: 0 6px;
 }
 
 .footer-actions {
@@ -1992,15 +2148,15 @@ button {
 }
 
 .primary-button {
-  background: #27398d;
-
   border: 1px solid #4258bd;
+
+  background: #27398d;
 }
 
 .secondary-button {
-  background: transparent;
-
   border: 1px solid var(--border);
+
+  background: transparent;
 }
 
 .toggle-label {
@@ -2056,7 +2212,7 @@ button {
 }
 
 /* =========================================================
-   RESPONSIVE - MEDIUM DESKTOP
+   MEDIUM DESKTOP
    ========================================================= */
 
 @media (max-width: 1500px) {
@@ -2073,26 +2229,47 @@ button {
   .topbar {
     grid-template-columns:
       52px
-      155px
-      minmax(210px, 1fr)
-      155px
-      185px
-      170px
+      145px
+      minmax(440px, 1fr)
+      145px
+      175px
+      165px
       105px;
   }
 
   .top-section {
-    padding-left: 13px;
-    padding-right: 13px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .mode-section {
-    padding-left: 14px;
-    padding-right: 15px;
+    padding-left: 12px;
+    padding-right: 12px;
   }
 
   .mode-section select {
-    width: 120px;
+    width: 115px;
+  }
+
+  .nifty-section {
+    padding-left: 15px;
+    padding-right: 10px;
+  }
+
+  .nifty-current {
+    min-width: 175px;
+
+    padding-right: 12px;
+  }
+
+  .nifty-current > strong {
+    font-size: 18px;
+  }
+
+  .nifty-mini-stat {
+    min-width: 65px;
+
+    padding: 0 9px;
   }
 
   .dashboard-grid {
@@ -2130,19 +2307,27 @@ button {
 
   .breadth-layout {
     grid-template-columns:
-      110px
-      minmax(80px, 0.7fr)
-      minmax(120px, 1fr);
+      90px
+      minmax(65px, 0.6fr)
+      minmax(0, 1.4fr);
   }
 
   .breadth-chart-container {
-    width: 110px;
-    min-width: 110px;
+    width: 90px;
+    height: 120px;
+  }
+
+  .breadth-details {
+    padding-left: 7px;
+  }
+
+  .breadth-details p {
+    font-size: 7px;
   }
 }
 
 /* =========================================================
-   RESPONSIVE - SMALL DESKTOP / TABLET
+   SMALL DESKTOP / TABLET
    ========================================================= */
 
 @media (max-width: 1180px) {
@@ -2159,14 +2344,9 @@ button {
   }
 
   .topbar {
-    min-width: 1000px;
+    min-width: 1100px;
 
     overflow-x: auto;
-  }
-
-  .dashboard-grid {
-    grid-template-columns:
-      repeat(12, minmax(0, 1fr));
   }
 
   .market-regime,
@@ -2199,5 +2379,544 @@ button {
     flex-wrap: wrap;
 
     gap: 15px;
+  }
+}
+
+/* =========================================================
+   DASHBOARD READABILITY & ENTRY STATUS ENHANCEMENT
+   Add at END of App.css
+   ========================================================= */
+
+
+/* =========================================================
+   1. HEADER - OPEN / HIGH / LOW / PREV CLOSE
+   ========================================================= */
+
+.nifty-mini-stat {
+  min-width: 88px;
+  padding: 0 14px;
+}
+
+.nifty-mini-stat span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #91a4b8;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  line-height: 1.2;
+
+  letter-spacing: 0.25px;
+
+  white-space: nowrap;
+}
+
+.nifty-mini-stat strong {
+  display: block;
+
+  color: #e4edf6;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  line-height: 1.25;
+
+  white-space: nowrap;
+}
+
+.nifty-mini-stat strong.green {
+  color: var(--green);
+}
+
+.nifty-mini-stat strong.red {
+  color: var(--red);
+}
+
+
+/* Make NIFTY label slightly stronger */
+
+.nifty-title {
+  color: #a8b9ca;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+.nifty-market-badge {
+  padding: 3px 6px;
+
+  font-size: 8px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   2. MARKET REGIME - SCORE / STATUS HEADER
+   ========================================================= */
+
+.score-header {
+  padding: 0 0 8px;
+
+  color: #9eb0c2;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.2px;
+}
+
+.score-header span:nth-child(2),
+.score-header span:nth-child(3) {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+
+/* Improve table row readability */
+
+.score-row {
+  padding: 10px 0;
+
+  font-size: 11px;
+
+  line-height: 1.3;
+}
+
+.score-row span:first-child {
+  color: #d6e1ec;
+
+  font-weight: 500;
+}
+
+.score-row span:nth-child(2) {
+  font-weight: 700;
+}
+
+.score-row span:nth-child(3) {
+  font-weight: 600;
+}
+
+
+/* Market regime final label */
+
+.final-regime span {
+  color: #93a6ba;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+.final-regime strong {
+  margin-top: 6px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   3. PCR & VOLATILITY - OPTION SELLING ENVIRONMENT
+   ========================================================= */
+
+.volatility-insight {
+  margin-top: 14px;
+
+  padding: 12px 14px;
+
+  border: 1px solid rgba(35, 215, 124, 0.22);
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(35, 215, 124, 0.07),
+      rgba(35, 215, 124, 0.025)
+    );
+
+  text-align: center;
+}
+
+.volatility-insight span {
+  display: block;
+
+  color: #8fa5b9;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.35px;
+}
+
+.volatility-insight strong {
+  display: block;
+
+  margin-top: 7px;
+
+  color: var(--green);
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 0.2px;
+}
+
+.volatility-insight small {
+  display: block;
+
+  max-width: 95%;
+
+  margin: 7px auto 0;
+
+  color: #aebdca;
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   4. STRATEGY ENVIRONMENT - RECOMMENDED STRATEGIES
+   ========================================================= */
+
+.strategy-card .subheading {
+  color: #94a8bc;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+.strategy-list {
+  margin-top: 12px;
+
+  gap: 7px;
+}
+
+.strategy-row {
+  min-height: 38px;
+
+  padding: 9px 10px;
+
+  font-size: 10.5px;
+}
+
+.strategy-row > span {
+  font-weight: 500;
+}
+
+.strategy-row small {
+  font-size: 7.5px;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   5. ENTRY STATUS - IMPROVED LAYOUT
+   ========================================================= */
+
+.entry-card {
+  position: relative;
+}
+
+.entry-layout {
+  display: grid;
+
+  grid-template-columns:
+    110px
+    minmax(0, 1fr)
+    190px;
+
+  min-height: 145px;
+}
+
+
+/* WAIT STATUS */
+
+.entry-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 10px;
+
+  border-right: 1px solid var(--border);
+
+  color: var(--yellow);
+}
+
+.entry-state svg {
+  width: 38px;
+  height: 38px;
+
+  stroke-width: 1.8;
+}
+
+.entry-state strong {
+  margin-top: 8px;
+
+  color: var(--yellow);
+
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+}
+
+
+/* REASON AREA */
+
+.entry-reason {
+  padding: 5px 22px;
+
+  text-align: left;
+}
+
+.entry-reason > strong {
+  display: block;
+
+  margin: 0 0 11px;
+
+  color: var(--yellow);
+
+  font-size: 10px;
+  font-weight: 700;
+
+  letter-spacing: 0.35px;
+
+  text-align: left;
+}
+
+.entry-reason ul {
+  margin: 0;
+
+  padding-left: 17px;
+
+  color: #d2dde8;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+
+  text-align: left;
+}
+
+.entry-reason li {
+  margin: 7px 0;
+
+  padding-left: 4px;
+}
+
+.entry-reason li::marker {
+  color: var(--green);
+
+  font-size: 11px;
+}
+
+
+/* =========================================================
+   BEST ENTRY ZONE - PREMIUM STYLE
+   ========================================================= */
+
+.entry-zone {
+  padding: 2px 0 2px 18px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  border-left: 1px solid var(--border);
+}
+
+
+/* Entry Zone Label */
+
+.entry-zone > span:first-child {
+  color: #8ea4b8;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.4px;
+
+  text-transform: uppercase;
+}
+
+
+/* Entry Range */
+
+.entry-zone > strong {
+  position: relative;
+
+  display: inline-block;
+
+  width: fit-content;
+
+  margin: 8px 0 10px;
+
+  padding: 8px 12px;
+
+  border: 1px solid rgba(35, 215, 124, 0.25);
+  border-radius: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(35, 215, 124, 0.1),
+      rgba(35, 215, 124, 0.025)
+    );
+
+  color: #ffffff;
+
+  font-size: 17px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    inset 3px 0 0 var(--green);
+}
+
+
+/* Divider */
+
+.entry-zone hr {
+  width: 100%;
+
+  margin: 2px 0 10px;
+
+  border: 0;
+
+  border-top: 1px solid var(--border);
+}
+
+
+/* Invalidation label */
+
+.entry-zone span:not(:first-child) {
+  color: #91a4b7;
+
+  font-size: 9px;
+  font-weight: 600;
+
+  letter-spacing: 0.3px;
+}
+
+
+/* Invalidation value */
+
+.entry-zone p {
+  margin: 6px 0 0;
+
+  color: #d8e3ed;
+
+  font-size: 10px;
+  font-weight: 500;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   6. GENERAL SECONDARY TEXT READABILITY
+   ========================================================= */
+
+/*
+   Increase only dashboard labels.
+   Do NOT globally increase all table text.
+*/
+
+.metric-title {
+  font-size: 9.5px;
+}
+
+.subheading {
+  font-size: 9px;
+}
+
+.card-heading {
+  font-size: 13px;
+}
+
+
+/* =========================================================
+   7. MEDIUM DESKTOP OVERRIDES
+   Important because screenshot appears around this breakpoint
+   ========================================================= */
+
+@media (max-width: 1500px) {
+
+  .nifty-mini-stat {
+    min-width: 72px;
+
+    padding: 0 9px;
+  }
+
+  .nifty-mini-stat span {
+    font-size: 8px;
+  }
+
+  .nifty-mini-stat strong {
+    font-size: 10px;
+  }
+
+  .score-header {
+    font-size: 9px;
+  }
+
+  .score-header span:nth-child(2),
+  .score-header span:nth-child(3) {
+    font-size: 9px;
+  }
+
+  .score-row {
+    font-size: 10px;
+  }
+
+  .volatility-insight span {
+    font-size: 8.5px;
+  }
+
+  .volatility-insight strong {
+    font-size: 11px;
+  }
+
+  .volatility-insight small {
+    font-size: 8.5px;
+  }
+
+  .strategy-card .subheading {
+    font-size: 8.5px;
+  }
+
+  .entry-layout {
+    grid-template-columns:
+      100px
+      minmax(0, 1fr)
+      175px;
+  }
+
+  .entry-reason {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .entry-reason ul {
+    font-size: 9px;
+  }
+
+  .entry-zone > strong {
+    font-size: 15px;
   }
 }
