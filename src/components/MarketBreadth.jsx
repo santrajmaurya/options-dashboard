@@ -8,9 +8,18 @@ import {
 } from "recharts";
 
 const data = [
-  { name: "Advances", value: 42 },
-  { name: "Declines", value: 16 },
-  { name: "Unchanged", value: 2 },
+  {
+    name: "Advances",
+    value: 42,
+  },
+  {
+    name: "Declines",
+    value: 16,
+  },
+  {
+    name: "Unchanged",
+    value: 2,
+  },
 ];
 
 const COLORS = [
@@ -26,10 +35,12 @@ export default function MarketBreadth() {
       className="breadth-card"
     >
       <div className="breadth-layout">
+
+        {/* Donut Chart */}
         <div className="breadth-chart-container">
           <ResponsiveContainer
             width="100%"
-            height={145}
+            height={130}
           >
             <PieChart>
               <Pie
@@ -37,8 +48,8 @@ export default function MarketBreadth() {
                 dataKey="value"
                 cx="50%"
                 cy="50%"
-                innerRadius={37}
-                outerRadius={55}
+                innerRadius={31}
+                outerRadius={46}
                 paddingAngle={2}
                 stroke="none"
               >
@@ -58,9 +69,11 @@ export default function MarketBreadth() {
           </div>
         </div>
 
+        {/* Advance / Decline */}
         <div className="breadth-numbers">
           <div>
             <span>ADVANCES</span>
+
             <strong className="green">
               42 (70%)
             </strong>
@@ -68,6 +81,7 @@ export default function MarketBreadth() {
 
           <div>
             <span>DECLINES</span>
+
             <strong className="red">
               16 (27%)
             </strong>
@@ -75,10 +89,14 @@ export default function MarketBreadth() {
 
           <div>
             <span>UNCHANGED</span>
-            <strong>2 (3%)</strong>
+
+            <strong>
+              2 (3%)
+            </strong>
           </div>
         </div>
 
+        {/* Breadth Details */}
         <div className="breadth-details">
           <p>
             <span>New 52W High</span>
@@ -92,6 +110,7 @@ export default function MarketBreadth() {
 
           <p>
             <span>A/D Ratio</span>
+
             <strong className="green">
               2.63
             </strong>
@@ -99,6 +118,7 @@ export default function MarketBreadth() {
 
           <p>
             <span>Stocks &gt; 200 DMA</span>
+
             <strong className="green">
               68%
             </strong>
@@ -106,8 +126,11 @@ export default function MarketBreadth() {
         </div>
       </div>
 
+      {/* Bottom Status */}
       <div className="breadth-status">
-        <span>MARKET PARTICIPATION</span>
+        <span>
+          MARKET PARTICIPATION
+        </span>
 
         <strong className="green">
           BROAD BASED BULLISH
