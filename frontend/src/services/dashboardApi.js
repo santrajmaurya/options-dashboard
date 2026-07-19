@@ -1,0 +1,22 @@
+const API_URL = "http://localhost:8000/api";
+
+
+export async function fetchDashboard() {
+
+  const response = await fetch(
+    `${API_URL}/dashboard`
+  );
+
+
+  if (!response.ok) {
+
+    throw new Error(
+      "Failed to fetch dashboard data"
+    );
+
+  }
+
+
+  return response.json();
+
+}
