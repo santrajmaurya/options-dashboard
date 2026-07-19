@@ -21,16 +21,68 @@ export default function FuturesOI() {
             {futuresData.map((row) => (
               <tr key={row[0]}>
                 <td>{row[0]}</td>
-                <td>{row[1]}</td>
+                <td className="value-strong">{row[1]}</td>
                 <td className="green">{row[2]}</td>
                 <td>{row[3]}</td>
                 <td className="green">{row[4]}</td>
-                <td className="green signal-cell">{row[5]}</td>
+                <td className="green signal-cell">
+                  {row[5]}
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <div className="futures-summary">
+        <SummaryItem
+          label="DOMINANT POSITIONING"
+          value="LONG BUILD-UP"
+          valueClass="green"
+        />
+
+        <SummaryItem
+          label="OI MOMENTUM"
+          value="ACCELERATING ↑"
+          valueClass="green"
+        />
+
+        <SummaryItem
+          label="FUTURES BASIS"
+          value="+21.65"
+          valueClass="green"
+        />
+
+        <SummaryItem
+          label="SIGNAL STRENGTH"
+          value="82 / 100"
+          valueClass="green"
+          progress={82}
+        />
+      </div>
     </Card>
+  );
+}
+
+function SummaryItem({
+  label,
+  value,
+  valueClass = "",
+  progress,
+}) {
+  return (
+    <div className="futures-summary-item">
+      <span>{label}</span>
+
+      <strong className={valueClass}>
+        {value}
+      </strong>
+
+      {progress !== undefined && (
+        <div className="mini-progress">
+          <i style={{ width: `${progress}%` }} />
+        </div>
+      )}
+    </div>
   );
 }

@@ -13,21 +13,34 @@ const data = [
   { name: "Unchanged", value: 2 },
 ];
 
-const COLORS = ["#25d77d", "#ef5350", "#b7c0cb"];
+const COLORS = [
+  "#25d77d",
+  "#ef5350",
+  "#b7c0cb",
+];
 
 export default function MarketBreadth() {
   return (
-    <Card title="MARKET BREADTH" className="breadth-card">
+    <Card
+      title="MARKET BREADTH"
+      className="breadth-card"
+    >
       <div className="breadth-layout">
-        <div className="breadth-chart">
-          <ResponsiveContainer width="100%" height={120}>
+        <div className="breadth-chart-container">
+          <ResponsiveContainer
+            width="100%"
+            height={145}
+          >
             <PieChart>
               <Pie
                 data={data}
                 dataKey="value"
-                innerRadius={32}
-                outerRadius={48}
-                paddingAngle={1}
+                cx="50%"
+                cy="50%"
+                innerRadius={37}
+                outerRadius={55}
+                paddingAngle={2}
+                stroke="none"
               >
                 {data.map((_, index) => (
                   <Cell
@@ -38,28 +51,67 @@ export default function MarketBreadth() {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+
+          <div className="breadth-center">
+            <strong>2.63</strong>
+            <span>A/D</span>
+          </div>
         </div>
 
         <div className="breadth-numbers">
-          <span className="green">
-            ADVANCES <strong>42 (70%)</strong>
-          </span>
+          <div>
+            <span>ADVANCES</span>
+            <strong className="green">
+              42 (70%)
+            </strong>
+          </div>
 
-          <span className="red">
-            DECLINES <strong>16 (27%)</strong>
-          </span>
+          <div>
+            <span>DECLINES</span>
+            <strong className="red">
+              16 (27%)
+            </strong>
+          </div>
 
-          <span>
-            UNCHANGED <strong>2 (3%)</strong>
-          </span>
+          <div>
+            <span>UNCHANGED</span>
+            <strong>2 (3%)</strong>
+          </div>
         </div>
 
         <div className="breadth-details">
-          <p>New 52W High <strong>18</strong></p>
-          <p>New 52W Low <strong>2</strong></p>
-          <p>Advance/Decline Ratio <strong>2.63</strong></p>
-          <p>Bullish Stocks &gt; 200 DMA <strong>68%</strong></p>
+          <p>
+            <span>New 52W High</span>
+            <strong>18</strong>
+          </p>
+
+          <p>
+            <span>New 52W Low</span>
+            <strong>2</strong>
+          </p>
+
+          <p>
+            <span>A/D Ratio</span>
+            <strong className="green">
+              2.63
+            </strong>
+          </p>
+
+          <p>
+            <span>Stocks &gt; 200 DMA</span>
+            <strong className="green">
+              68%
+            </strong>
+          </p>
         </div>
+      </div>
+
+      <div className="breadth-status">
+        <span>MARKET PARTICIPATION</span>
+
+        <strong className="green">
+          BROAD BASED BULLISH
+        </strong>
       </div>
     </Card>
   );
