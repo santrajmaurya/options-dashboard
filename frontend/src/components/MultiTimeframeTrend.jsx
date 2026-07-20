@@ -2,6 +2,7 @@ import Card from "./Card";
 
 export default function MultiTimeframeTrend({ data }) {
   const trend = data ?? {};
+  console.log("MultiTimeframeTrend data:", trend);
 
   const overallScore = Number(trend.overall_score ?? 0);
 

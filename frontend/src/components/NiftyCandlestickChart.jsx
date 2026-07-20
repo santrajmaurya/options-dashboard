@@ -25,6 +25,7 @@ const toChartTimestamp = (value) => {
 
 export default function NiftyCandlestickChart({ candles = [] }) {
   const containerRef = useRef(null);
+  console.log("NiftyCandlestickChart data:", candles);
 
   useEffect(() => {
     const container = containerRef.current;

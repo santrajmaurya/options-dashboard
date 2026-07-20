@@ -1,77 +1,62 @@
 import Card from "./Card";
-import {
-  ResponsiveContainer,
-  AreaChart,
-  Area,
-} from "recharts";
 
-const vixData = [
-  { value: 12.72 },
-  { value: 12.84 },
-  { value: 12.78 },
-  { value: 12.95 },
-  { value: 13.08 },
-  { value: 12.98 },
-  { value: 13.14 },
-  { value: 13.02 },
-  { value: 13.22 },
-  { value: 13.11 },
-  { value: 13.32 },
-  { value: 13.25 },
-  { value: 13.42 },
-];
+export default function PCRVolatility({ optionChain, vix }) {
+  const options = optionChain ?? {};
+  const vixData = vix ?? {};
 
-export default function PCRVolatility() {
+  const pcrOI = toNumber(options.pcr_oi);
+  const pcrVolume = toNumber(options.pcr_volume);
+
+  const vixValue = toNumber(vixData.value);
+  const vixChange = toNumber(vixData.change);
+  const vixChangePercent = toNumber(vixData.change_percent);
+
+  const pcrOIStatus = getPCRStatus(pcrOI);
+  const pcrVolumeStatus = getPCRStatus(pcrVolume);
+
+  const vixTrend =
+    vixChange > 0 ? "RISING ↑" : vixChange < 0 ? "FALLING ↓" : "UNCHANGED";
+
+  const vixTrendClass =
+    vixChange > 0 ? "red" : vixChange < 0 ? "green" : "yellow";
+
+  const volatilityRegime = getVolatilityRegime(vixValue);
+
+  const environment = getOptionSellingEnvironment(vixValue, vixChange);
+
   return (
-    <Card
-      title="PCR & VOLATILITY"
-      className="pcr-card"
-    >
+    <Card title="PCR & VOLATILITY" className="pcr-card">
       <div className="pcr-main">
         <PCRMetric
-          title="PCR (TOTAL)"
-          value="1.18"
-          status="BULLISH"
-          previous="1.32"
-          change="-10.6%"
+          title="PCR (OI)"
+          value={formatNumber(pcrOI)}
+          status={pcrOIStatus.label}
+          statusClass={pcrOIStatus.className}
         />
 
         <PCRMetric
-          title="PCR (ATM ± 5)"
-          value="1.42"
-          status="BULLISH"
-          previous="1.55"
-          change="-8.4%"
+          title="PCR (VOLUME)"
+          value={formatNumber(pcrVolume)}
+          status={pcrVolumeStatus.label}
+          statusClass={pcrVolumeStatus.className}
         />
 
         <div className="vix-metric">
-          <span className="metric-title">
-            INDIA VIX
-          </span>
+          <span className="metric-title">INDIA VIX</span>
 
-          <strong>13.42</strong>
+          <strong>{formatNumber(vixValue)}</strong>
 
-          <b className="green">
-            +0.45 (+3.47%)
+          <b className={vixTrendClass}>
+            {formatSignedNumber(vixChange)}
+            {" ("}
+            {formatSignedPercent(vixChangePercent)}
+            {")"}
           </b>
 
-          <div className="vix-chart">
-            <ResponsiveContainer
-              width="100%"
-              height="100%"
-            >
-              <AreaChart data={vixData}>
-                <Area
-                  type="monotone"
-                  dataKey="value"
-                  stroke="#23d77c"
-                  fill="#23d77c"
-                  fillOpacity={0.08}
-                  strokeWidth={2}
-                  dot={false}
-                />
-              </AreaChart>
-            </ResponsiveContainer>
+          <div className="vix-details">
+            <span>PREVIOUS</span>
+
+            <strong>{formatNumber(vixData.previous)}</strong>
           </div>
         </div>
       </div>
@@ -79,70 +64,173 @@ export default function PCRVolatility() {
       <div className="volatility-regime">
         <div>
           <span>VOLATILITY REGIME</span>
-          <strong className="yellow">
-            ELEVATED
+
+          <strong className={volatilityRegime.className}>
+            {volatilityRegime.label}
           </strong>
         </div>
 
         <div>
-          <span>IV PERCENTILE</span>
-          <strong>72%</strong>
+          <span>PCR OI</span>
+
+          <strong>{formatNumber(pcrOI)}</strong>
         </div>
 
         <div>
           <span>VIX TREND</span>
-          <strong className="red">
-            RISING ↑
-          </strong>
+
+          <strong className={vixTrendClass}>{vixTrend}</strong>
         </div>
       </div>
 
       <div className="volatility-insight">
         <span>OPTION SELLING ENVIRONMENT</span>
 
-        <strong className="green">
-          FAVORABLE
-        </strong>
+        <strong className={environment.className}>{environment.label}</strong>
 
-        <small>
-          Elevated premiums, but use defined-risk
-          strategies due to rising volatility.
-        </small>
+        <small>{environment.description}</small>
       </div>
     </Card>
   );
 }
 
-function PCRMetric({
-  title,
-  value,
-  status,
-  previous,
-  change,
-}) {
+function PCRMetric({ title, value, status, statusClass }) {
   return (
     <div className="pcr-metric">
-      <span className="metric-title">
-        {title}
-      </span>
+      <span className="metric-title">{title}</span>
 
       <strong>{value}</strong>
 
-      <b className="green">{status}</b>
-
-      <div className="pcr-comparison">
-        <div>
-          <span>PREV</span>
-          <strong>{previous}</strong>
-        </div>
-
-        <div>
-          <span>CHANGE</span>
-          <strong className="green">
-            {change}
-          </strong>
-        </div>
-      </div>
+      <b className={statusClass}>{status}</b>
     </div>
   );
+}
+
+function getPCRStatus(value) {
+  if (!Number.isFinite(value)) {
+    return {
+      label: "N/A",
+      className: "yellow",
+    };
+  }
+
+  if (value >= 1.1) {
+    return {
+      label: "BULLISH",
+      className: "green",
+    };
+  }
+
+  if (value <= 0.8) {
+    return {
+      label: "BEARISH",
+      className: "red",
+    };
+  }
+
+  return {
+    label: "NEUTRAL",
+    className: "yellow",
+  };
+}
+
+function getVolatilityRegime(value) {
+  if (!Number.isFinite(value)) {
+    return {
+      label: "UNKNOWN",
+      className: "yellow",
+    };
+  }
+
+  if (value >= 20) {
+    return {
+      label: "HIGH",
+      className: "red",
+    };
+  }
+
+  if (value >= 15) {
+    return {
+      label: "ELEVATED",
+      className: "yellow",
+    };
+  }
+
+  return {
+    label: "NORMAL",
+    className: "green",
+  };
+}
+
+function getOptionSellingEnvironment(vix, vixChange) {
+  if (!Number.isFinite(vix)) {
+    return {
+      label: "UNKNOWN",
+      className: "yellow",
+      description: "Volatility data is not currently available.",
+    };
+  }
+
+  if (vix >= 20) {
+    return {
+      label: "HIGH RISK",
+      className: "red",
+      description:
+        "Premiums are elevated, but volatility risk is high. Prefer defined-risk strategies.",
+    };
+  }
+
+  if (vix >= 15) {
+    return {
+      label: "FAVORABLE",
+      className: "green",
+      description:
+        vixChange > 0
+          ? "Premiums are elevated, but volatility is rising. Prefer defined-risk option selling strategies."
+          : "Elevated option premiums may support option selling strategies with disciplined risk management.",
+    };
+  }
+
+  return {
+    label: "SELECTIVE",
+    className: "yellow",
+    description:
+      "Volatility is relatively low. Option premiums may offer less compensation for risk.",
+  };
+}
+
+function toNumber(value) {
+  const number = Number(value);
+
+  return Number.isFinite(number) ? number : Number.NaN;
+}
+
+function formatNumber(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "--";
+  }
+
+  return number.toFixed(2);
+}
+
+function formatSignedNumber(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "--";
+  }
+
+  return `${number > 0 ? "+" : ""}${number.toFixed(2)}`;
+}
+
+function formatSignedPercent(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "--";
+  }
+
+  return `${number > 0 ? "+" : ""}${number.toFixed(2)}%`;
 }

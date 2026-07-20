@@ -2,6 +2,7 @@ import Card from "./Card";
 import NiftyCandlestickChart from "./NiftyCandlestickChart";
 
 export default function PriceAndLevels({ nifty, levels, candles = [] }) {
+  console.log("PriceAndLevels data:", { nifty, levels, candles });
   const market = nifty ?? {};
   const levelData = levels ?? {};
 
