@@ -17,6 +17,7 @@ import EntryStatus from "./components/EntryStatus";
 import RiskEvents from "./components/RiskEvents";
 
 import { fetchDashboard } from "./services/dashboardApi";
+import { connectDashboardSocket } from "./services/dashboardSocket";
 
 import "./App.css";
 
@@ -91,6 +92,23 @@ export default function App() {
     return () => {
       cancelled = true;
     };
+  }, []);
+
+  useEffect(() => {
+    const disconnect = connectDashboardSocket({
+      onData: (data) => {
+        setDashboardData(data);
+        setError(null);
+      },
+      onError: (err) => {
+        console.error("Dashboard WebSocket error:", err);
+      },
+      onStatusChange: (status) => {
+        console.log("Dashboard WebSocket:", status);
+      },
+    });
+
+    return disconnect;
   }, []);
 
   console.log("Dashboard data:", dashboardData);

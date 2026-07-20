@@ -7,6 +7,7 @@ export default function Topbar({
   refreshInterval = 300,
 }) {
   const [countdown, setCountdown] = useState(refreshInterval);
+  const [currentTime, setCurrentTime] = useState(() => new Date());
 
   // --------------------------------------------------
   // API DATA
@@ -119,31 +120,33 @@ export default function Topbar({
   };
 
   // --------------------------------------------------
-  // TIMESTAMP
+  // LIVE CLOCK
   // --------------------------------------------------
 
-  const marketDate = timestamp ? new Date(timestamp) : null;
+  useEffect(() => {
+    const intervalId = window.setInterval(() => {
+      setCurrentTime(new Date());
+    }, 1000);
 
-  const hasValidTimestamp = marketDate && !Number.isNaN(marketDate.getTime());
+    return () => {
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
-  const formattedTime = hasValidTimestamp
-    ? marketDate.toLocaleTimeString("en-IN", {
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit",
-        hour12: true,
-        timeZone: "Asia/Kolkata",
-      })
-    : "--:--:--";
+  const formattedTime = currentTime.toLocaleTimeString("en-IN", {
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+    hour12: true,
+    timeZone: "Asia/Kolkata",
+  });
 
-  const formattedDate = hasValidTimestamp
-    ? marketDate.toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-        timeZone: "Asia/Kolkata",
-      })
-    : "--";
+  const formattedDate = currentTime.toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+    timeZone: "Asia/Kolkata",
+  });
 
   return (
     <header className="topbar">
