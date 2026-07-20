@@ -1,31 +1,74 @@
 import Card from "./Card";
 
-export default function StrategyEnvironment() {
+export default function StrategyEnvironment({ data }) {
+  const strategies = data ?? {};
+
+  const preferred = Array.isArray(strategies.preferred)
+    ? strategies.preferred
+    : [];
+
+  const neutral = Array.isArray(strategies.neutral) ? strategies.neutral : [];
+
+  const avoid = Array.isArray(strategies.avoid) ? strategies.avoid : [];
+
+  const hasStrategies =
+    preferred.length > 0 || neutral.length > 0 || avoid.length > 0;
+
   return (
-    <Card
-      title="STRATEGY ENVIRONMENT"
-      className="strategy-card"
-    >
-      <span className="subheading">
-        RECOMMENDED STRATEGIES
-      </span>
+    <Card title="STRATEGY ENVIRONMENT" className="strategy-card">
+      <span className="subheading">RECOMMENDED STRATEGIES</span>
 
-      <div className="strategy-list">
-        <div className="strategy-row preferred">
-          <span>Bull Put Spread</span>
-          <small>MOST SUITABLE</small>
-        </div>
+      {hasStrategies ? (
+        <div className="strategy-list">
+          {preferred.map((strategy) => (
+            <StrategyRow
+              key={`preferred-${strategy}`}
+              strategy={strategy}
+              type="preferred"
+              label="MOST SUITABLE"
+            />
+          ))}
 
-        <div className="strategy-row">
-          <span>Iron Condor</span>
-          <small>SUITABLE</small>
-        </div>
+          {neutral.map((strategy) => (
+            <StrategyRow
+              key={`neutral-${strategy}`}
+              strategy={strategy}
+              type="neutral"
+              label="SUITABLE"
+            />
+          ))}
 
-        <div className="strategy-row avoid">
-          <span>Bear Call Spread</span>
-          <small>NOT PREFERRED</small>
+          {avoid.map((strategy) => (
+            <StrategyRow
+              key={`avoid-${strategy}`}
+              strategy={strategy}
+              type="avoid"
+              label="NOT PREFERRED"
+            />
+          ))}
         </div>
-      </div>
+      ) : (
+        <div className="strategy-empty">
+          No strategy recommendations available.
+        </div>
+      )}
     </Card>
+  );
+}
+
+function StrategyRow({ strategy, type, label }) {
+  const className =
+    type === "preferred"
+      ? "strategy-row preferred"
+      : type === "avoid"
+        ? "strategy-row avoid"
+        : "strategy-row";
+
+  return (
+    <div className={className}>
+      <span>{strategy}</span>
+
+      <small>{label}</small>
+    </div>
   );
 }

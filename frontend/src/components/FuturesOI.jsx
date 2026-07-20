@@ -2,6 +2,7 @@ import Card from "./Card";
 
 export default function FuturesOI({ data }) {
   const futures = data ?? {};
+  console.log("FuturesOI data:", futures);
 
   const price = Number(futures.price ?? 0);
   const basis = Number(futures.basis ?? 0);

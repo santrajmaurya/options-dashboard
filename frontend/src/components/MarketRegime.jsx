@@ -3,6 +3,7 @@ import Card from "./Card";
 export default function MarketRegime({ data }) {
   // Keep existing UI usable until API data is available.
   const regime = data ?? {};
+  console.log("MarketRegime data:", regime);
 
   const score = regime.score ?? 74;
   const direction = regime.direction ?? "BULLISH";

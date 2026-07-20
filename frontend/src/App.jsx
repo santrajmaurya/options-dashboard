@@ -194,7 +194,7 @@ export default function App() {
 
           <MarketBreadth data={dashboardData?.breadth} />
 
-          <SectorStrength />
+          <SectorStrength data={dashboardData?.sectors} />
 
           <StrategyEnvironment data={dashboardData?.strategies} />
 

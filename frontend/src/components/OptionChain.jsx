@@ -2,6 +2,7 @@ import Card from "./Card";
 
 export default function OptionChain({ data, nifty }) {
   const chain = data ?? {};
+  console.log("OptionChain data:", chain);
 
   // ---------------------------------------------
   // API DATA

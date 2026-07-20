@@ -1,44 +1,162 @@
 import Card from "./Card";
 
-const data = [
-  ["ATM IV", "14.85", "+0.62 (4.35%)", "Rising"],
-  ["Call IV", "15.10", "+0.70 (4.85%)", "Rising"],
-  ["Put IV", "14.60", "+0.55 (3.91%)", "Rising"],
-  ["IV Percentile (1Y)", "72%", "—", "Elevated"],
-];
+export default function IVMetrics({ data }) {
+  const volatility = data ?? {};
 
-export default function IVMetrics() {
+  const atmIV = toNumber(volatility.atm_iv);
+
+  const ivPercentile = toNumber(volatility.iv_percentile);
+
+  const ivRank = toNumber(volatility.iv_rank);
+
+  const regime = volatility.regime ?? "UNKNOWN";
+
+  const metrics = [
+    {
+      name: "ATM IV",
+      value: formatPercent(atmIV),
+      status: getIVStatus(atmIV),
+    },
+
+    {
+      name: "IV PERCENTILE (1Y)",
+      value: formatPercent(ivPercentile),
+      status: getPercentileStatus(ivPercentile),
+    },
+
+    {
+      name: "IV RANK",
+      value: formatPercent(ivRank),
+      status: getPercentileStatus(ivRank),
+    },
+
+    {
+      name: "VOLATILITY REGIME",
+      value: regime,
+      status: getRegimeStatus(regime),
+    },
+  ];
+
   return (
     <Card title="IV METRICS" className="iv-card">
       <table className="data-table">
         <thead>
           <tr>
             <th>METRIC</th>
+
             <th>VALUE</th>
-            <th>CHANGE</th>
+
             <th>STATUS</th>
           </tr>
         </thead>
 
         <tbody>
-          {data.map((row) => (
-            <tr key={row[0]}>
-              <td>{row[0]}</td>
-              <td>{row[1]}</td>
-              <td className="green">{row[2]}</td>
-              <td
-                className={
-                  row[3] === "Elevated"
-                    ? "yellow"
-                    : "red"
-                }
-              >
-                {row[3]}
-              </td>
+          {metrics.map((metric) => (
+            <tr key={metric.name}>
+              <td>{metric.name}</td>
+
+              <td className="value-strong">{metric.value}</td>
+
+              <td className={metric.status.className}>{metric.status.label}</td>
             </tr>
           ))}
         </tbody>
       </table>
     </Card>
   );
+}
+
+function getIVStatus(value) {
+  if (!Number.isFinite(value)) {
+    return {
+      label: "N/A",
+      className: "yellow",
+    };
+  }
+
+  if (value >= 25) {
+    return {
+      label: "HIGH",
+      className: "red",
+    };
+  }
+
+  if (value >= 15) {
+    return {
+      label: "ELEVATED",
+      className: "yellow",
+    };
+  }
+
+  return {
+    label: "NORMAL",
+    className: "green",
+  };
+}
+
+function getPercentileStatus(value) {
+  if (!Number.isFinite(value)) {
+    return {
+      label: "N/A",
+      className: "yellow",
+    };
+  }
+
+  if (value >= 75) {
+    return {
+      label: "HIGH",
+      className: "red",
+    };
+  }
+
+  if (value >= 50) {
+    return {
+      label: "ELEVATED",
+      className: "yellow",
+    };
+  }
+
+  return {
+    label: "LOW",
+    className: "green",
+  };
+}
+
+function getRegimeStatus(regime) {
+  const normalized = String(regime).toUpperCase();
+
+  if (normalized.includes("HIGH")) {
+    return {
+      label: normalized,
+      className: "red",
+    };
+  }
+
+  if (normalized.includes("ELEVATED")) {
+    return {
+      label: normalized,
+      className: "yellow",
+    };
+  }
+
+  return {
+    label: normalized,
+    className: "green",
+  };
+}
+
+function toNumber(value) {
+  const number = Number(value);
+
+  return Number.isFinite(number) ? number : Number.NaN;
+}
+
+function formatPercent(value) {
+  const number = Number(value);
+
+  if (!Number.isFinite(number)) {
+    return "--";
+  }
+
+  return `${number.toFixed(2)}%`;
 }
