@@ -93,6 +93,8 @@ export default function App() {
     };
   }, []);
 
+  console.log("Dashboard data:", dashboardData);
+
   /*
    * Auto refresh.
    *
@@ -141,7 +143,6 @@ export default function App() {
       </div>
     );
   }
-  console.log("dashboardData:", dashboardData);
 
   return (
     <div className="app-shell">
