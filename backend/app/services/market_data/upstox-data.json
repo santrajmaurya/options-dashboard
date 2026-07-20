@@ -1,0 +1,524 @@
+{
+  "market": {
+    "status": "OPEN",
+    "timestamp": "2026-07-20T11:25:51.114090+05:30"
+  },
+  "nifty": {
+    "ltp": 24214.2,
+    "change": -120.1,
+    "change_percent": -0.5,
+    "open": 24190.05,
+    "high": 24262.35,
+    "low": 24149.9,
+    "previous_close": 24214.2
+  },
+  "vix": {
+    "value": 13.33,
+    "previous": 13.33,
+    "change": 0.18,
+    "change_percent": 1.35
+  },
+  "candles": [
+    {
+      "timestamp": "2026-07-20T09:15:00+05:30",
+      "open": 24190.05,
+      "high": 24262.35,
+      "low": 24149.9,
+      "close": 24209.7,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24207.32
+    },
+    {
+      "timestamp": "2026-07-20T09:20:00+05:30",
+      "open": 24205.85,
+      "high": 24217.15,
+      "low": 24178.3,
+      "close": 24212.65,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24205.01
+    },
+    {
+      "timestamp": "2026-07-20T09:25:00+05:30",
+      "open": 24213.5,
+      "high": 24214.4,
+      "low": 24181.65,
+      "close": 24191.7,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24201.98
+    },
+    {
+      "timestamp": "2026-07-20T09:30:00+05:30",
+      "open": 24191.9,
+      "high": 24193.05,
+      "low": 24170.2,
+      "close": 24180.45,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24196.79
+    },
+    {
+      "timestamp": "2026-07-20T09:35:00+05:30",
+      "open": 24182,
+      "high": 24191.8,
+      "low": 24162.75,
+      "close": 24162.75,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24191.92
+    },
+    {
+      "timestamp": "2026-07-20T09:40:00+05:30",
+      "open": 24162.6,
+      "high": 24178.9,
+      "low": 24159.6,
+      "close": 24171.45,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24188.26
+    },
+    {
+      "timestamp": "2026-07-20T09:45:00+05:30",
+      "open": 24170.6,
+      "high": 24175.6,
+      "low": 24157.5,
+      "close": 24163.3,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24185.01
+    },
+    {
+      "timestamp": "2026-07-20T09:50:00+05:30",
+      "open": 24162.7,
+      "high": 24179.15,
+      "low": 24162.05,
+      "close": 24178.15,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24183.52
+    },
+    {
+      "timestamp": "2026-07-20T09:55:00+05:30",
+      "open": 24176.2,
+      "high": 24198.5,
+      "low": 24174.75,
+      "close": 24190.25,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24184
+    },
+    {
+      "timestamp": "2026-07-20T10:00:00+05:30",
+      "open": 24191.25,
+      "high": 24207.1,
+      "low": 24179.8,
+      "close": 24194.55,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24184.98
+    },
+    {
+      "timestamp": "2026-07-20T10:05:00+05:30",
+      "open": 24194.55,
+      "high": 24209.5,
+      "low": 24190.5,
+      "close": 24201.55,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24186.39
+    },
+    {
+      "timestamp": "2026-07-20T10:10:00+05:30",
+      "open": 24201.7,
+      "high": 24219.4,
+      "low": 24199.85,
+      "close": 24209.95,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24188.34
+    },
+    {
+      "timestamp": "2026-07-20T10:15:00+05:30",
+      "open": 24210.4,
+      "high": 24232.35,
+      "low": 24207.35,
+      "close": 24228.1,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24190.97
+    },
+    {
+      "timestamp": "2026-07-20T10:20:00+05:30",
+      "open": 24228.3,
+      "high": 24230.15,
+      "low": 24208,
+      "close": 24213.75,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24192.85
+    },
+    {
+      "timestamp": "2026-07-20T10:25:00+05:30",
+      "open": 24213.75,
+      "high": 24230.25,
+      "low": 24209.9,
+      "close": 24230.25,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24194.9
+    },
+    {
+      "timestamp": "2026-07-20T10:30:00+05:30",
+      "open": 24229.9,
+      "high": 24239.2,
+      "low": 24224.2,
+      "close": 24224.2,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24197.04
+    },
+    {
+      "timestamp": "2026-07-20T10:35:00+05:30",
+      "open": 24225.6,
+      "high": 24226.9,
+      "low": 24213.95,
+      "close": 24224.2,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24198.49
+    },
+    {
+      "timestamp": "2026-07-20T10:40:00+05:30",
+      "open": 24224,
+      "high": 24229.9,
+      "low": 24213.55,
+      "close": 24218.45,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24199.72
+    },
+    {
+      "timestamp": "2026-07-20T10:45:00+05:30",
+      "open": 24218.4,
+      "high": 24228.15,
+      "low": 24216.55,
+      "close": 24225.8,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24200.97
+    },
+    {
+      "timestamp": "2026-07-20T10:50:00+05:30",
+      "open": 24225.95,
+      "high": 24232.4,
+      "low": 24216.75,
+      "close": 24223.15,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24202.13
+    },
+    {
+      "timestamp": "2026-07-20T10:55:00+05:30",
+      "open": 24223.8,
+      "high": 24231.55,
+      "low": 24216.55,
+      "close": 24228.65,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24203.24
+    },
+    {
+      "timestamp": "2026-07-20T11:00:00+05:30",
+      "open": 24228.6,
+      "high": 24231,
+      "low": 24219.25,
+      "close": 24222.8,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24204.2
+    },
+    {
+      "timestamp": "2026-07-20T11:05:00+05:30",
+      "open": 24222.85,
+      "high": 24234.9,
+      "low": 24211.05,
+      "close": 24229.15,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24205.11
+    },
+    {
+      "timestamp": "2026-07-20T11:10:00+05:30",
+      "open": 24229.65,
+      "high": 24231.65,
+      "low": 24213.9,
+      "close": 24214.6,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24205.73
+    },
+    {
+      "timestamp": "2026-07-20T11:15:00+05:30",
+      "open": 24215.45,
+      "high": 24221.1,
+      "low": 24203.05,
+      "close": 24216.65,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24206.05
+    },
+    {
+      "timestamp": "2026-07-20T11:20:00+05:30",
+      "open": 24217.3,
+      "high": 24224.8,
+      "low": 24208.75,
+      "close": 24211.5,
+      "volume": 0,
+      "open_interest": 0,
+      "vwap": 24206.39
+    }
+  ],
+  "regime": {
+    "score": 74,
+    "direction": "BULLISH",
+    "volatility": "ELEVATED",
+    "final_regime": "BULLISH + ELEVATED VOLATILITY",
+    "components": [
+      {
+        "parameter": "Trend Score",
+        "score": 82,
+        "status": "Strong Bullish"
+      },
+      {
+        "parameter": "Futures Positioning",
+        "score": 68,
+        "status": "Long Buildup"
+      },
+      {
+        "parameter": "Options Positioning",
+        "score": 72,
+        "status": "Put Writing"
+      },
+      {
+        "parameter": "Market Breadth",
+        "score": 76,
+        "status": "Broad Bullish"
+      },
+      {
+        "parameter": "Volatility",
+        "score": 48,
+        "status": "Elevated"
+      },
+      {
+        "parameter": "Price Structure",
+        "score": 80,
+        "status": "Above VWAP"
+      }
+    ]
+  },
+  "trend": {
+    "overall_score": 82,
+    "overall_status": "STRONG BULLISH",
+    "timeframes": [
+      {
+        "timeframe": "5 Min",
+        "direction": "UP",
+        "score": 78,
+        "status": "Bullish"
+      },
+      {
+        "timeframe": "15 Min",
+        "direction": "UP",
+        "score": 82,
+        "status": "Bullish"
+      },
+      {
+        "timeframe": "1 Hour",
+        "direction": "UP",
+        "score": 85,
+        "status": "Strong Bullish"
+      },
+      {
+        "timeframe": "Daily",
+        "direction": "UP",
+        "score": 80,
+        "status": "Bullish"
+      }
+    ]
+  },
+  "futures": {
+    "price": 25178.5,
+    "basis": 26.15,
+    "oi": 12548000,
+    "oi_change_percent": 6.8,
+    "signal": "LONG BUILDUP"
+  },
+  "option_chain": {
+    "atm_strike": 25150,
+    "max_call_oi_strike": 25300,
+    "max_put_oi_strike": 25000,
+    "max_call_oi": 3850000,
+    "max_put_oi": 4620000,
+    "pcr_oi": 1.1,
+    "pcr_volume": 1.12,
+    "strikes": [
+      {
+        "strike": 24900,
+        "call_oi": 850000,
+        "call_oi_change": 95000,
+        "put_oi": 3820000,
+        "put_oi_change": 410000
+      },
+      {
+        "strike": 24950,
+        "call_oi": 920000,
+        "call_oi_change": 110000,
+        "put_oi": 3250000,
+        "put_oi_change": 360000
+      },
+      {
+        "strike": 25000,
+        "call_oi": 1450000,
+        "call_oi_change": 180000,
+        "put_oi": 4620000,
+        "put_oi_change": 520000
+      },
+      {
+        "strike": 25050,
+        "call_oi": 1680000,
+        "call_oi_change": 210000,
+        "put_oi": 3480000,
+        "put_oi_change": 390000
+      },
+      {
+        "strike": 25100,
+        "call_oi": 2250000,
+        "call_oi_change": 290000,
+        "put_oi": 3150000,
+        "put_oi_change": 350000
+      },
+      {
+        "strike": 25150,
+        "call_oi": 2780000,
+        "call_oi_change": 360000,
+        "put_oi": 2920000,
+        "put_oi_change": 330000
+      },
+      {
+        "strike": 25200,
+        "call_oi": 3420000,
+        "call_oi_change": 440000,
+        "put_oi": 2350000,
+        "put_oi_change": 270000
+      },
+      {
+        "strike": 25250,
+        "call_oi": 3580000,
+        "call_oi_change": 470000,
+        "put_oi": 1920000,
+        "put_oi_change": 220000
+      },
+      {
+        "strike": 25300,
+        "call_oi": 3850000,
+        "call_oi_change": 510000,
+        "put_oi": 1550000,
+        "put_oi_change": 175000
+      },
+      {
+        "strike": 25350,
+        "call_oi": 3180000,
+        "call_oi_change": 390000,
+        "put_oi": 1280000,
+        "put_oi_change": 140000
+      },
+      {
+        "strike": 25400,
+        "call_oi": 2750000,
+        "call_oi_change": 310000,
+        "put_oi": 980000,
+        "put_oi_change": 105000
+      }
+    ]
+  },
+  "levels": {
+    "support_1": {
+      "strike": 24900,
+      "score": 279700000,
+      "oi": 3820000,
+      "oi_change": 410000,
+      "distance": 685.8,
+      "distance_percent": 2.83
+    },
+    "support_2": {
+      "strike": 24900,
+      "score": 279700000,
+      "oi": 3820000,
+      "oi_change": 410000,
+      "distance": 685.8,
+      "distance_percent": 2.83
+    },
+    "resistance_1": {
+      "strike": 25300,
+      "score": 100,
+      "oi": 3850000,
+      "oi_change": 510000,
+      "distance": 1085.8,
+      "distance_percent": 4.48
+    },
+    "resistance_2": {
+      "strike": 25250,
+      "score": 93,
+      "oi": 3580000,
+      "oi_change": 470000,
+      "distance": 1035.8,
+      "distance_percent": 4.28
+    },
+    "vwap": 24206.39
+  },
+  "volatility": {
+    "atm_iv": 16.8,
+    "iv_percentile": 62,
+    "iv_rank": 54,
+    "regime": "ELEVATED"
+  },
+  "breadth": {
+    "advances": 42,
+    "declines": 16,
+    "unchanged": 2,
+    "advance_decline_ratio": 2.63,
+    "new_52_week_high": 18,
+    "new_52_week_low": 2,
+    "stocks_above_200_dma": 68
+  },
+  "entry": {
+    "status": "WAIT",
+    "entry_low": 25050,
+    "entry_high": 25100,
+    "current_price": 24214.2,
+    "invalidation": 24900,
+    "reasons": [
+      "Price extended from VWAP",
+      "Wait for pullback or retest of 25,050 - 25,100 zone",
+      "Watch for Put Writing confirmation"
+    ]
+  },
+  "risk": {
+    "score": 48,
+    "level": "MODERATE",
+    "environment": "TRADE WITH CAUTION",
+    "reasons": [
+      "No major high-impact events today",
+      "Overnight global sentiment is neutral",
+      "India VIX is rising",
+      "Prefer defined-risk option strategies"
+    ]
+  },
+  "strategies": {
+    "preferred": ["Bull Put Spread", "Put Credit Spread"],
+    "neutral": ["Iron Condor"],
+    "avoid": ["Naked Call Selling", "Aggressive Short Straddle"]
+  }
+}

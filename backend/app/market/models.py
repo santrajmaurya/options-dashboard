@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from pydantic import BaseModel, Field
 
 
@@ -43,6 +41,26 @@ class VixData(BaseModel):
 
     change: float
     change_percent: float
+
+
+# ==========================================
+# CANDLES
+# ==========================================
+
+
+class CandleData(BaseModel):
+    timestamp: str
+
+    open: float
+    high: float
+    low: float
+    close: float
+
+    volume: float = 0
+
+    open_interest: float = 0
+
+    vwap: float | None = None
 
 
 # ==========================================
@@ -261,6 +279,10 @@ class DashboardResponse(BaseModel):
     nifty: NiftyData
 
     vix: VixData
+
+    candles: list[CandleData] = Field(
+        default_factory=list,
+    )
 
     regime: MarketRegime
 
