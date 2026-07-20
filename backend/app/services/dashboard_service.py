@@ -22,6 +22,10 @@ from app.market.models import (
     StrategyData,
 )
 
+from app.services.market_data import (
+    get_market_data_provider,
+)
+
 
 class DashboardService:
 
@@ -32,10 +36,28 @@ class DashboardService:
         )
 
         # ==========================================
+        # MARKET DATA PROVIDER
+        # ==========================================
+
+        provider = (
+            get_market_data_provider()
+        )
+
+        nifty_snapshot = (
+            provider.get_nifty_snapshot()
+        )
+
+        vix_snapshot = (
+            provider.get_vix_snapshot()
+        )
+
+        # ==========================================
         # SHARED MARKET VALUES
         # ==========================================
 
-        nifty_ltp = 25152.35
+        nifty_ltp = (
+            nifty_snapshot.ltp
+        )
 
         # ==========================================
         # OPTION CHAIN
@@ -72,16 +94,34 @@ class DashboardService:
             # ==============================
 
             nifty=NiftyData(
-                ltp=nifty_ltp,
 
-                change=132.45,
-                change_percent=0.53,
+                ltp=nifty_snapshot.ltp,
 
-                open=25020.15,
-                high=25182.40,
-                low=24985.20,
+                change=(
+                    nifty_snapshot.change
+                ),
 
-                previous_close=25019.90,
+                change_percent=(
+                    nifty_snapshot
+                    .change_percent
+                ),
+
+                open=(
+                    nifty_snapshot.open
+                ),
+
+                high=(
+                    nifty_snapshot.high
+                ),
+
+                low=(
+                    nifty_snapshot.low
+                ),
+
+                previous_close=(
+                    nifty_snapshot
+                    .previous_close
+                ),
             ),
 
             # ==============================
@@ -89,12 +129,23 @@ class DashboardService:
             # ==============================
 
             vix=VixData(
-                value=14.85,
 
-                previous=14.17,
+                value=(
+                    vix_snapshot.value
+                ),
 
-                change=0.68,
-                change_percent=4.80,
+                previous=(
+                    vix_snapshot.previous
+                ),
+
+                change=(
+                    vix_snapshot.change
+                ),
+
+                change_percent=(
+                    vix_snapshot
+                    .change_percent
+                ),
             ),
 
             # ==============================
@@ -574,7 +625,7 @@ class DashboardService:
         ]
 
         # ======================================
-        # RAW SUPPORT STRENGTH
+        # SUPPORT STRENGTH
         #
         # 70% Total Put OI
         # 30% Put OI Change
@@ -591,7 +642,7 @@ class DashboardService:
             )
 
         # ======================================
-        # RAW RESISTANCE STRENGTH
+        # RESISTANCE STRENGTH
         #
         # 70% Total Call OI
         # 30% Call OI Change
@@ -634,7 +685,7 @@ class DashboardService:
         )
 
         # ======================================
-        # BUILD SUPPORT DETAIL
+        # BUILD SUPPORT
         # ======================================
 
         def build_support(
@@ -694,7 +745,7 @@ class DashboardService:
             )
 
         # ======================================
-        # BUILD RESISTANCE DETAIL
+        # BUILD RESISTANCE
         # ======================================
 
         def build_resistance(
@@ -831,17 +882,13 @@ class DashboardService:
 
             resistance_1=(
                 build_resistance(
-                    strongest_resistances[
-                        0
-                    ]
+                    strongest_resistances[0]
                 )
             ),
 
             resistance_2=(
                 build_resistance(
-                    strongest_resistances[
-                        1
-                    ]
+                    strongest_resistances[1]
                 )
             ),
 
