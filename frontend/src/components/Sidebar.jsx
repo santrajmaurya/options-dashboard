@@ -32,27 +32,24 @@ const menu = [
 
 export default function Sidebar() {
   function MiniTrend({ index }) {
-  const patterns = [
-    [25, 38, 32, 55, 48, 70, 65, 82],
-    [22, 30, 28, 45, 42, 60, 58, 75],
-    [20, 27, 40, 35, 52, 48, 65, 72],
-    [20, 45, 32, 55, 40, 70, 48, 60],
-    [25, 35, 30, 50, 45, 58, 62, 78],
-  ];
+    const patterns = [
+      [25, 38, 32, 55, 48, 70, 65, 82],
+      [22, 30, 28, 45, 42, 60, 58, 75],
+      [20, 27, 40, 35, 52, 48, 65, 72],
+      [20, 45, 32, 55, 40, 70, 48, 60],
+      [25, 35, 30, 50, 45, 58, 62, 78],
+    ];
 
-  const values = patterns[index % patterns.length];
+    const values = patterns[index % patterns.length];
 
-  return (
-    <div className="watch-mini-chart">
-      {values.map((height, i) => (
-        <i
-          key={i}
-          style={{ height: `${height}%` }}
-        />
-      ))}
-    </div>
-  );
-}
+    return (
+      <div className="watch-mini-chart">
+        {values.map((height, i) => (
+          <i key={i} style={{ height: `${height}%` }} />
+        ))}
+      </div>
+    );
+  }
   return (
     <aside className="sidebar">
       <div className="logo">
@@ -82,26 +79,26 @@ export default function Sidebar() {
           <Pencil size={14} />
         </div>
 
-       {watchlist.map((item, index) => (
-  <div className="watch-row" key={item.name}>
-    <div className="watch-left">
-      <div className="watch-symbol">
-        <span className="market-dot" />
-        <strong>{item.name}</strong>
-      </div>
+        {watchlist.map((item, index) => (
+          <div className="watch-row" key={item.name}>
+            <div className="watch-left">
+              <div className="watch-symbol">
+                <span className="market-dot" />
+                <strong>{item.name}</strong>
+              </div>
 
-      <MiniTrend index={index} />
-    </div>
+              <MiniTrend index={index} />
+            </div>
 
-    <div className="watch-price">
-      <strong>{item.value}</strong>
+            <div className="watch-price">
+              <strong>{item.value}</strong>
 
-      <small>
-        {item.points} ({item.change})
-      </small>
-    </div>
-  </div>
-))}
+              <small>
+                {item.points} ({item.change})
+              </small>
+            </div>
+          </div>
+        ))}
       </div>
     </aside>
   );

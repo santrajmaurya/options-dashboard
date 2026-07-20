@@ -5,55 +5,43 @@ export default function SectorStrength({ data = [] }) {
 
   return (
     <Card title="SECTOR STRENGTH" className="sector-card">
-      {sectors.length > 0 ? (
+      {sectors.length === 0 ? (
+        <div className="sector-empty">No live sector data available</div>
+      ) : (
         <table className="data-table">
           <thead>
             <tr>
               <th>SECTOR</th>
-
               <th>1D % CHG</th>
-
               <th>TREND</th>
             </tr>
           </thead>
 
           <tbody>
             {sectors.map((sector) => {
-              const change = Number(sector.change_percent);
-
-              const isPositive = Number.isFinite(change) && change >= 0;
-
-              const trend = sector.trend ?? (isPositive ? "UP" : "DOWN");
+              const changePercent = Number(sector.change_percent ?? 0);
+              const isPositive = changePercent >= 0;
+              const direction =
+                sector.direction ?? (isPositive ? "UP" : "DOWN");
 
               return (
-                <tr key={sector.name}>
+                <tr key={sector.instrument_key ?? sector.name}>
                   <td>{sector.name}</td>
 
                   <td className={isPositive ? "green" : "red"}>
-                    {formatChange(change)}
+                    {isPositive ? "+" : ""}
+                    {changePercent.toFixed(2)}%
                   </td>
 
                   <td className={`direction ${isPositive ? "green" : "red"}`}>
-                    {trend}
+                    {direction}
                   </td>
                 </tr>
               );
             })}
           </tbody>
         </table>
-      ) : (
-        <div className="sector-empty">Sector data not available.</div>
       )}
     </Card>
   );
-}
-
-function formatChange(value) {
-  const number = Number(value);
-
-  if (!Number.isFinite(number)) {
-    return "--";
-  }
-
-  return `${number > 0 ? "+" : ""}${number.toFixed(2)}%`;
 }

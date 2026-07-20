@@ -8,99 +8,80 @@ load_dotenv()
 
 class Settings:
 
-    # ==========================================
-    # APPLICATION
-    # ==========================================
-
     APP_NAME = os.getenv(
         "APP_NAME",
         "Nifty Option Selling Dashboard API",
     )
-
-    APP_ENV = os.getenv(
-        "APP_ENV",
-        "development",
-    )
-
-    DEBUG = (
-        os.getenv(
-            "DEBUG",
-            "true",
-        ).lower()
-        == "true"
-    )
-
-    HOST = os.getenv(
-        "HOST",
-        "0.0.0.0",
-    )
-
-    PORT = int(
-        os.getenv(
-            "PORT",
-            "8000",
-        )
-    )
-
+    APP_ENV = os.getenv("APP_ENV", "development")
+    DEBUG = os.getenv("DEBUG", "true").lower() == "true"
+    HOST = os.getenv("HOST", "0.0.0.0")
+    PORT = int(os.getenv("PORT", "8000"))
     FRONTEND_URL = os.getenv(
         "FRONTEND_URL",
         "http://localhost:5173",
     )
-
-    # ==========================================
-    # MARKET DATA PROVIDER
-    # ==========================================
 
     MARKET_DATA_PROVIDER = os.getenv(
         "MARKET_DATA_PROVIDER",
         "mock",
     ).lower()
 
-    # ==========================================
-    # UPSTOX
-    # ==========================================
-
-    UPSTOX_ACCESS_TOKEN = os.getenv(
-        "UPSTOX_ACCESS_TOKEN",
-        "",
-    )
-
-    UPSTOX_API_KEY = os.getenv(
-        "UPSTOX_API_KEY",
-        "",
-    )
-
-    UPSTOX_API_SECRET = os.getenv(
-        "UPSTOX_API_SECRET",
-        "",
-    )
-
+    UPSTOX_ACCESS_TOKEN = os.getenv("UPSTOX_ACCESS_TOKEN", "")
+    UPSTOX_API_KEY = os.getenv("UPSTOX_API_KEY", "")
+    UPSTOX_API_SECRET = os.getenv("UPSTOX_API_SECRET", "")
     UPSTOX_REDIRECT_URI = os.getenv(
         "UPSTOX_REDIRECT_URI",
-        (
-            "http://localhost:8000/"
-            "api/auth/upstox/callback"
-        ),
+        "http://localhost:8000/api/auth/upstox/callback",
     )
-
     UPSTOX_API_BASE_URL = os.getenv(
         "UPSTOX_API_BASE_URL",
         "https://api.upstox.com",
     )
 
-    # ==========================================
-    # INSTRUMENT KEYS
-    # ==========================================
-
     UPSTOX_NIFTY_INSTRUMENT_KEY = os.getenv(
         "UPSTOX_NIFTY_INSTRUMENT_KEY",
         "NSE_INDEX|Nifty 50",
     )
-
     UPSTOX_VIX_INSTRUMENT_KEY = os.getenv(
         "UPSTOX_VIX_INSTRUMENT_KEY",
         "NSE_INDEX|India VIX",
     )
+
+    # Override these in .env if the exact Upstox instrument names differ.
+    UPSTOX_SECTOR_INSTRUMENTS = {
+        "NIFTY BANK": os.getenv(
+            "UPSTOX_NIFTY_BANK_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Bank",
+        ),
+        "NIFTY IT": os.getenv(
+            "UPSTOX_NIFTY_IT_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty IT",
+        ),
+        "NIFTY AUTO": os.getenv(
+            "UPSTOX_NIFTY_AUTO_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Auto",
+        ),
+        "NIFTY FMCG": os.getenv(
+            "UPSTOX_NIFTY_FMCG_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty FMCG",
+        ),
+        "NIFTY PHARMA": os.getenv(
+            "UPSTOX_NIFTY_PHARMA_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Pharma",
+        ),
+        "NIFTY METAL": os.getenv(
+            "UPSTOX_NIFTY_METAL_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Metal",
+        ),
+        "NIFTY REALTY": os.getenv(
+            "UPSTOX_NIFTY_REALTY_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Realty",
+        ),
+        "NIFTY ENERGY": os.getenv(
+            "UPSTOX_NIFTY_ENERGY_INSTRUMENT_KEY",
+            "NSE_INDEX|Nifty Energy",
+        ),
+    }
 
 
 settings = Settings()
