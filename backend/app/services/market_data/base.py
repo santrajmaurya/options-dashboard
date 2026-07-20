@@ -4,7 +4,6 @@ from dataclasses import dataclass
 
 @dataclass
 class IndexSnapshot:
-
     ltp: float
 
     open: float
@@ -19,13 +18,28 @@ class IndexSnapshot:
 
 @dataclass
 class VixSnapshot:
-
     value: float
 
     previous: float
 
     change: float
     change_percent: float
+
+
+@dataclass
+class MarketCandle:
+    timestamp: str
+
+    open: float
+    high: float
+    low: float
+    close: float
+
+    volume: float = 0
+
+    open_interest: float = 0
+
+    vwap: float | None = None
 
 
 class MarketDataProvider(ABC):
@@ -40,4 +54,10 @@ class MarketDataProvider(ABC):
     def get_vix_snapshot(
         self,
     ) -> VixSnapshot:
+        raise NotImplementedError
+
+    @abstractmethod
+    def get_nifty_candles(
+        self,
+    ) -> list[MarketCandle]:
         raise NotImplementedError

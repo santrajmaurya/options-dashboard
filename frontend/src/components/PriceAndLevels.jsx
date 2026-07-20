@@ -1,20 +1,17 @@
 import Card from "./Card";
 import NiftyCandlestickChart from "./NiftyCandlestickChart";
 
-export default function PriceAndLevels({ nifty, levels }) {
+export default function PriceAndLevels({ nifty, levels, candles = [] }) {
   const market = nifty ?? {};
   const levelData = levels ?? {};
 
   const currentPrice = Number(market.ltp ?? 0);
-
   const vwap = Number(levelData.vwap ?? 0);
 
   const support1 = levelData.support_1;
-
   const support2 = levelData.support_2;
 
   const resistance1 = levelData.resistance_1;
-
   const resistance2 = levelData.resistance_2;
 
   const priceLevels = [
@@ -79,7 +76,7 @@ export default function PriceAndLevels({ nifty, levels }) {
         <div className="chart-area">
           <div className="chart-label">5m CHART WITH VWAP</div>
 
-          <NiftyCandlestickChart />
+          <NiftyCandlestickChart candles={candles} />
         </div>
       </div>
     </Card>

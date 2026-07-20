@@ -6,6 +6,7 @@ from app.market.models import (
     MarketStatus,
     NiftyData,
     VixData,
+    CandleData,
     MarketRegime,
     RegimeComponent,
     TrendData,
@@ -51,12 +52,36 @@ class DashboardService:
             provider.get_vix_snapshot()
         )
 
+        market_candles = (
+            provider.get_nifty_candles()
+        )
+
+        candles = [
+            CandleData(
+                timestamp=candle.timestamp,
+                open=candle.open,
+                high=candle.high,
+                low=candle.low,
+                close=candle.close,
+                volume=candle.volume,
+                open_interest=candle.open_interest,
+                vwap=candle.vwap,
+            )
+            for candle in market_candles
+        ]
+
         # ==========================================
         # SHARED MARKET VALUES
         # ==========================================
 
         nifty_ltp = (
             nifty_snapshot.ltp
+        )
+
+        current_vwap = (
+            candles[-1].vwap
+            if candles and candles[-1].vwap is not None
+            else nifty_ltp
         )
 
         # ==========================================
@@ -75,6 +100,7 @@ class DashboardService:
             self._get_dynamic_levels(
                 option_chain=option_chain,
                 current_price=nifty_ltp,
+                vwap=current_vwap,
             )
         )
 
@@ -147,6 +173,12 @@ class DashboardService:
                     .change_percent
                 ),
             ),
+
+            # ==============================
+            # NIFTY 5-MINUTE CANDLES
+            # ==============================
+
+            candles=candles,
 
             # ==============================
             # MARKET REGIME
@@ -606,6 +638,7 @@ class DashboardService:
         self,
         option_chain: OptionChainSummary,
         current_price: float,
+        vwap: float,
     ) -> LevelsData:
 
         strikes = option_chain.strikes
@@ -892,10 +925,10 @@ class DashboardService:
                 )
             ),
 
-            # Temporary static VWAP.
-            # Replace with candle-based
-            # calculation later.
-            vwap=25084.50,
+            vwap=round(
+                vwap,
+                2,
+            ),
         )
 
 

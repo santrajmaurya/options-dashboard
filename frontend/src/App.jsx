@@ -169,6 +169,7 @@ export default function App() {
           <PriceAndLevels
             nifty={dashboardData?.nifty}
             levels={dashboardData?.levels}
+            candles={dashboardData?.candles ?? []}
           />
 
           <FuturesOI data={dashboardData?.futures} />

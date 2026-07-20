@@ -1,70 +1,91 @@
 import { useEffect, useRef } from "react";
-import { createChart, CandlestickSeries, LineSeries } from "lightweight-charts";
+import { CandlestickSeries, createChart, LineSeries } from "lightweight-charts";
 
-const toTimestamp = (dateTime) =>
-  Math.floor(new Date(dateTime).getTime() / 1000);
+// ==========================================
+// TIMESTAMP NORMALIZER
+// ==========================================
 
-const candles = [
-  { time: toTimestamp("2024-05-23T09:15:00+05:30"), open: 25020, high: 25035, low: 24995, close: 25010 },
-  { time: toTimestamp("2024-05-23T09:20:00+05:30"), open: 25010, high: 25018, low: 24970, close: 24982 },
-  { time: toTimestamp("2024-05-23T09:25:00+05:30"), open: 24982, high: 25015, low: 24972, close: 25008 },
-  { time: toTimestamp("2024-05-23T09:30:00+05:30"), open: 25008, high: 25042, low: 24998, close: 25035 },
-  { time: toTimestamp("2024-05-23T09:35:00+05:30"), open: 25035, high: 25075, low: 25025, close: 25065 },
-  { time: toTimestamp("2024-05-23T09:40:00+05:30"), open: 25065, high: 25078, low: 25038, close: 25045 },
-  { time: toTimestamp("2024-05-23T09:45:00+05:30"), open: 25045, high: 25082, low: 25040, close: 25075 },
-  { time: toTimestamp("2024-05-23T09:50:00+05:30"), open: 25075, high: 25095, low: 25058, close: 25088 },
-  { time: toTimestamp("2024-05-23T09:55:00+05:30"), open: 25088, high: 25102, low: 25062, close: 25070 },
-  { time: toTimestamp("2024-05-23T10:00:00+05:30"), open: 25070, high: 25110, low: 25065, close: 25102 },
-  { time: toTimestamp("2024-05-23T10:05:00+05:30"), open: 25102, high: 25122, low: 25090, close: 25115 },
-  { time: toTimestamp("2024-05-23T10:10:00+05:30"), open: 25115, high: 25128, low: 25098, close: 25105 },
-  { time: toTimestamp("2024-05-23T10:15:00+05:30"), open: 25105, high: 25135, low: 25100, close: 25128 },
-  { time: toTimestamp("2024-05-23T10:20:00+05:30"), open: 25128, high: 25142, low: 25115, close: 25135 },
-  { time: toTimestamp("2024-05-23T10:25:00+05:30"), open: 25135, high: 25140, low: 25118, close: 25125 },
-  { time: toTimestamp("2024-05-23T10:30:00+05:30"), open: 25125, high: 25152, low: 25120, close: 25145 },
-  { time: toTimestamp("2024-05-23T10:35:00+05:30"), open: 25145, high: 25160, low: 25132, close: 25152 },
-];
+const toChartTimestamp = (value) => {
+  if (typeof value === "number") {
+    return value;
+  }
 
-const vwap = candles.map((c, index) => ({
-  time: c.time,
-  value: 25010 + index * 3.05,
-}));
+  const timestamp = new Date(value).getTime();
 
-export default function NiftyCandlestickChart() {
+  if (Number.isNaN(timestamp)) {
+    return null;
+  }
+
+  return Math.floor(timestamp / 1000);
+};
+
+// ==========================================
+// NIFTY CANDLESTICK CHART
+// ==========================================
+
+export default function NiftyCandlestickChart({ candles = [] }) {
   const containerRef = useRef(null);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const container = containerRef.current;
 
-    const chart = createChart(containerRef.current, {
-      width: containerRef.current.clientWidth,
+    if (!container) {
+      return undefined;
+    }
+
+    // ======================================
+    // CREATE CHART
+    // ======================================
+
+    const chart = createChart(container, {
+      width: container.clientWidth,
       height: 230,
+
       layout: {
-        background: { color: "#091929" },
+        background: {
+          color: "#091929",
+        },
         textColor: "#8295aa",
       },
+
       grid: {
-        vertLines: { color: "#14283a" },
-        horzLines: { color: "#14283a" },
+        vertLines: {
+          color: "#14283a",
+        },
+        horzLines: {
+          color: "#14283a",
+        },
       },
+
       rightPriceScale: {
         borderColor: "#203449",
       },
+
       timeScale: {
         borderColor: "#203449",
         timeVisible: true,
+        secondsVisible: false,
       },
     });
+
+    // ======================================
+    // CANDLE SERIES
+    // ======================================
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
       upColor: "#23d77c",
       downColor: "#ff525b",
+
       borderUpColor: "#23d77c",
       borderDownColor: "#ff525b",
+
       wickUpColor: "#23d77c",
       wickDownColor: "#ff525b",
     });
 
-    candleSeries.setData(candles);
+    // ======================================
+    // VWAP SERIES
+    // ======================================
 
     const vwapSeries = chart.addSeries(LineSeries, {
       color: "#f4c936",
@@ -72,25 +93,139 @@ export default function NiftyCandlestickChart() {
       title: "VWAP",
     });
 
-    vwapSeries.setData(vwap);
+    // ======================================
+    // NORMALIZE API CANDLE DATA
+    // ======================================
 
-    chart.timeScale().fitContent();
+    const normalizedCandles = candles
+      .map((candle) => {
+        const time = toChartTimestamp(candle.timestamp ?? candle.time);
+
+        if (time === null) {
+          return null;
+        }
+
+        return {
+          time,
+
+          open: Number(candle.open),
+          high: Number(candle.high),
+          low: Number(candle.low),
+          close: Number(candle.close),
+
+          vwap:
+            candle.vwap !== undefined && candle.vwap !== null
+              ? Number(candle.vwap)
+              : null,
+        };
+      })
+      .filter(
+        (candle) =>
+          candle !== null &&
+          Number.isFinite(candle.open) &&
+          Number.isFinite(candle.high) &&
+          Number.isFinite(candle.low) &&
+          Number.isFinite(candle.close)
+      );
+
+    // ======================================
+    // REMOVE DUPLICATE TIMESTAMPS
+    //
+    // Lightweight Charts requires each
+    // series to contain unique timestamps.
+    // If duplicate candles exist, the last
+    // candle for that timestamp is retained.
+    // ======================================
+
+    const uniqueCandles = Array.from(
+      new Map(normalizedCandles.map((candle) => [candle.time, candle])).values()
+    ).sort((a, b) => a.time - b.time);
+
+    // ======================================
+    // SET CANDLE DATA
+    // ======================================
+
+    candleSeries.setData(
+      uniqueCandles.map((candle) => ({
+        time: candle.time,
+
+        open: candle.open,
+        high: candle.high,
+        low: candle.low,
+        close: candle.close,
+      }))
+    );
+
+    // ======================================
+    // SET VWAP DATA
+    // ======================================
+
+    const vwapData = uniqueCandles
+      .filter((candle) => Number.isFinite(candle.vwap))
+      .map((candle) => ({
+        time: candle.time,
+        value: candle.vwap,
+      }));
+
+    if (vwapData.length > 0) {
+      vwapSeries.setData(vwapData);
+    }
+
+    // ======================================
+    // FIT CHART TO AVAILABLE DATA
+    // ======================================
+
+    if (uniqueCandles.length > 0) {
+      chart.timeScale().fitContent();
+    }
+
+    // ======================================
+    // RESPONSIVE RESIZE
+    // ======================================
 
     const resizeObserver = new ResizeObserver(() => {
-      if (containerRef.current) {
-        chart.applyOptions({
-          width: containerRef.current.clientWidth,
-        });
+      if (!containerRef.current) {
+        return;
       }
+
+      chart.applyOptions({
+        width: containerRef.current.clientWidth,
+      });
     });
 
-    resizeObserver.observe(containerRef.current);
+    resizeObserver.observe(container);
+
+    // ======================================
+    // CLEANUP
+    // ======================================
 
     return () => {
       resizeObserver.disconnect();
+
       chart.remove();
     };
-  }, []);
+  }, [candles]);
+
+  // ==========================================
+  // EMPTY STATE
+  // ==========================================
+
+  if (!candles.length) {
+    return (
+      <div
+        className="
+          candlestick-chart
+          candlestick-chart-empty
+        "
+      >
+        No candle data available
+      </div>
+    );
+  }
+
+  // ==========================================
+  // CHART CONTAINER
+  // ==========================================
 
   return <div ref={containerRef} className="candlestick-chart" />;
 }
