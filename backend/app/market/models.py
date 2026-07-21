@@ -62,10 +62,10 @@ class TrendData(BaseModel):
 
 
 class FuturesData(BaseModel):
-    price: float
-    basis: float
-    oi: int
-    oi_change_percent: float
+    price: float | None
+    basis: float | None
+    oi: int | None
+    oi_change_percent: float | None
     signal: str
 
 
@@ -83,8 +83,8 @@ class OptionChainSummary(BaseModel):
     max_put_oi_strike: float
     max_call_oi: int
     max_put_oi: int
-    pcr_oi: float
-    pcr_volume: float
+    pcr_oi: float | None
+    pcr_volume: float | None
     strikes: list[OptionChainStrike] = Field(
         default_factory=list
     )
@@ -108,9 +108,9 @@ class LevelsData(BaseModel):
 
 
 class VolatilityData(BaseModel):
-    atm_iv: float
-    iv_percentile: float
-    iv_rank: float
+    atm_iv: float | None
+    iv_percentile: float | None
+    iv_rank: float | None
     regime: str
 
 
