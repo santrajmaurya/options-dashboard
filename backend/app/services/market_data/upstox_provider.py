@@ -1,4 +1,8 @@
 from urllib.parse import quote
+import json
+import gzip
+from pathlib import Path
+from datetime import date
 
 import requests
 
@@ -287,9 +291,26 @@ class UpstoxMarketDataProvider(MarketDataProvider):
         oi = int(self._to_float(q.get("oi")))
         day_high = self._to_float(q.get("oi_day_high"))
         day_low = self._to_float(q.get("oi_day_low"))
-        # Full quote does not expose previous-day OI. Use intraday OI range as a
-        # conservative momentum proxy; never fabricate a percentage change.
-        return {"instrument_key": key, "price": price, "oi": oi, "oi_day_high": day_high, "oi_day_low": day_low}
+        # Track a genuine observed OI baseline locally. The first observation has
+        # no change; subsequent refreshes compare against the last observed OI.
+        state_path = Path(settings.FUTURES_OI_STATE_FILE)
+        try:
+            state = json.loads(state_path.read_text())
+        except Exception:
+            state = {}
+        previous_oi = self._to_float(state.get(key, {}).get("oi")) or None
+        oi_change_percent = (
+            ((oi - previous_oi) / previous_oi) * 100
+            if previous_oi and oi else None
+        )
+        try:
+            state[key] = {"oi": oi, "price": price}
+            state_path.write_text(json.dumps(state))
+        except Exception:
+            pass
+        return {"instrument_key": key, "price": price, "oi": oi,
+                "oi_day_high": day_high, "oi_day_low": day_low,
+                "oi_change_percent": round(oi_change_percent, 4) if oi_change_percent is not None else None}
 
     def _find_nearest_nifty_future_key(self) -> str | None:
         url = f"{self.base_url}/v2/instruments/search"
@@ -304,8 +325,8 @@ class UpstoxMarketDataProvider(MarketDataProvider):
             return None
 
     def get_breadth_snapshot(self) -> dict | None:
-        """Calculate breadth from configured NIFTY constituent instrument keys."""
-        keys = settings.UPSTOX_BREADTH_INSTRUMENT_KEYS
+        """Calculate NIFTY 50 breadth from configured keys or auto-resolved NSE EQ keys."""
+        keys = settings.UPSTOX_BREADTH_INSTRUMENT_KEYS or self._resolve_nifty50_keys()
         if not keys:
             return None
         quotes = self._get_quotes(keys)
@@ -321,7 +342,41 @@ class UpstoxMarketDataProvider(MarketDataProvider):
         total = advances + declines + unchanged
         if not total:
             return None
-        return {"advances": advances, "declines": declines, "unchanged": unchanged, "advance_decline_ratio": round(advances / declines, 2) if declines else float(advances), "new_52_week_high": 0, "new_52_week_low": 0, "stocks_above_200_dma": 0.0}
+        return {"advances": advances, "declines": declines, "unchanged": unchanged,
+                "advance_decline_ratio": round(advances / declines, 2) if declines else float(advances),
+                "new_52_week_high": 0, "new_52_week_low": 0, "stocks_above_200_dma": 0.0}
+
+    def _resolve_nifty50_keys(self) -> list[str]:
+        # Constituents are symbols; instrument keys are resolved from Upstox's
+        # official NSE instrument master and cached in-process.
+        if hasattr(self, "_breadth_keys_cache"):
+            return self._breadth_keys_cache
+        symbols = {
+            "ADANIENT","ADANIPORTS","APOLLOHOSP","ASIANPAINT","AXISBANK",
+            "BAJAJ-AUTO","BAJFINANCE","BAJAJFINSV","BEL","BHARTIARTL",
+            "CIPLA","COALINDIA","DRREDDY","EICHERMOT","ETERNAL",
+            "GRASIM","HCLTECH","HDFCBANK","HDFCLIFE","HEROMOTOCO",
+            "HINDALCO","HINDUNILVR","ICICIBANK","INDUSINDBK","INFY",
+            "ITC","JIOFIN","JSWSTEEL","KOTAKBANK","LT","M&M",
+            "MARUTI","NESTLEIND","NTPC","ONGC","POWERGRID","RELIANCE",
+            "SBILIFE","SBIN","SHRIRAMFIN","SUNPHARMA","TATACONSUM",
+            "TATAMOTORS","TATASTEEL","TCS","TECHM","TITAN","TRENT",
+            "ULTRACEMCO","WIPRO"
+        }
+        try:
+            r = self.session.get("https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz", timeout=20)
+            r.raise_for_status()
+            rows = json.loads(gzip.decompress(r.content).decode("utf-8"))
+            keys = []
+            for x in rows:
+                sym = str(x.get("trading_symbol") or x.get("tradingsymbol") or "").upper()
+                if sym in symbols and str(x.get("instrument_type", "")).upper() in {"EQ", "EQUITY"}:
+                    key = x.get("instrument_key")
+                    if key: keys.append(key)
+            self._breadth_keys_cache = list(dict.fromkeys(keys))
+        except Exception:
+            self._breadth_keys_cache = []
+        return self._breadth_keys_cache
 
     def _get_quote(
         self,
