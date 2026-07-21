@@ -276,6 +276,53 @@ class UpstoxMarketDataProvider(MarketDataProvider):
             })
         return rows
 
+
+    def get_nifty_futures_snapshot(self) -> dict | None:
+        """Return nearest-expiry NIFTY future quote and OI."""
+        key = settings.UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY or self._find_nearest_nifty_future_key()
+        if not key:
+            return None
+        q = self._get_quote(key)
+        price = self._to_float(q.get("last_price"))
+        oi = int(self._to_float(q.get("oi")))
+        day_high = self._to_float(q.get("oi_day_high"))
+        day_low = self._to_float(q.get("oi_day_low"))
+        # Full quote does not expose previous-day OI. Use intraday OI range as a
+        # conservative momentum proxy; never fabricate a percentage change.
+        return {"instrument_key": key, "price": price, "oi": oi, "oi_day_high": day_high, "oi_day_low": day_low}
+
+    def _find_nearest_nifty_future_key(self) -> str | None:
+        url = f"{self.base_url}/v2/instruments/search"
+        try:
+            response = self.session.get(url, params={"query": "NIFTY", "segment": "FO", "instrument_type": "FUT", "page_size": 50}, timeout=10)
+            response.raise_for_status()
+            rows = response.json().get("data", [])
+            rows = [x for x in rows if x.get("instrument_type") == "FUT" and str(x.get("underlying_symbol", "")).upper() == "NIFTY"]
+            rows.sort(key=lambda x: str(x.get("expiry", "9999-12-31")))
+            return rows[0].get("instrument_key") if rows else None
+        except Exception:
+            return None
+
+    def get_breadth_snapshot(self) -> dict | None:
+        """Calculate breadth from configured NIFTY constituent instrument keys."""
+        keys = settings.UPSTOX_BREADTH_INSTRUMENT_KEYS
+        if not keys:
+            return None
+        quotes = self._get_quotes(keys)
+        advances = declines = unchanged = 0
+        for key in keys:
+            q = self._find_quote(quotes, key)
+            if not q:
+                continue
+            ch = self._to_float(q.get("net_change"))
+            if ch > 0: advances += 1
+            elif ch < 0: declines += 1
+            else: unchanged += 1
+        total = advances + declines + unchanged
+        if not total:
+            return None
+        return {"advances": advances, "declines": declines, "unchanged": unchanged, "advance_decline_ratio": round(advances / declines, 2) if declines else float(advances), "new_52_week_high": 0, "new_52_week_low": 0, "stocks_above_200_dma": 0.0}
+
     def _get_quote(
         self,
         instrument_key: str,
