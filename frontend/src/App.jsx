@@ -18,6 +18,7 @@ import RiskEvents from "./components/RiskEvents";
 
 import { fetchDashboard } from "./services/dashboardApi";
 import { connectDashboardSocket } from "./services/dashboardSocket";
+import { mergeDashboardUpdate } from "./services/mergeDashboardUpdate";
 
 import "./App.css";
 
@@ -96,8 +97,8 @@ export default function App() {
 
   useEffect(() => {
     const disconnect = connectDashboardSocket({
-      onData: (data) => {
-        setDashboardData(data);
+      onData: (update) => {
+        setDashboardData((current) => mergeDashboardUpdate(current, update));
         setError(null);
       },
       onError: (err) => {
