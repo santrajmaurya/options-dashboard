@@ -5,6 +5,7 @@ export default function Topbar({
   data,
   autoRefresh = true,
   refreshInterval = 300,
+  socketStatus = "connecting",
 }) {
   const [countdown, setCountdown] = useState(refreshInterval);
   const [currentTime, setCurrentTime] = useState(() => new Date());
@@ -26,7 +27,10 @@ export default function Topbar({
   const previousClose = nifty.previous_close ?? 0;
 
   const timestamp = market.timestamp ?? null;
-  const rawMarketStatus = market.status ?? "UNKNOWN";
+  const rawMarketStatus = market.market_status ?? market.status ?? "UNKNOWN";
+  const feedState = String(
+    market.feed_state ?? socketStatus ?? "CONNECTING"
+  ).toUpperCase();
 
   // --------------------------------------------------
   // DERIVED VALUES
@@ -257,6 +261,10 @@ export default function Topbar({
           <i />
 
           {marketStatusLabel}
+          <small style={{ display: "block", marginTop: 4 }}>
+            FEED: {feedState}
+            {market.simulated ? " (SIM)" : ""}
+          </small>
         </strong>
       </div>
 

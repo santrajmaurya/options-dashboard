@@ -3,7 +3,8 @@ import json
 import logging
 import uuid
 from collections.abc import Awaitable, Callable
-from datetime import datetime, timezone
+from datetime import datetime, timezone, time
+from zoneinfo import ZoneInfo
 from typing import Any
 
 import requests
@@ -35,6 +36,9 @@ class UpstoxMarketStream:
 
         self.on_update = on_update
         self._stop_event = asyncio.Event()
+        self.feed_state = "CONNECTING"
+        self.last_tick_at = None
+        self._simulated_ltp = 24238.50
 
         self.instrument_keys = self._build_instrument_keys()
         self.sector_key_to_name = {
@@ -56,6 +60,11 @@ class UpstoxMarketStream:
     async def run_forever(self):
         retry_seconds = settings.UPSTOX_STREAM_RECONNECT_SECONDS
 
+        if settings.UPSTOX_STREAM_SIMULATION:
+            logger.warning("[UPSTOX] SIMULATION MODE enabled; no live Upstox connection will be used")
+            await self._run_simulation()
+            return
+
         logger.info(
             "[UPSTOX] Starting Market Data Feed V3 for %s instruments",
             len(self.instrument_keys),
@@ -68,6 +77,8 @@ class UpstoxMarketStream:
                     self._get_authorized_websocket_url
                 )
 
+                self.feed_state = "CONNECTING"
+                await self._emit_feed_state()
                 logger.info("[UPSTOX] Authorization successful")
                 logger.info(
                     "[UPSTOX] Connecting to Market Data Feed V3 for %s instruments",
@@ -81,6 +92,8 @@ class UpstoxMarketStream:
                     close_timeout=10,
                     max_size=None,
                 ) as websocket:
+                    self.feed_state = "LIVE"
+                    await self._emit_feed_state()
                     logger.info("[UPSTOX] WebSocket connected")
                     await self._subscribe(websocket)
                     logger.info("[UPSTOX] Subscription sent")
@@ -100,11 +113,17 @@ class UpstoxMarketStream:
                         patch = self._decode_message(bytes(message))
 
                         if patch:
+                            self.last_tick_at = datetime.now(timezone.utc)
+                            patch.setdefault("market", {})["feed_state"] = "LIVE"
+                            patch["market"]["market_status"] = self._market_status()
+                            patch["market"]["last_tick_at"] = self.last_tick_at.isoformat()
                             await self.on_update(patch)
 
             except asyncio.CancelledError:
                 raise
             except Exception:
+                self.feed_state = "DISCONNECTED"
+                await self._emit_feed_state()
                 logger.exception(
                     "Upstox V3 stream disconnected; reconnecting in %s seconds",
                     retry_seconds,
@@ -119,6 +138,82 @@ class UpstoxMarketStream:
                     pass
 
                 retry_seconds = min(retry_seconds * 2, 30)
+
+    @staticmethod
+    def _market_status() -> str:
+        """Return the current NSE market status using IST."""
+        now = datetime.now(ZoneInfo("Asia/Kolkata"))
+
+        if now.weekday() >= 5:
+            return "MARKET CLOSED"
+
+        current_time = now.time()
+
+        if time(9, 0) <= current_time < time(9, 15):
+            return "PRE-MARKET"
+
+        if time(9, 15) <= current_time <= time(15, 30):
+            return "MARKET OPEN"
+
+        return "MARKET CLOSED"
+
+    async def _emit_feed_state(self):
+        await self.on_update(
+            {
+                "type": "market_update",
+                "market": {
+                    "feed_state": self.feed_state,
+                    "market_status": self._market_status(),
+                    "last_tick_at": (
+                        self.last_tick_at.isoformat()
+                        if self.last_tick_at
+                        else None
+                    ),
+                },
+            }
+        )
+
+    async def _run_simulation(self):
+        self.feed_state = "LIVE"
+        await self._emit_feed_state()
+
+        direction = 1
+
+        while not self._stop_event.is_set():
+            self._simulated_ltp += direction * 1.25
+
+            if abs(self._simulated_ltp - 24238.50) >= 10:
+                direction *= -1
+
+            self.last_tick_at = datetime.now(timezone.utc)
+            previous_close = 24334.30
+            change = self._simulated_ltp - previous_close
+
+            await self.on_update(
+                {
+                    "type": "market_update",
+                    "market": {
+                        "timestamp": self.last_tick_at.isoformat(),
+                        "last_tick_at": self.last_tick_at.isoformat(),
+                        "feed_state": "LIVE",
+                        "market_status": self._market_status(),
+                        "simulated": True,
+                    },
+                    "nifty": {
+                        "ltp": round(self._simulated_ltp, 2),
+                        "previous_close": previous_close,
+                        "change": round(change, 2),
+                        "change_percent": round(
+                            (change / previous_close) * 100,
+                            2,
+                        ),
+                    },
+                }
+            )
+
+            await asyncio.sleep(
+                settings.UPSTOX_STREAM_SIMULATION_INTERVAL_SECONDS
+            )
 
     async def stop(self):
         self._stop_event.set()

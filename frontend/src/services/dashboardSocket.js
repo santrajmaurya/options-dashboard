@@ -27,6 +27,10 @@ export function connectDashboardSocket({ onData, onError, onStatusChange }) {
       try {
         const payload = JSON.parse(event.data);
 
+        if (payload?.type === "ping" || payload?.type === "connected") {
+          return;
+        }
+
         if (payload?.type === "error") {
           onError?.(new Error(payload.message));
           return;
@@ -60,7 +64,11 @@ export function connectDashboardSocket({ onData, onError, onStatusChange }) {
       window.clearTimeout(reconnectTimer);
     }
 
-    if (socket) {
+    if (
+      socket &&
+      (socket.readyState === WebSocket.OPEN ||
+        socket.readyState === WebSocket.CONNECTING)
+    ) {
       socket.close();
     }
   };
