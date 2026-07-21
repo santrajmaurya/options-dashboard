@@ -1,0 +1,203 @@
+/* =========================================================
+   SUPPORT & RESISTANCE
+   ========================================================= */
+
+.sr-columns {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  gap: 20px;
+}
+
+.sr-columns h4 {
+  margin: 0 0 10px;
+
+  text-align: center;
+
+  font-size: 12px;
+}
+
+.sr-row {
+  margin: 12px 0;
+
+  display: grid;
+
+  grid-template-columns:
+    55px
+    minmax(60px, 1fr)
+    50px;
+
+  gap: 7px;
+
+  align-items: center;
+
+  font-size: 10.5px;
+}
+
+.segmented-bar {
+  display: flex;
+
+  gap: 2px;
+}
+
+.segment {
+  flex: 1;
+
+  height: 11px;
+
+  background: #132638;
+}
+
+.support-active {
+  background: #22c871;
+}
+
+.resistance-active {
+  background: #f04d55;
+}
+
+.price-location {
+  margin-top: 16px;
+  padding-top: 12px;
+
+  border-top: 1px solid var(--border);
+}
+
+.price-location-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  font-size: 9px;
+}
+
+.location-line {
+  margin-top: 10px;
+
+  display: grid;
+
+  grid-template-columns:
+    45px
+    1fr
+    45px;
+
+  align-items: center;
+
+  font-size: 9px;
+}
+
+.location-line div {
+  position: relative;
+
+  height: 2px;
+
+  background: linear-gradient(
+    to right,
+    var(--green),
+    var(--green) 55%,
+    var(--red) 55%,
+    var(--red)
+  );
+}
+
+.location-line i {
+  position: absolute;
+
+  left: 55%;
+  top: -4px;
+
+  width: 9px;
+  height: 9px;
+
+  background: white;
+
+  transform: rotate(45deg);
+}
+
+.sr-intelligence {
+  margin-top: 18px;
+  padding-top: 14px;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border);
+}
+
+.sr-intelligence > div {
+  min-width: 0;
+
+  padding: 0 10px;
+
+  border-right: 1px solid var(--border);
+}
+
+.sr-intelligence > div:first-child {
+  padding-left: 0;
+}
+
+.sr-intelligence > div:last-child {
+  border-right: 0;
+}
+
+.sr-intelligence span,
+.sr-intelligence strong,
+.sr-intelligence small {
+  display: block;
+}
+
+.sr-intelligence span {
+  color: var(--muted);
+
+  font-size: 8.5px;
+}
+
+.sr-intelligence strong {
+  margin-top: 6px;
+
+  font-size: 12px;
+}
+
+.sr-intelligence small {
+  margin-top: 4px;
+
+  color: #91a2b4;
+
+  font-size: 8px;
+}
+
+.sr-risk {
+  margin-top: 14px;
+
+  padding: 9px 11px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 14px;
+
+  border: 1px solid rgba(244, 201, 54, 0.2);
+  border-radius: 4px;
+
+  background: rgba(244, 201, 54, 0.04);
+}
+
+.sr-risk span {
+  color: var(--muted);
+
+  font-size: 8px;
+}
+
+.sr-risk strong {
+  font-size: 10px;
+}
+
+.sr-risk small {
+  color: #9aa9b7;
+
+  font-size: 8px;
+}

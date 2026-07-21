@@ -1,0 +1,100 @@
+/* =========================================================
+   ENTRY STATUS
+   ========================================================= */
+
+.entry-layout {
+  display: grid;
+
+  grid-template-columns:
+    100px
+    minmax(0, 1fr)
+    155px;
+}
+
+.entry-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-right: 1px solid var(--border);
+
+  color: var(--yellow);
+}
+
+.entry-state strong {
+  margin-top: 5px;
+
+  font-size: 15px;
+}
+
+.entry-reason {
+  padding: 0 20px;
+
+  text-align: left;
+}
+
+.entry-reason > strong {
+  display: block;
+
+  margin: 0 0 10px;
+
+  text-align: left;
+
+  font-size: 10px;
+}
+
+.entry-reason ul {
+  margin: 0;
+
+  padding-left: 18px;
+
+  text-align: left;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.entry-reason li {
+  margin: 6px 0;
+
+  padding-left: 3px;
+
+  text-align: left;
+}
+
+.entry-reason li::marker {
+  color: var(--green);
+}
+
+.entry-zone {
+  padding-left: 14px;
+
+  border-left: 1px solid var(--border);
+}
+
+.entry-zone span {
+  display: block;
+
+  color: #8fa1b3;
+
+  font-size: 8px;
+}
+
+.entry-zone strong {
+  display: block;
+
+  margin: 6px 0 12px;
+
+  font-size: 15px;
+}
+
+.entry-zone p {
+  font-size: 9px;
+}
+
+.entry-zone hr {
+  border: 0;
+
+  border-top: 1px solid var(--border);
+}

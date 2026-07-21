@@ -1,0 +1,174 @@
+/* =========================================================
+   MARKET BREADTH - V4
+   ========================================================= */
+
+.breadth-card {
+  overflow: hidden;
+}
+
+.breadth-layout {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    105px
+    minmax(75px, 0.65fr)
+    minmax(0, 1.35fr);
+
+  align-items: center;
+
+  gap: 8px;
+}
+
+.breadth-chart-container {
+  position: relative;
+
+  width: 105px;
+  height: 130px;
+
+  min-width: 0;
+
+  overflow: visible;
+}
+
+.breadth-chart-container .recharts-wrapper,
+.breadth-chart-container svg {
+  overflow: visible !important;
+}
+
+.breadth-center {
+  position: absolute;
+
+  inset: 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  pointer-events: none;
+}
+
+.breadth-center strong {
+  font-size: 13px;
+}
+
+.breadth-center span {
+  margin-top: 2px;
+
+  color: var(--muted);
+
+  font-size: 7px;
+}
+
+.breadth-numbers {
+  min-width: 0;
+
+  padding-left: 2px;
+}
+
+.breadth-numbers > div {
+  margin: 9px 0;
+}
+
+.breadth-numbers span {
+  display: block;
+
+  color: var(--muted);
+
+  font-size: 7px;
+
+  white-space: nowrap;
+}
+
+.breadth-numbers strong {
+  display: block;
+
+  margin-top: 3px;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.breadth-details {
+  min-width: 0;
+
+  padding-left: 10px;
+
+  border-left: 1px solid var(--border);
+}
+
+.breadth-details p {
+  width: 100%;
+
+  margin: 0;
+
+  padding: 8px 0;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 8px;
+
+  border-bottom: 1px solid var(--border-soft);
+
+  font-size: 8px;
+}
+
+.breadth-details p:last-child {
+  border-bottom: 0;
+}
+
+.breadth-details p span {
+  min-width: 0;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+  color: #b5c1cd;
+}
+
+.breadth-details p strong {
+  text-align: right;
+
+  font-size: 9px;
+
+  white-space: nowrap;
+}
+
+.breadth-status {
+  margin-top: 10px;
+  padding-top: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  border-top: 1px solid var(--border);
+}
+
+.breadth-status span {
+  color: var(--muted);
+
+  font-size: 7px;
+}
+
+.breadth-status strong {
+  font-size: 9px;
+
+  text-align: right;
+
+  white-space: nowrap;
+}
