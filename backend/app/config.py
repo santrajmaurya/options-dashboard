@@ -38,6 +38,17 @@ class Settings:
         "https://api.upstox.com",
     )
 
+    UPSTOX_STREAM_RECONNECT_SECONDS = float(
+        os.getenv(
+            "UPSTOX_STREAM_RECONNECT_SECONDS",
+            "2",
+        )
+    )
+
+    UPSTOX_STREAM_RECONNECT_MAX_SECONDS = float(
+        os.getenv("UPSTOX_STREAM_RECONNECT_MAX_SECONDS", "30")
+    )
+
     UPSTOX_NIFTY_INSTRUMENT_KEY = os.getenv(
         "UPSTOX_NIFTY_INSTRUMENT_KEY",
         "NSE_INDEX|Nifty 50",
@@ -47,7 +58,6 @@ class Settings:
         "NSE_INDEX|India VIX",
     )
 
-    # Override these in .env if the exact Upstox instrument names differ.
     UPSTOX_SECTOR_INSTRUMENTS = {
         "NIFTY BANK": os.getenv(
             "UPSTOX_NIFTY_BANK_INSTRUMENT_KEY",
