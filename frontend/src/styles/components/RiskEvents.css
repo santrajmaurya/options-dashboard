@@ -1,0 +1,82 @@
+/* =========================================================
+   RISK & EVENTS
+   ========================================================= */
+
+.risk-layout {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+}
+
+.risk-layout > div {
+  padding: 0 12px;
+}
+
+.risk-layout > div + div {
+  border-left: 1px solid var(--border);
+}
+
+.event-row {
+  display: grid;
+
+  grid-template-columns:
+    70px
+    1fr;
+
+  align-items: center;
+
+  font-size: 9px;
+}
+
+.event-row p {
+  margin: 6px 0;
+}
+
+.risk-level {
+  text-align: left;
+}
+
+.risk-level > div {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-start;
+
+  gap: 15px;
+
+  text-align: left;
+}
+
+.risk-level span {
+  font-size: 9px;
+}
+
+.risk-level strong {
+  color: var(--yellow);
+
+  font-size: 13px;
+}
+
+.risk-level ul {
+  margin: 12px 0 0;
+
+  padding-left: 18px;
+
+  text-align: left;
+
+  font-size: 9px;
+  line-height: 1.5;
+}
+
+.risk-level li {
+  margin: 6px 0;
+
+  padding-left: 3px;
+
+  text-align: left;
+}
+
+.risk-level li::marker {
+  color: var(--green);
+}

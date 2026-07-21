@@ -1,0 +1,89 @@
+/* =========================================================
+   FUTURES
+   ========================================================= */
+
+.table-scroll {
+  width: 100%;
+
+  overflow-x: auto;
+}
+
+.futures-table {
+  min-width: 520px;
+}
+
+.futures-table td {
+  padding-top: 13px;
+  padding-bottom: 13px;
+}
+
+.signal-cell {
+  min-width: 90px;
+
+  white-space: normal !important;
+
+  line-height: 1.4;
+}
+
+.futures-summary {
+  margin-top: 18px;
+  padding-top: 14px;
+
+  display: grid;
+
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+
+  border-top: 1px solid var(--border);
+}
+
+.futures-summary-item {
+  min-width: 0;
+
+  padding: 3px 13px;
+
+  border-right: 1px solid var(--border);
+}
+
+.futures-summary-item:first-child {
+  padding-left: 0;
+}
+
+.futures-summary-item:last-child {
+  border-right: 0;
+}
+
+.futures-summary-item > span {
+  display: block;
+
+  margin-bottom: 7px;
+
+  color: var(--muted);
+
+  font-size: 9px;
+}
+
+.futures-summary-item > strong {
+  display: block;
+
+  font-size: 11px;
+}
+
+.mini-progress {
+  height: 3px;
+
+  margin-top: 7px;
+
+  overflow: hidden;
+
+  border-radius: 5px;
+
+  background: #172a3b;
+}
+
+.mini-progress i {
+  display: block;
+
+  height: 100%;
+
+  background: var(--green);
+}

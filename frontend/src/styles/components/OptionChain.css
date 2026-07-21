@@ -1,0 +1,61 @@
+/* =========================================================
+   OPTION CHAIN
+   ========================================================= */
+
+.option-meta {
+  display: flex;
+  justify-content: space-between;
+
+  color: #8fa1b3;
+
+  font-size: 9px;
+}
+
+.option-labels {
+  margin-top: 8px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    80px
+    1fr;
+
+  text-align: center;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.option-table th:nth-child(1),
+.option-table th:nth-child(2) {
+  background: rgba(18, 102, 65, 0.15);
+}
+
+.option-table th:nth-child(4),
+.option-table th:nth-child(5) {
+  background: rgba(140, 36, 42, 0.15);
+}
+
+.option-table td {
+  text-align: center;
+}
+
+.strike {
+  font-weight: 700;
+}
+
+.atm-highlight {
+  background: #272f72;
+}
+
+.max-oi {
+  margin-top: 12px;
+
+  display: flex;
+  justify-content: space-between;
+
+  gap: 10px;
+
+  font-size: 9px;
+}

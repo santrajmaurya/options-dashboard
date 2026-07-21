@@ -1,0 +1,160 @@
+/* =========================================================
+   MARKET REGIME
+   ========================================================= */
+
+.regime-content {
+  display: grid;
+
+  grid-template-columns:
+    42%
+    58%;
+
+  min-height: 205px;
+}
+
+.gauge-area {
+  border-right: 1px solid var(--border);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.gauge {
+  position: relative;
+
+  width: 135px;
+  height: 108px;
+
+  overflow: hidden;
+
+  border-radius: 100px 100px 0 0;
+
+  background: conic-gradient(
+    from 270deg,
+    var(--green) 0deg 130deg,
+    #f0f4f7 130deg 140deg,
+    #314154 140deg 180deg,
+    transparent 180deg
+  );
+}
+
+.gauge::after {
+  content: "";
+
+  position: absolute;
+
+  width: 102px;
+  height: 82px;
+
+  left: 16px;
+  top: 16px;
+
+  border-radius: 100px 100px 0 0;
+
+  background: #091929;
+}
+
+.gauge-center {
+  position: absolute;
+
+  z-index: 2;
+
+  left: 0;
+  right: 0;
+  top: 38px;
+
+  text-align: center;
+}
+
+.gauge-center strong {
+  font-size: 31px;
+}
+
+.gauge-center span {
+  display: block;
+
+  font-size: 11px;
+}
+
+.gauge-range {
+  width: 135px;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #a6b3c1;
+
+  font-size: 9px;
+}
+
+.gauge-area h3 {
+  margin: 9px 0 2px;
+
+  color: var(--green);
+
+  font-size: 16px;
+}
+
+.gauge-area p {
+  margin: 0;
+
+  font-size: 11px;
+}
+
+.score-table {
+  padding-left: 12px;
+}
+
+.score-header,
+.score-row {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    55px
+    65px;
+
+  gap: 6px;
+}
+
+.score-header {
+  padding-bottom: 5px;
+
+  color: #91a2b4;
+
+  font-size: 9px;
+}
+
+.score-row {
+  padding: 8px 0;
+
+  border-top: 1px solid var(--border-soft);
+
+  font-size: 10px;
+}
+
+.final-regime {
+  padding-top: 10px;
+
+  border-top: 1px solid var(--border);
+}
+
+.final-regime span,
+.final-regime strong {
+  display: block;
+}
+
+.final-regime span {
+  color: #8ea0b2;
+
+  font-size: 9px;
+}
+
+.final-regime strong {
+  margin-top: 4px;
+
+  color: #9dea32;
+
+  font-size: 11px;
+}

@@ -1,0 +1,247 @@
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+  position: sticky;
+  top: 0;
+
+  width: 235px;
+  height: 100vh;
+
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  background: #05111e;
+
+  border-right: 1px solid var(--border);
+
+  display: flex;
+  flex-direction: column;
+
+  padding: 15px 10px 10px;
+
+  z-index: 10;
+}
+
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background: #34485c;
+  border-radius: 10px;
+}
+
+/* =========================
+   LOGO
+   ========================= */
+
+.logo {
+  display: flex;
+  gap: 10px;
+
+  padding: 6px 10px 17px;
+}
+
+.logo svg {
+  color: #6677ff;
+  flex-shrink: 0;
+}
+
+.logo strong {
+  display: block;
+
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.logo span {
+  display: block;
+
+  margin-top: 3px;
+
+  color: #a2b0bf;
+
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+/* =========================
+   NAVIGATION
+   ========================= */
+
+.nav {
+  display: grid;
+  gap: 4px;
+}
+
+.nav-item {
+  width: 100%;
+  height: 40px;
+
+  padding: 0 11px;
+
+  display: flex;
+  align-items: center;
+
+  gap: 11px;
+
+  border: 0;
+  border-radius: 6px;
+
+  color: #a7b5c5;
+
+  background: transparent;
+
+  font-size: 12.5px;
+  text-align: left;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
+}
+
+.nav-item svg {
+  flex-shrink: 0;
+}
+
+.nav-item:hover {
+  color: #fff;
+
+  background: rgba(39, 55, 132, 0.45);
+}
+
+.nav-item.active {
+  color: #fff;
+
+  background: #273784;
+}
+
+/* =========================================================
+   WATCHLIST
+   ========================================================= */
+
+.watchlist {
+  margin-top: auto;
+
+  padding: 11px 12px;
+
+  border: 1px solid var(--border);
+  border-radius: 8px;
+
+  background: linear-gradient(
+    145deg,
+    rgba(10, 29, 46, 0.98),
+    rgba(6, 20, 33, 0.98)
+  );
+}
+
+.watchlist-heading {
+  padding: 2px 3px 9px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-bottom: 1px solid var(--border);
+
+  color: #8ea0b3;
+
+  font-size: 12px;
+}
+
+.watch-row {
+  min-height: 58px;
+
+  padding: 9px 3px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.watch-row:last-child {
+  border-bottom: 0;
+}
+
+.watch-left {
+  min-width: 0;
+}
+
+.watch-symbol {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+}
+
+.watch-symbol strong {
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.market-dot {
+  width: 5px;
+  height: 5px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: var(--green);
+}
+
+.watch-mini-chart {
+  width: 54px;
+  height: 16px;
+
+  margin-top: 7px;
+
+  display: flex;
+  align-items: flex-end;
+
+  gap: 2px;
+}
+
+.watch-mini-chart i {
+  width: 4px;
+  min-height: 2px;
+
+  border-radius: 1px;
+
+  background: var(--green);
+
+  opacity: 0.8;
+}
+
+.watch-price {
+  flex-shrink: 0;
+
+  text-align: right;
+}
+
+.watch-price > strong {
+  display: block;
+
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.watch-price small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--green);
+
+  font-size: 8.5px;
+}

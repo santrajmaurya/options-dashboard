@@ -1,0 +1,45 @@
+/* =========================================================
+   TREND
+   ========================================================= */
+
+.direction {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.trend-footer {
+  margin-top: 11px;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    1fr;
+
+  border-top: 1px solid var(--border);
+}
+
+.trend-footer div {
+  padding: 10px;
+}
+
+.trend-footer div + div {
+  border-left: 1px solid var(--border);
+}
+
+.trend-footer span,
+.trend-footer strong {
+  display: block;
+}
+
+.trend-footer span {
+  color: #8da0b3;
+
+  font-size: 9px;
+}
+
+.trend-footer strong {
+  margin-top: 5px;
+
+  font-size: 10px;
+}

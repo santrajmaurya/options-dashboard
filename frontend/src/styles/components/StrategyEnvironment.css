@@ -1,0 +1,50 @@
+/* =========================================================
+   STRATEGY
+   ========================================================= */
+
+.subheading {
+  color: #8ea0b2;
+
+  font-size: 8px;
+}
+
+.strategy-list {
+  margin-top: 10px;
+
+  display: grid;
+
+  gap: 6px;
+}
+
+.strategy-row {
+  padding: 8px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 8px;
+
+  border: 1px solid #284057;
+  border-radius: 4px;
+
+  background: #102234;
+
+  font-size: 10px;
+}
+
+.strategy-row small {
+  font-size: 7px;
+
+  white-space: nowrap;
+}
+
+.preferred {
+  border-color: #197240;
+
+  background: #10532e;
+}
+
+.avoid {
+  color: var(--red);
+}
