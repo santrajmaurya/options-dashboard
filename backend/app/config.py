@@ -68,6 +68,9 @@ class Settings:
         "UPSTOX_VIX_INSTRUMENT_KEY",
         "NSE_INDEX|India VIX",
     )
+    UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY = os.getenv("UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY", "")
+    UPSTOX_BREADTH_INSTRUMENT_KEYS = [x.strip() for x in os.getenv("UPSTOX_BREADTH_INSTRUMENT_KEYS", "").split(",") if x.strip()]
+    IV_HISTORY_FILE = os.getenv("IV_HISTORY_FILE", "iv_history.json")
 
     UPSTOX_SECTOR_INSTRUMENTS = {
         "NIFTY BANK": os.getenv(
