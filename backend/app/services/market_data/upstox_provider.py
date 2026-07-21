@@ -253,6 +253,29 @@ class UpstoxMarketDataProvider(MarketDataProvider):
 
         return candles
 
+
+    def get_nifty_option_chain(self) -> list[dict]:
+        """Return current-week NIFTY option-chain rows from Upstox REST API."""
+        url = f"{self.base_url}/v2/option/chain"
+        response = self.session.get(url, params={"instrument_key": settings.UPSTOX_NIFTY_INSTRUMENT_KEY, "expiry_date": "current_week"}, timeout=10)
+        response.raise_for_status()
+        payload = response.json()
+        rows = []
+        for item in payload.get("data", []):
+            call = item.get("call_options") or {}; put = item.get("put_options") or {}
+            cm = call.get("market_data") or {}; pm = put.get("market_data") or {}
+            cg = call.get("option_greeks") or {}; pg = put.get("option_greeks") or {}
+            rows.append({
+                "strike": self._to_float(item.get("strike_price")),
+                "call_oi": int(self._to_float(cm.get("oi"))), "call_prev_oi": int(self._to_float(cm.get("prev_oi"))),
+                "call_oi_change": int(self._to_float(cm.get("oi"))-self._to_float(cm.get("prev_oi"))),
+                "call_volume": int(self._to_float(cm.get("volume"))), "call_iv": self._to_float(cg.get("iv")),
+                "put_oi": int(self._to_float(pm.get("oi"))), "put_prev_oi": int(self._to_float(pm.get("prev_oi"))),
+                "put_oi_change": int(self._to_float(pm.get("oi"))-self._to_float(pm.get("prev_oi"))),
+                "put_volume": int(self._to_float(pm.get("volume"))), "put_iv": self._to_float(pg.get("iv")),
+            })
+        return rows
+
     def _get_quote(
         self,
         instrument_key: str,
