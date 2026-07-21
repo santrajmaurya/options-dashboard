@@ -29,6 +29,7 @@ export default function App() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState(null);
+  const [socketStatus, setSocketStatus] = useState("connecting");
 
   const loadDashboard = useCallback(async (isRefresh = false) => {
     try {
@@ -105,6 +106,7 @@ export default function App() {
         console.error("Dashboard WebSocket error:", err);
       },
       onStatusChange: (status) => {
+        setSocketStatus(status);
         console.log("Dashboard WebSocket:", status);
       },
     });
@@ -172,6 +174,7 @@ export default function App() {
           data={dashboardData}
           autoRefresh={autoRefresh}
           refreshInterval={300}
+          socketStatus={socketStatus}
         />
 
         {error && (
@@ -242,9 +245,11 @@ export default function App() {
               <span>
                 LAST DATA RECEIVED:{" "}
                 <strong>
-                  {dashboardData?.market?.timestamp
+                  {(dashboardData?.market?.last_tick_at ??
+                  dashboardData?.market?.timestamp)
                     ? new Date(
-                        dashboardData.market.timestamp
+                        dashboardData.market.last_tick_at ??
+                          dashboardData.market.timestamp
                       ).toLocaleTimeString()
                     : "--"}
                 </strong>

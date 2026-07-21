@@ -30,6 +30,17 @@ class LiveMarketService:
             "[LIVE] Dashboard client connected; clients=%s",
             len(self.connections),
         )
+        await websocket.send_json({
+            "type": "market_update",
+            "market": {
+                "feed_state": self._stream.feed_state,
+                "market_status": self._stream._market_status(),
+                "last_tick_at": (
+                    self._stream.last_tick_at.isoformat()
+                    if self._stream.last_tick_at else None
+                ),
+            },
+        })
         await self.start()
 
     def disconnect(self, websocket):

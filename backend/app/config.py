@@ -49,6 +49,17 @@ class Settings:
         os.getenv("UPSTOX_STREAM_RECONNECT_MAX_SECONDS", "30")
     )
 
+
+    UPSTOX_STREAM_SIMULATION = os.getenv(
+        "UPSTOX_STREAM_SIMULATION", "false"
+    ).lower() == "true"
+    UPSTOX_STREAM_SIMULATION_INTERVAL_SECONDS = float(
+        os.getenv("UPSTOX_STREAM_SIMULATION_INTERVAL_SECONDS", "2")
+    )
+    UPSTOX_STREAM_STALE_SECONDS = int(
+        os.getenv("UPSTOX_STREAM_STALE_SECONDS", "30")
+    )
+
     UPSTOX_NIFTY_INSTRUMENT_KEY = os.getenv(
         "UPSTOX_NIFTY_INSTRUMENT_KEY",
         "NSE_INDEX|Nifty 50",
