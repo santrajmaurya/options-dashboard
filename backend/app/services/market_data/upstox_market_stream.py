@@ -51,6 +51,8 @@ class UpstoxMarketStream:
         keys = [
             settings.UPSTOX_NIFTY_INSTRUMENT_KEY,
             settings.UPSTOX_VIX_INSTRUMENT_KEY,
+            settings.UPSTOX_NIFTY_BANK_INSTRUMENT_KEY,
+            settings.UPSTOX_FINNIFTY_INSTRUMENT_KEY,
             *settings.UPSTOX_SECTOR_INSTRUMENTS.values(),
         ]
 
@@ -312,6 +314,7 @@ class UpstoxMarketStream:
 
             if instrument_key == settings.UPSTOX_NIFTY_INSTRUMENT_KEY:
                 patch["nifty"] = values
+                patch.setdefault("watchlist", {})["NIFTY"] = values
 
             elif instrument_key == settings.UPSTOX_VIX_INSTRUMENT_KEY:
                 patch["vix"] = {
@@ -320,6 +323,13 @@ class UpstoxMarketStream:
                     "change": round(change, 2),
                     "change_percent": round(change_percent, 2),
                 }
+                patch.setdefault("watchlist", {})["INDIA VIX"] = values
+
+            elif instrument_key == settings.UPSTOX_NIFTY_BANK_INSTRUMENT_KEY:
+                patch.setdefault("watchlist", {})["BANKNIFTY"] = values
+
+            elif instrument_key == settings.UPSTOX_FINNIFTY_INSTRUMENT_KEY:
+                patch.setdefault("watchlist", {})["FINNIFTY"] = values
 
             elif instrument_key in self.sector_key_to_name:
                 sectors.append({

@@ -71,6 +71,9 @@ class Settings:
     UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY = os.getenv("UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY", "")
     UPSTOX_BREADTH_INSTRUMENT_KEYS = [x.strip() for x in os.getenv("UPSTOX_BREADTH_INSTRUMENT_KEYS", "").split(",") if x.strip()]
     IV_HISTORY_FILE = os.getenv("IV_HISTORY_FILE", "iv_history.json")
+    FUTURES_OI_STATE_FILE = os.getenv("FUTURES_OI_STATE_FILE", "futures_oi_state.json")
+    UPSTOX_NIFTY_BANK_INSTRUMENT_KEY = os.getenv("UPSTOX_NIFTY_BANK_INSTRUMENT_KEY", "NSE_INDEX|Nifty Bank")
+    UPSTOX_FINNIFTY_INSTRUMENT_KEY = os.getenv("UPSTOX_FINNIFTY_INSTRUMENT_KEY", "NSE_INDEX|Nifty Fin Service")
 
     UPSTOX_SECTOR_INSTRUMENTS = {
         "NIFTY BANK": os.getenv(
