@@ -32,6 +32,13 @@ export function mergeDashboardUpdate(current, update) {
     };
   }
 
+  if (update.watchlist) {
+    next.watchlist = {
+      ...(current.watchlist ?? {}),
+      ...update.watchlist,
+    };
+  }
+
   if (Array.isArray(update.sectors)) {
     const existing = new Map(
       (current.sectors ?? []).map((sector) => [

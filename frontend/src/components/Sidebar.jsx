@@ -14,7 +14,7 @@ import {
   Pencil,
 } from "lucide-react";
 
-import { watchlist } from "../data/mockData";
+
 
 const menu = [
   [LayoutDashboard, "DASHBOARD"],
@@ -30,7 +30,25 @@ const menu = [
   [Settings, "SETTINGS"],
 ];
 
-export default function Sidebar() {
+export default function Sidebar({ data }) {
+  const liveWatchlist = data?.watchlist ?? {};
+  const fallback = {
+    NIFTY: data?.nifty
+      ? { ltp: data.nifty.ltp, change: data.nifty.change, change_percent: data.nifty.change_percent }
+      : null,
+    "INDIA VIX": data?.vix
+      ? { ltp: data.vix.value, change: data.vix.change, change_percent: data.vix.change_percent }
+      : null,
+  };
+  const watchlist = ["NIFTY", "BANKNIFTY", "FINNIFTY", "INDIA VIX"].map((name) => {
+    const item = liveWatchlist[name] ?? fallback[name];
+    return {
+      name,
+      value: Number.isFinite(Number(item?.ltp)) ? Number(item.ltp).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "--",
+      points: Number.isFinite(Number(item?.change)) ? `${Number(item.change) >= 0 ? "+" : ""}${Number(item.change).toFixed(2)}` : "--",
+      change: Number.isFinite(Number(item?.change_percent)) ? `${Number(item.change_percent) >= 0 ? "+" : ""}${Number(item.change_percent).toFixed(2)}%` : "--",
+    };
+  });
   function MiniTrend({ index }) {
     const patterns = [
       [25, 38, 32, 55, 48, 70, 65, 82],

@@ -298,7 +298,8 @@ class UpstoxMarketDataProvider(MarketDataProvider):
             state = json.loads(state_path.read_text())
         except Exception:
             state = {}
-        previous_oi = self._to_float(state.get(key, {}).get("oi")) or None
+        quote_previous_oi = self._to_float(q.get("prev_oi")) or None
+        previous_oi = quote_previous_oi or self._to_float(state.get(key, {}).get("oi")) or None
         oi_change_percent = (
             ((oi - previous_oi) / previous_oi) * 100
             if previous_oi and oi else None
