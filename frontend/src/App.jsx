@@ -167,7 +167,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <Sidebar />
+      <Sidebar data={dashboardData} />
 
       <div className="main-shell">
         <Topbar
