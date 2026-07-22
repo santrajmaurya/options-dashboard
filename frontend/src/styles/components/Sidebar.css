@@ -245,3 +245,11 @@
 
   font-size: 8.5px;
 }
+
+.watch-mini-chart.positive i { background: var(--green); }
+.watch-mini-chart.negative i { background: var(--red); }
+.watch-mini-chart.neutral i { background: var(--yellow); }
+.watch-price small.positive { color: var(--green); }
+.watch-price small.negative { color: var(--red); }
+.watch-price small.neutral { color: var(--yellow); }
+.watch-price > strong { color: #fff; }

@@ -3,7 +3,6 @@ import Card from "./Card";
 export default function MarketRegime({ data }) {
   // Keep existing UI usable until API data is available.
   const regime = data ?? {};
-  console.log("MarketRegime data:", regime);
 
   const score = regime.score ?? 74;
   const direction = regime.direction ?? "BULLISH";
@@ -32,6 +31,16 @@ export default function MarketRegime({ data }) {
     },
   ];
 
+  const semanticClass = (value) => {
+    const text = String(value ?? "").toLowerCase();
+    if (text.includes("bear") || text.includes("negative") || text.includes("down")) return "bearish";
+    if (text.includes("bull") || text.includes("positive") || text.includes("up") || text.includes("discount")) return "bullish";
+    if (text.includes("neutral") || text.includes("normal") || text.includes("flat")) return "neutral";
+    return "neutral";
+  };
+
+  const directionClass = semanticClass(direction);
+
   const finalRegime =
     regime.final_regime ??
     `${direction} + ${regime.volatility ?? "ELEVATED VOLATILITY"}`;
@@ -53,7 +62,7 @@ export default function MarketRegime({ data }) {
             <span>+100</span>
           </div>
 
-          <h3>{direction}</h3>
+          <h3 className={directionClass}>{direction}</h3>
 
           <p>
             Confidence: <strong>{confidence}</strong>
@@ -83,6 +92,7 @@ export default function MarketRegime({ data }) {
                 score={displayScore}
                 status={item.status}
                 warning={warning}
+                semanticClass={semanticClass}
               />
             );
           })}
@@ -90,7 +100,7 @@ export default function MarketRegime({ data }) {
           <div className="final-regime">
             <span>MARKET REGIME</span>
 
-            <strong>{finalRegime}</strong>
+            <strong className={directionClass}>{finalRegime}</strong>
           </div>
         </div>
       </div>
@@ -98,14 +108,16 @@ export default function MarketRegime({ data }) {
   );
 }
 
-function Score({ name, score, status, warning = false }) {
-  const statusClassName = warning ? "yellow" : "green";
+function Score({ name, score, status, warning = false, semanticClass }) {
+  const statusClassName = warning ? "neutral" : semanticClass(status);
+  const scoreNumber = Number(score);
+  const scoreClassName = Number.isFinite(scoreNumber) ? (scoreNumber > 0 ? "bullish" : scoreNumber < 0 ? "bearish" : "neutral") : statusClassName;
 
   return (
     <div className="score-row">
       <span>{name}</span>
 
-      <strong className={statusClassName}>{score}</strong>
+      <strong className={scoreClassName}>{score}</strong>
 
       <strong className={statusClassName}>{status}</strong>
     </div>

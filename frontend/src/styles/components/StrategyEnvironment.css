@@ -48,3 +48,12 @@
 .avoid {
   color: var(--red);
 }
+
+.strategy-bias { margin: 4px 0 12px; padding: 10px 12px; display:flex; align-items:center; justify-content:space-between; border:1px solid var(--border); border-radius:5px; background:#0b1d2e; }
+.strategy-bias span { color:var(--muted); font-size:8px; letter-spacing:.5px; }
+.strategy-bias strong { font-size:13px; }
+.strategy-bias.strong-bearish strong { color:var(--red); font-weight:800; }
+.strategy-bias.mild-bearish strong { color:#ff858d; font-weight:600; }
+.strategy-bias.neutral-bias strong { color:var(--yellow); font-weight:700; }
+.strategy-bias.mild-bullish strong { color:#78dda9; font-weight:600; }
+.strategy-bias.strong-bullish strong { color:var(--green); font-weight:800; }
