@@ -260,10 +260,45 @@ class UpstoxMarketDataProvider(MarketDataProvider):
         return candles
 
 
+    def _get_nearest_nifty_option_expiry(self) -> str | None:
+        """Resolve the nearest live NIFTY option expiry from Upstox contracts."""
+        url = f"{self.base_url}/v2/option/contract"
+        response = self.session.get(
+            url,
+            params={"instrument_key": settings.UPSTOX_NIFTY_INSTRUMENT_KEY},
+            timeout=10,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        today = datetime.now(ZoneInfo("Asia/Kolkata")).date()
+        expiries = set()
+        for item in payload.get("data", []):
+            raw = item.get("expiry") or item.get("expiry_date")
+            if not raw:
+                continue
+            try:
+                expiry = datetime.fromisoformat(str(raw)[:10]).date()
+            except ValueError:
+                continue
+            if expiry >= today:
+                expiries.add(expiry)
+        return min(expiries).isoformat() if expiries else None
+
     def get_nifty_option_chain(self) -> list[dict]:
-        """Return current-week NIFTY option-chain rows from Upstox REST API."""
+        """Return nearest-expiry NIFTY option-chain rows from Upstox REST API.
+
+        Upstox expects an actual YYYY-MM-DD expiry_date. Passing the literal
+        'current_week' can make the chain disappear on a new trading day.
+        """
+        expiry = self._get_nearest_nifty_option_expiry()
+        if not expiry:
+            return []
         url = f"{self.base_url}/v2/option/chain"
-        response = self.session.get(url, params={"instrument_key": settings.UPSTOX_NIFTY_INSTRUMENT_KEY, "expiry_date": "current_week"}, timeout=10)
+        response = self.session.get(
+            url,
+            params={"instrument_key": settings.UPSTOX_NIFTY_INSTRUMENT_KEY, "expiry_date": expiry},
+            timeout=10,
+        )
         response.raise_for_status()
         payload = response.json()
         rows = []
