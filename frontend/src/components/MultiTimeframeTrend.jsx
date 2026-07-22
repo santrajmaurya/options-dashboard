@@ -85,6 +85,10 @@ export default function MultiTimeframeTrend({ data }) {
 function getTrendClass(status = "") {
   const normalized = String(status).toUpperCase();
 
+  if (normalized.includes("UNAVAILABLE") || normalized.includes("NO DATA") || normalized.includes("UNKNOWN")) {
+    return "unavailable";
+  }
+
   if (normalized.includes("BULLISH")) {
     return "green";
   }
@@ -152,7 +156,7 @@ function getMarketCondition(overallStatus, timeframes) {
   if (!timeframes.length) {
     return {
       label: "NO DATA",
-      className: "yellow",
+      className: "unavailable",
     };
   }
 

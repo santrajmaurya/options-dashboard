@@ -89,3 +89,11 @@ button {
 .value-strong {
   font-weight: 600;
 }
+
+/* Shared semantic score bands and missing-data state */
+.score-strong-red { color: #ff3b45 !important; font-weight: 800; }
+.score-mild-red { color: #ff7a80 !important; }
+.score-neutral { color: var(--yellow) !important; }
+.score-mild-green { color: #72d9a5 !important; }
+.score-strong-green { color: var(--green) !important; font-weight: 800; }
+.unavailable { color: var(--muted) !important; opacity: .82; }
