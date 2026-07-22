@@ -1,5 +1,5 @@
 from dataclasses import asdict
-from datetime import datetime, time
+from datetime import datetime
 from zoneinfo import ZoneInfo
 from statistics import median
 
@@ -51,36 +51,21 @@ class DashboardService:
             breadth_status="BROAD BULLISH" if breadth_score>=60 else "BROAD BEARISH" if breadth_score<=40 else "MIXED"
         components=[RegimeComponent(parameter="Trend Score",score=overall,status=overall_status.title()),RegimeComponent(parameter="Futures Positioning",score=fut_score if futures_raw else 0,status=fut_status),RegimeComponent(parameter="Options Positioning",score=option_score,status=option_status),RegimeComponent(parameter="Market Breadth",score=breadth_score or 0,status=breadth_status),RegimeComponent(parameter="Volatility",score=vol_score,status=vol_status.title()),RegimeComponent(parameter="Price Structure",score=price_score,status=price_status)]
         valid=[overall,option_score if pos else None,fut_score if futures_raw else None,breadth_score,vol_score,price_score]; valid=[x for x in valid if x is not None]; regime_score=round(sum(valid)/len(valid)); direction="BULLISH" if regime_score>=58 else "BEARISH" if regime_score<=42 else "NEUTRAL"
-        # ATM IV must come from the actual ATM strike, not a median across
-        # neighbouring strikes (which can be distorted close to expiry).
-        atm_row = min(atm_rows, key=lambda x: abs(x["strike"] - atm)) if atm_rows else None
-        atm_iv_values = []
+        # ATM IV must represent the actual ATM strike, not a median of nearby
+        # strikes. Average valid ATM CE/PE IV values when both are available.
+        atm_row = next((row for row in atm_rows if row["strike"] == atm), None)
+        atm_leg_ivs = []
         if atm_row:
             for field in ("call_iv", "put_iv"):
                 value = atm_row.get(field)
-                if value is None:
-                    continue
-                value = float(value)
-                # Upstox normally reports IV in percentage points. Handle a
-                # decimal-form value defensively without double-scaling.
-                if 0 < value < 1:
-                    value *= 100
-                if 1.0 <= value <= 80.0:
-                    atm_iv_values.append(value)
-        atm_iv = round(median(atm_iv_values), 2) if atm_iv_values else None
+                if value is not None and 0.1 <= float(value) <= 150.0:
+                    atm_leg_ivs.append(float(value))
+        atm_iv = round(sum(atm_leg_ivs) / len(atm_leg_ivs), 2) if atm_leg_ivs else None
         iv_percentile,iv_rank=calculate_iv_metrics(atm_iv)
         risk_score,risk_level,risk_env,risk_reasons=calculate_risk(vix.value,breadth_raw,futures_raw,overall)
         preferred,neutral,avoid=calculate_strategies(direction,vix.value,pos["pcr_oi"] if pos else None,risk_env)
         entry_status,entry_reasons=calculate_entry(nifty.ltp,s1.strike,r1.strike,preferred,risk_env)
-        now_ist = datetime.now(ZoneInfo("Asia/Kolkata"))
-        if now_ist.weekday() >= 5:
-            market_status = "CLOSED"
-        elif time(9, 0) <= now_ist.time() < time(9, 15):
-            market_status = "PRE-MARKET"
-        elif time(9, 15) <= now_ist.time() <= time(15, 30):
-            market_status = "OPEN"
-        else:
-            market_status = "CLOSED"
+        now_ist=datetime.now(ZoneInfo("Asia/Kolkata")); market_status="OPEN" if now_ist.weekday()<5 and now_ist.time() >= __import__("datetime").time(9,15) and now_ist.time() <= __import__("datetime").time(15,30) else "CLOSED"
         return DashboardResponse(market=MarketStatus(status=market_status,timestamp=now_ist.isoformat()),nifty=NiftyData(**asdict(nifty)),vix=VixData(**asdict(vix)),candles=[asdict(x) for x in candles],regime=MarketRegime(score=regime_score,direction=direction,volatility=vol_status,final_regime=f"{direction} + {vol_status} VOLATILITY",components=components),trend=TrendData(overall_score=overall,overall_status=overall_status,timeframes=[TrendTimeframe(**x) for x in frames]),futures=FuturesData(price=futures_raw["price"] if futures_raw else None,basis=round(futures_raw["price"]-nifty.ltp,2) if futures_raw else None,oi=futures_raw["oi"] if futures_raw else None,oi_change_percent=futures_raw.get("oi_change_percent") if futures_raw else None,signal=fut_status),option_chain=OptionChainSummary(atm_strike=atm,max_call_oi_strike=pos["max_call"]["strike"] if pos else 0,max_put_oi_strike=pos["max_put"]["strike"] if pos else 0,max_call_oi=pos["max_call"]["call_oi"] if pos else 0,max_put_oi=pos["max_put"]["put_oi"] if pos else 0,pcr_oi=pos["pcr_oi"] if pos else None,pcr_volume=pos["pcr_volume"] if pos else None,strikes=[OptionChainStrike(strike=x["strike"],call_oi=x["call_oi"],call_oi_change=x["call_oi_change"],put_oi=x["put_oi"],put_oi_change=x["put_oi_change"]) for x in atm_rows]),levels=LevelsData(support_1=s1,support_2=s2,resistance_1=r1,resistance_2=r2,vwap=latest_vwap),volatility=VolatilityData(atm_iv=atm_iv,iv_percentile=iv_percentile,iv_rank=iv_rank,regime=vol_status if atm_iv is not None else "UNAVAILABLE"),breadth=BreadthData(**breadth_raw) if breadth_raw else BreadthData(advances=0,declines=0,unchanged=0,advance_decline_ratio=0,new_52_week_high=0,new_52_week_low=0,stocks_above_200_dma=0),sectors=sectors,entry=EntryData(status=entry_status,entry_low=s1.strike,entry_high=r1.strike,current_price=nifty.ltp,invalidation=s2.strike,reasons=entry_reasons),risk=RiskData(score=risk_score,level=risk_level,environment=risk_env,reasons=risk_reasons),strategies=StrategyData(preferred=preferred,neutral=neutral,avoid=avoid))
 
 dashboard_service=DashboardService()

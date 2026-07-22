@@ -3,6 +3,8 @@ import logging
 from typing import Any
 
 from app.services.market_data.upstox_market_stream import UpstoxMarketStream
+from app.services.market_data import get_market_data_provider
+from app.config import settings
 
 
 logger = logging.getLogger(__name__)
@@ -41,6 +43,38 @@ class LiveMarketService:
                 ),
             },
         })
+        # Seed the watchlist from REST immediately. This is important after
+        # market close, when index WebSocket ticks may no longer arrive.
+        try:
+            provider = get_market_data_provider()
+            def build_watchlist():
+                bank_key = provider.resolve_index_key(settings.UPSTOX_NIFTY_BANK_INSTRUMENT_KEY, ["Nifty Bank", "NIFTY BANK", "BANKNIFTY"]) if hasattr(provider, "resolve_index_key") else settings.UPSTOX_NIFTY_BANK_INSTRUMENT_KEY
+                fin_key = provider.resolve_index_key(settings.UPSTOX_FINNIFTY_INSTRUMENT_KEY, ["Nifty Fin Service", "Nifty Financial Services", "NIFTY FIN SERVICE", "FINNIFTY"]) if hasattr(provider, "resolve_index_key") else settings.UPSTOX_FINNIFTY_INSTRUMENT_KEY
+                mapping = {
+                    "NIFTY": settings.UPSTOX_NIFTY_INSTRUMENT_KEY,
+                    "BANKNIFTY": bank_key,
+                    "FINNIFTY": fin_key,
+                    "INDIA VIX": settings.UPSTOX_VIX_INSTRUMENT_KEY,
+                }
+                quotes = provider._get_quotes(list(mapping.values()))
+                result = {}
+                for name, key in mapping.items():
+                    q = provider._find_quote(quotes, key)
+                    if not q:
+                        continue
+                    ltp = provider._to_float(q.get("last_price"))
+                    cp = provider._to_float((q.get("ohlc") or {}).get("close"))
+                    change = provider._to_float(q.get("net_change"), default=ltp-cp)
+                    result[name] = {"ltp": ltp, "previous_close": cp,
+                        "change": round(change,2),
+                        "change_percent": round(change/cp*100,2) if cp else 0.0}
+                return result
+            watchlist = await asyncio.to_thread(build_watchlist)
+            if watchlist:
+                await websocket.send_json({"type":"market_update", "watchlist":watchlist})
+        except Exception:
+            logger.exception("[LIVE] Unable to seed watchlist from REST")
+
         await self.start()
 
     def disconnect(self, websocket):
