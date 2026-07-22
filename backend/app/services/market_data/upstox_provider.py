@@ -3,6 +3,8 @@ import json
 import gzip
 from pathlib import Path
 from datetime import date
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 import requests
 
@@ -282,7 +284,13 @@ class UpstoxMarketDataProvider(MarketDataProvider):
 
 
     def get_nifty_futures_snapshot(self) -> dict | None:
-        """Return nearest-expiry NIFTY future quote and OI."""
+        """Return nearest-expiry NIFTY future quote and OI.
+
+        OI change is measured against the provider previous OI when available;
+        otherwise against the first observation persisted for the current IST
+        trading date. This avoids comparing with the immediately preceding
+        dashboard refresh, which made the displayed change look like 0.00%.
+        """
         key = settings.UPSTOX_NIFTY_FUTURES_INSTRUMENT_KEY or self._find_nearest_nifty_future_key()
         if not key:
             return None
@@ -291,21 +299,24 @@ class UpstoxMarketDataProvider(MarketDataProvider):
         oi = int(self._to_float(q.get("oi")))
         day_high = self._to_float(q.get("oi_day_high"))
         day_low = self._to_float(q.get("oi_day_low"))
-        # Track a genuine observed OI baseline locally. The first observation has
-        # no change; subsequent refreshes compare against the last observed OI.
         state_path = Path(settings.FUTURES_OI_STATE_FILE)
         try:
             state = json.loads(state_path.read_text())
         except Exception:
             state = {}
-        quote_previous_oi = self._to_float(q.get("prev_oi")) or None
-        previous_oi = quote_previous_oi or self._to_float(state.get(key, {}).get("oi")) or None
-        oi_change_percent = (
-            ((oi - previous_oi) / previous_oi) * 100
-            if previous_oi and oi else None
-        )
+        today = datetime.now(ZoneInfo("Asia/Kolkata")).date().isoformat()
+        saved = state.get(key, {})
+        provider_prev_oi = self._to_float(q.get("prev_oi")) or None
+        baseline_oi = (self._to_float(saved.get("baseline_oi")) or None) if saved.get("date") == today else None
+        previous_oi = provider_prev_oi or baseline_oi
+        oi_change_percent = (((oi - previous_oi) / previous_oi) * 100 if previous_oi and oi else None)
         try:
-            state[key] = {"oi": oi, "price": price}
+            state[key] = {
+                "date": today,
+                "baseline_oi": baseline_oi or oi,
+                "last_oi": oi,
+                "price": price,
+            }
             state_path.write_text(json.dumps(state))
         except Exception:
             pass
@@ -378,6 +389,33 @@ class UpstoxMarketDataProvider(MarketDataProvider):
         except Exception:
             self._breadth_keys_cache = []
         return self._breadth_keys_cache
+
+    def resolve_index_key(self, configured_key: str, aliases: list[str]) -> str:
+        """Resolve an index key from the NSE instrument master when a configured
+        display-name key is not accepted by the quote endpoint.
+        """
+        cache = getattr(self, "_index_key_cache", {})
+        cache_key = configured_key + "|" + "|".join(aliases)
+        if cache_key in cache:
+            return cache[cache_key]
+        try:
+            r = self.session.get("https://assets.upstox.com/market-quote/instruments/exchange/NSE.json.gz", timeout=20)
+            r.raise_for_status()
+            rows = json.loads(gzip.decompress(r.content).decode("utf-8"))
+            wanted = {x.strip().lower() for x in aliases}
+            for row in rows:
+                if str(row.get("segment", "")).upper() not in {"NSE_INDEX", "NSE_INDEX|INDEX"} and str(row.get("instrument_type", "")).upper() not in {"INDEX", "IDX"}:
+                    continue
+                names = {str(row.get(k, "")).strip().lower() for k in ("name", "trading_symbol", "tradingsymbol", "short_name")}
+                if names & wanted:
+                    resolved = row.get("instrument_key")
+                    if resolved:
+                        cache[cache_key] = resolved
+                        self._index_key_cache = cache
+                        return resolved
+        except Exception:
+            pass
+        return configured_key
 
     def _get_quote(
         self,
