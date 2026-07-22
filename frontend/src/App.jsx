@@ -148,7 +148,17 @@ export default function App() {
   };
 
   if (loading) {
-    return <div className="app-loading">Loading market dashboard...</div>;
+    return (
+      <div className="app-loading">
+        <div className="loading-panel">
+          <div className="loading-pulse" aria-hidden="true"><span /><span /><span /><span /><span /></div>
+          <strong>NIFTY DASHBOARD</strong>
+          <p>Connecting to live market feed...</p>
+          <div className="loading-track"><span /></div>
+          <small>Loading market data and resolving instruments</small>
+        </div>
+      </div>
+    );
   }
 
   if (error && !dashboardData) {

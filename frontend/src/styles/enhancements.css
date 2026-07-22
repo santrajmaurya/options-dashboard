@@ -514,3 +514,29 @@
     font-size: 15px;
   }
 }
+
+
+/* V5 readability + loading */
+.app-loading { min-height:100vh; display:grid; place-items:center; background:radial-gradient(circle at 50% 35%, #0b2135 0, #030b14 48%); }
+.loading-panel { width:min(420px,88vw); padding:34px; text-align:center; border:1px solid var(--border); border-radius:12px; background:rgba(9,25,41,.94); box-shadow:0 20px 60px rgba(0,0,0,.35); }
+.loading-panel strong { display:block; font-size:20px; letter-spacing:.7px; }
+.loading-panel p { margin:12px 0; color:#aebdca; font-size:13px; }
+.loading-panel small { color:var(--muted); font-size:11px; }
+.loading-pulse { height:42px; display:flex; align-items:flex-end; justify-content:center; gap:5px; margin-bottom:18px; }
+.loading-pulse span { width:7px; height:14px; border-radius:3px; background:var(--green); animation:marketPulse 1s ease-in-out infinite alternate; }
+.loading-pulse span:nth-child(2){animation-delay:.12s}.loading-pulse span:nth-child(3){animation-delay:.24s}.loading-pulse span:nth-child(4){animation-delay:.36s}.loading-pulse span:nth-child(5){animation-delay:.48s}
+.loading-track { height:3px; margin:18px 0 12px; overflow:hidden; border-radius:4px; background:#13283b; }
+.loading-track span { display:block; width:40%; height:100%; background:var(--green); animation:loadingSlide 1.2s ease-in-out infinite; }
+@keyframes marketPulse { to { height:38px; } } @keyframes loadingSlide { from{transform:translateX(-110%)} to{transform:translateX(360%)} }
+/* Improve dense dashboard readability without changing layout */
+.card-heading { font-size:14px; }
+.metric-title,.subheading { font-size:10px; }
+.score-row { font-size:12px; }
+.score-header { font-size:11px; }
+table th { font-size:10px; } table td { font-size:12px; }
+/* Semantic utility classes used throughout components */
+.positive,.up,.bullish { color:var(--green)!important; }
+.negative,.down,.bearish { color:var(--red)!important; }
+.neutral,.flat { color:var(--yellow)!important; }
+.unavailable { color:var(--muted)!important; }
+@media (max-width:1500px){.score-row{font-size:11px}.score-header{font-size:10px}.metric-title,.subheading{font-size:9.5px}table td{font-size:11px}}
