@@ -30,13 +30,6 @@
 
   border-radius: 100px 100px 0 0;
 
-  background: conic-gradient(
-    from 270deg,
-    var(--green) 0deg 130deg,
-    #f0f4f7 130deg 140deg,
-    #314154 140deg 180deg,
-    transparent 180deg
-  );
 }
 
 .gauge::after {
@@ -155,4 +148,35 @@
   color: #9dea32;
 
   font-size: 11px;
+}
+
+/* Dynamic 0-100 regime gauge */
+.gauge { --gauge-color: var(--yellow); }
+.gauge.score-strong-red { --gauge-color: #ff3b45; }
+.gauge.score-mild-red { --gauge-color: #ff7a80; }
+.gauge.score-neutral { --gauge-color: var(--yellow); }
+.gauge.score-mild-green { --gauge-color: #72d9a5; }
+.gauge.score-strong-green { --gauge-color: var(--green); }
+
+.gauge-needle {
+  position: absolute;
+  z-index: 3;
+  left: calc(50% - 1px);
+  bottom: 8px;
+  width: 2px;
+  height: 45px;
+  background: #f0f4f7;
+  transform-origin: 50% 100%;
+  border-radius: 2px;
+  pointer-events: none;
+}
+.gauge-needle::after {
+  content: "";
+  position: absolute;
+  left: -3px;
+  bottom: -3px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f0f4f7;
 }

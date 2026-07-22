@@ -417,3 +417,40 @@
     padding-right: 4px;
   }
 }
+
+/* Semantic entry-state emphasis */
+.entry-state.entry-ready { color: var(--green); }
+.entry-state.entry-wait { color: var(--yellow); }
+.entry-state.entry-no-entry { color: var(--red); }
+
+.entry-state.entry-ready .entry-icon {
+  color: var(--green);
+  border-color: rgba(35, 215, 124, .35);
+  background: rgba(35, 215, 124, .07);
+}
+.entry-state.entry-wait .entry-icon {
+  color: var(--yellow);
+  border-color: rgba(244, 201, 54, .3);
+  background: rgba(244, 201, 54, .06);
+}
+.entry-state.entry-no-entry .entry-icon {
+  color: var(--red);
+  border-color: rgba(255, 82, 91, .35);
+  background: rgba(255, 82, 91, .07);
+}
+.entry-state.entry-ready > strong,
+.entry-state.entry-wait > strong,
+.entry-state.entry-no-entry > strong {
+  color: currentColor !important;
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 800;
+}
+.entry-state .entry-icon {
+  width: 56px;
+  height: 56px;
+}
+.entry-state-subtitle {
+  color: #8fa2b5 !important;
+  font-size: 8px;
+}

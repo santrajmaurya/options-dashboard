@@ -6,6 +6,7 @@ export default function EntryStatus({ data }) {
   const entry = data ?? {};
 
   const status = entry.status ?? "WAIT";
+  const statusClass = getEntryStatusClass(status);
 
   const currentPrice = toNumber(entry.current_price);
 
@@ -62,7 +63,7 @@ export default function EntryStatus({ data }) {
       <div className="entry-layout">
         {/* STATUS */}
 
-        <div className="entry-state">
+        <div className={`entry-state ${statusClass}`}>
           <div className="entry-icon">
             <Hourglass size={38} />
           </div>
@@ -207,7 +208,7 @@ function getPositionStatus(currentPrice, entryLow, entryHigh) {
   ) {
     return {
       label: "UNKNOWN",
-      className: "yellow",
+      className: "unavailable",
     };
   }
 
@@ -266,4 +267,16 @@ function formatPrice(value) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   });
+}
+
+function getEntryStatusClass(status) {
+  const normalized = String(status ?? "").trim().toUpperCase();
+  if (normalized.includes("READY")) return "entry-ready";
+  if (normalized === "WAIT" || normalized.includes("WAIT")) return "entry-wait";
+  if (
+    normalized.includes("NO ENTRY") ||
+    normalized.includes("AVOID") ||
+    normalized.includes("NOT RECOMMENDED")
+  ) return "entry-no-entry";
+  return "entry-wait";
 }
