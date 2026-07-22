@@ -131,7 +131,7 @@ export default function App() {
       () => {
         void loadDashboard(true);
       },
-      5 * 60 * 1000
+      2 * 60 * 1000
     );
 
     return () => {
@@ -183,7 +183,7 @@ export default function App() {
         <Topbar
           data={dashboardData}
           autoRefresh={autoRefresh}
-          refreshInterval={300}
+          refreshInterval={120}
           socketStatus={socketStatus}
         />
 

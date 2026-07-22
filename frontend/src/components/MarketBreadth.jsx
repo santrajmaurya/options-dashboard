@@ -156,7 +156,7 @@ function getParticipationStatus(ratio) {
   if (!Number.isFinite(ratio)) {
     return {
       label: "UNKNOWN",
-      className: "yellow",
+      className: "unavailable",
     };
   }
 

@@ -40,8 +40,8 @@ export default function MarketRegime({ data }) {
   };
 
   const directionClass = semanticClass(direction);
-  const gaugeClass = getScoreBandClass(score);
-  const gaugeDegrees = (score / 100) * 180;
+  const scoreBandClass = getScoreBandClass(score);
+  const scorePosition = `${score}%`;
 
   const finalRegime =
     regime.final_regime ??
@@ -50,34 +50,28 @@ export default function MarketRegime({ data }) {
   return (
     <Card title="MARKET REGIME SUMMARY" className="market-regime">
       <div className="regime-content">
-        {/* LEFT SIDE - GAUGE */}
-        <div className="gauge-area">
-          <div
-            className={`gauge ${gaugeClass}`}
-            style={{
-              background: `conic-gradient(from 270deg, var(--gauge-color) 0deg ${gaugeDegrees}deg, #314154 ${gaugeDegrees}deg 180deg, transparent 180deg)`,
-            }}
-          >
-            <div
-              className="gauge-needle"
-              style={{ transform: `rotate(${gaugeDegrees - 90}deg)` }}
-            />
-            <div className="gauge-center">
-              <strong className={gaugeClass}>{score}</strong>
-              <span>/100</span>
-            </div>
+        {/* LEFT SIDE - COMPACT SCORE (score strength is independent of regime label) */}
+        <div className="gauge-area regime-score-area">
+          <span className="regime-score-label">REGIME SCORE</span>
+          <div className="regime-score-value">
+            <strong className={scoreBandClass}>{score}</strong>
+            <span>/100</span>
           </div>
 
-          <div className="gauge-range">
-            <span>-100</span>
-            <span>+100</span>
+          <div className="regime-score-track" aria-label={`Regime score ${score} out of 100`}>
+            <span className="regime-zone zone-strong-red" />
+            <span className="regime-zone zone-mild-red" />
+            <span className="regime-zone zone-neutral" />
+            <span className="regime-zone zone-mild-green" />
+            <span className="regime-zone zone-strong-green" />
+            <i className="regime-score-marker" style={{ left: scorePosition }} />
+          </div>
+          <div className="regime-score-scale">
+            <span>0</span><span>50</span><span>100</span>
           </div>
 
           <h3 className={directionClass}>{direction}</h3>
-
-          <p>
-            Confidence: <strong>{confidence}</strong>
-          </p>
+          <p>Confidence: <strong>{confidence}</strong></p>
         </div>
 
         {/* RIGHT SIDE - SCORE TABLE */}
@@ -129,9 +123,13 @@ function Score({ name, score, status, warning = false, semanticClass }) {
       : semanticClass(status);
 
   const scoreNumber = Number(String(score).replace("+", ""));
-  const scoreClassName = Number.isFinite(scoreNumber)
-    ? getScoreBandClass(scoreNumber)
-    : "unavailable";
+  const scoreClassName = !Number.isFinite(scoreNumber)
+    ? "unavailable"
+    : scoreNumber > 0
+      ? "positive-score"
+      : scoreNumber < 0
+        ? "negative-score"
+        : "neutral";
 
   return (
     <div className="score-row">

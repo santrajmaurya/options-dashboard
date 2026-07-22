@@ -7,9 +7,19 @@ export default function StrategyEnvironment({ data, regime }) {
     ? strategies.preferred
     : [];
 
-  const neutral = Array.isArray(strategies.neutral) ? strategies.neutral : [];
+  const preferredUnique = [...new Set(preferred)];
+  const preferredSet = new Set(preferredUnique);
 
-  const avoid = Array.isArray(strategies.avoid) ? strategies.avoid : [];
+  const neutral = Array.isArray(strategies.neutral)
+    ? [...new Set(strategies.neutral)].filter((item) => !preferredSet.has(item))
+    : [];
+  const neutralSet = new Set(neutral);
+
+  const avoid = Array.isArray(strategies.avoid)
+    ? [...new Set(strategies.avoid)].filter(
+        (item) => !preferredSet.has(item) && !neutralSet.has(item)
+      )
+    : [];
 
 
   const getBias = () => {
@@ -24,7 +34,7 @@ export default function StrategyEnvironment({ data, regime }) {
   const bias = getBias();
 
   const hasStrategies =
-    preferred.length > 0 || neutral.length > 0 || avoid.length > 0;
+    preferredUnique.length > 0 || neutral.length > 0 || avoid.length > 0;
 
   return (
     <Card title="STRATEGY ENVIRONMENT" className="strategy-card">
@@ -33,7 +43,7 @@ export default function StrategyEnvironment({ data, regime }) {
 
       {hasStrategies ? (
         <div className="strategy-list">
-          {preferred.map((strategy) => (
+          {preferredUnique.map((strategy) => (
             <StrategyRow
               key={`preferred-${strategy}`}
               strategy={strategy}
