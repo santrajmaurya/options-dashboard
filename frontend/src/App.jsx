@@ -228,7 +228,7 @@ export default function App() {
 
           <SectorStrength data={dashboardData?.sectors} />
 
-          <StrategyEnvironment data={dashboardData?.strategies} regime={dashboardData?.regime} />
+          <StrategyEnvironment data={dashboardData?.strategies} regime={dashboardData?.regime} entry={dashboardData?.entry} />
 
           <EntryStatus data={dashboardData?.entry} />
 
