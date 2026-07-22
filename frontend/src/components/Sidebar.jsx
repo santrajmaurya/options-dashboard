@@ -47,9 +47,10 @@ export default function Sidebar({ data }) {
       value: Number.isFinite(Number(item?.ltp)) ? Number(item.ltp).toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "--",
       points: Number.isFinite(Number(item?.change)) ? `${Number(item.change) >= 0 ? "+" : ""}${Number(item.change).toFixed(2)}` : "--",
       change: Number.isFinite(Number(item?.change_percent)) ? `${Number(item.change_percent) >= 0 ? "+" : ""}${Number(item.change_percent).toFixed(2)}%` : "--",
+      direction: Number(item?.change) > 0 ? "positive" : Number(item?.change) < 0 ? "negative" : "neutral",
     };
   });
-  function MiniTrend({ index }) {
+  function MiniTrend({ index, direction }) {
     const patterns = [
       [25, 38, 32, 55, 48, 70, 65, 82],
       [22, 30, 28, 45, 42, 60, 58, 75],
@@ -61,7 +62,7 @@ export default function Sidebar({ data }) {
     const values = patterns[index % patterns.length];
 
     return (
-      <div className="watch-mini-chart">
+      <div className={`watch-mini-chart ${direction}`}>
         {values.map((height, i) => (
           <i key={i} style={{ height: `${height}%` }} />
         ))}
@@ -105,13 +106,13 @@ export default function Sidebar({ data }) {
                 <strong>{item.name}</strong>
               </div>
 
-              <MiniTrend index={index} />
+              <MiniTrend index={index} direction={item.direction} />
             </div>
 
             <div className="watch-price">
               <strong>{item.value}</strong>
 
-              <small>
+              <small className={item.direction}>
                 {item.points} ({item.change})
               </small>
             </div>
